@@ -1,0 +1,140 @@
+{
+  "backend/qlib/threader/threaderEngine.js": {
+    "usedBy": [
+      {
+        "file": "components/contextPipeline.js",
+        "line": 7,
+        "commentStatus": "active",
+        "importType": "require",
+        "matchText": "buildThreadedMemory = require('../../tools/memory/threaderEngine').buildThreadedMemory;",
+        "importPath": "../../tools/memory/threaderEngine"
+      },
+      {
+        "file": "precision-patcher.js",
+        "line": 174,
+        "commentStatus": "active",
+        "importType": "require",
+        "matchText": "code: `  const threader = require('../../backend/qlib/threader/threaderEngine');\\n  threader.initialize();`,",
+        "importPath": "../../backend/qlib/threader/threaderEngine"
+      },
+      {
+        "file": "src/memory/index.js",
+        "line": 8,
+        "commentStatus": "active",
+        "importType": "require",
+        "matchText": "buildContextTimeline = require('../../tools/memory/threaderEngine').buildContextTimeline;",
+        "importPath": "../../tools/memory/threaderEngine"
+      },
+      {
+        "file": "z__archive/backend/qlib/threader/test-threader.js",
+        "line": 2,
+        "commentStatus": "active",
+        "importType": "require",
+        "matchText": "const { buildContextTimeline } = require('./threaderEngine');",
+        "importPath": "./threaderEngine"
+      },
+      {
+        "file": "z__archive/components/MyAI-global.rewired.js",
+        "line": 2098,
+        "commentStatus": "active",
+        "importType": "require",
+        "matchText": "const { buildThreadedMemory } = require('../backend/qlib/threader/threaderEngine');",
+        "importPath": "../backend/qlib/threader/threaderEngine"
+      }
+    ],
+    "status": "partially connected",
+    "totalReferences": 5,
+    "activeReferences": 5
+  },
+  "components/legacy/DevPanel.jsx": {
+    "usedBy": [
+      {
+        "file": "components/utils/hotkey-logic.js",
+        "line": 67,
+        "commentStatus": "active",
+        "importType": "import",
+        "matchText": "import DevPanel from './components/DevPanel';",
+        "importPath": "./components/DevPanel"
+      },
+      {
+        "file": "components-backup/MyAI.js",
+        "line": 17,
+        "commentStatus": "active",
+        "importType": "import",
+        "matchText": "import DevPanel from './DevPanel.jsx';",
+        "importPath": "./DevPanel.jsx"
+      },
+      {
+        "file": "components-backup/utils/hotkey-logic.js",
+        "line": 67,
+        "commentStatus": "active",
+        "importType": "import",
+        "matchText": "import DevPanel from './components/DevPanel';",
+        "importPath": "./components/DevPanel"
+      },
+      {
+        "file": "z__archive/components/MyAI-global.rewired.js",
+        "line": 23,
+        "commentStatus": "active",
+        "importType": "require",
+        "matchText": "var DevPanel = require('./legacy/DevPanel.jsx');",
+        "importPath": "./legacy/DevPanel.jsx"
+      }
+    ],
+    "status": "partially connected",
+    "totalReferences": 4,
+    "activeReferences": 4
+  },
+  "components/legacy/model-benchmarks.jsx": {
+    "usedBy": [],
+    "status": "orphaned",
+    "totalReferences": 0,
+    "activeReferences": 0
+  },
+  "components/legacy/ObsidianNotes.jsx": {
+    "usedBy": [
+      {
+        "file": "components-backup/MyAI.js",
+        "line": 4,
+        "commentStatus": "active",
+        "importType": "import",
+        "matchText": "import ObsidianNotes from './ObsidianNotes.jsx';",
+        "importPath": "./ObsidianNotes.jsx"
+      },
+      {
+        "file": "z__archive/components/MyAI-global.rewired.js",
+        "line": 24,
+        "commentStatus": "active",
+        "importType": "require",
+        "matchText": "var ObsidianNotes = require('./legacy/ObsidianNotes.jsx');",
+        "importPath": "./legacy/ObsidianNotes.jsx"
+      }
+    ],
+    "status": "partially connected",
+    "totalReferences": 2,
+    "activeReferences": 2
+  },
+  "components/legacy/SettingsPanel.jsx": {
+    "usedBy": [
+      {
+        "file": "components-backup/MyAI.js",
+        "line": 3,
+        "commentStatus": "active",
+        "importType": "import",
+        "matchText": "import SettingsPanel from './SettingsPanel.jsx';",
+        "importPath": "./SettingsPanel.jsx"
+      },
+      {
+        "file": "z__archive/components/MyAI-global.rewired.js",
+        "line": 25,
+        "commentStatus": "active",
+        "importType": "require",
+        "matchText": "var SettingsPanel = require('./legacy/SettingsPanel.jsx');",
+        "importPath": "./legacy/SettingsPanel.jsx"
+      }
+    ],
+    "status": "partially connected",
+    "totalReferences": 2,
+    "activeReferences": 2
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "meta": {
+    "timestamp": "2025-08-20T00:42:02.967Z",
+    "version": "2.0.0-runtime",
+    "system_running": true
+  },
+  "runtime_tests": {
+    "memory_system_actual": {
+      "status": "PASS",
+      "errors": [],
+      "runtime_failures": []
+    },
+    "ipc_live_test": {
+      "status": "UNKNOWN",
+      "handlers_responding": {},
+      "errors": []
+    },
+    "chat_pipeline_live": {
+      "status": "HEALTHY",
+      "stages": {},
+      "breaks": [],
+      "timing": {}
+    },
+    "context_injection_live": {
+      "status": "HEALTHY",
+      "injections": [
+        {
+          "query": "what are my clients?",
+          "results_count": 3,
+          "sample_content": "user: list my recipes\n\nassistant: I don't see any recipes in your vault.",
+          "can_inject": "user: list my recipes\n\nassistant: I don't see any recipes in your vault."
+        },
+        {
+          "query": "list my recipes",
+          "results_count": 3,
+          "sample_content": "user: list my recipes\n\nassistant: I don't see any recipes in your vault.",
+          "can_inject": "user: list my recipes\n\nassistant: I don't see any recipes in your vault."
+        },
+        {
+          "query": "what are my lifts?",
+          "results_count": 3,
+          "sample_content": "user: list my recipes\n\nassistant: I don't see any recipes in your vault.",
+          "can_inject": "user: list my recipes\n\nassistant: I don't see any recipes in your vault."
+        }
+      ],
+      "failures": []
+    }
+  },
+  "runtime_errors": [
+    {
+      "pattern": "/threaderEngine not loaded/",
+      "file": "src/memory/index.js",
+      "type": "RUNTIME_ERROR"
+    }
+  ],
+  "live_memory_flow": [],
+  "actual_breaks": [
+    {
+      "type": "MISSING_FILE",
+      "file": "src/memory/relevantCapsules.js",
+      "impact": "Memory system buildContextForInput fails",
+      "fix": "Create the missing file or fix the import"
+    }
+  ],
+  "recommendations": {
+    "runtime_fixes": [],
+    "immediate": [
+      "Create src/memory/relevantCapsules.js",
+      "IMMEDIATE: Create missing src/memory/relevantCapsules.js file",
+      "QUICK FIX: Comment out ./relevantCapsules import in src/memory/index.js temporarily"
+    ]
+  }
+}

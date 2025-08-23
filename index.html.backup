@@ -1,0 +1,316 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Echo Rubicon</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Base styling -->
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #1e1e1e;
+      color: #ffffff;
+    }
+
+    #myai-root {
+      width: 100%;
+      height: 100vh;
+    }
+
+    /* Loading screen styles */
+    .loading-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: #888;
+    }
+
+    .component-status {
+      margin: 10px 0;
+      font-family: monospace;
+    }
+
+    .status-ok { color: #4caf50; }
+    .status-error { color: #f44336; }
+    .status-waiting { color: #ff9800; }
+  </style>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="src/auth.css">
+  <link rel="stylesheet" href="components/base.css">
+  <link rel="stylesheet" href="components/layout.css">
+  <link rel="stylesheet" href="components/components.css">
+  <link rel="stylesheet" href="components/MyAI.css">
+  <link rel="stylesheet" href="theme-enhancement.css">
+</head>
+
+<body>
+  <div id="myai-root">
+    <div class="loading-screen">
+      <h2>Echo Rubicon Loading...</h2>
+      <div id="react-status" class="component-status status-waiting">⏳ Loading React...</div>
+      <div id="myai-status" class="component-status status-waiting">⏳ Loading MyAI...</div>
+    </div>
+  </div>
+
+<!-- React MUST load first -->
+<script src="vendor/react.development.js"></script>
+<script src="vendor/react-dom.development.js"></script>
+
+<!-- Wait for React to be ready -->
+<script>
+  // Ensure React is loaded
+  if (!window.React) {
+    console.error('[CRITICAL] React failed to load!');
+  } else {
+    console.log('[React] Loaded successfully');
+  }
+</script>
+
+<!-- Pre-initialize MyAI stub with registry -->
+<script>
+  window.MyAI = { pending: true };
+  window.MyAIRegistry = { 
+    components: {},
+    register: function(name, component) {
+      this.components[name] = component;
+      console.log(`[Registry] Registered component: ${name}`);
+      window.dispatchEvent(new CustomEvent('MyAI-ready', { detail: { name } }));
+    }
+  };
+  console.log('[Pre-init] MyAI stub and registry created');
+</script>
+
+<!-- Component hooks + challenge (these need React) -->
+<script src="src/components/useAuth.js"></script>
+<script src="components/AuthChallenge.jsx"></script>
+
+<!-- Component registry members -->
+<script src="components/AuthChallenge.jsx"></script>
+<script src="components/MyAIInterface.js"></script>
+<script src="components/ObsidianNotes-global.js"></script>
+
+<!-- Core logic - MUST load before MyAI.js -->
+<script src="components/MyAICore.js"></script>
+
+<!-- Load MyAI.js AFTER MyAICore -->
+<script src="components/MyAI.js"></script>
+
+<!-- Other components -->
+
+
+<!-- Memory modules -->
+<script src="src/echo/memory/VaultInterface.js"></script>
+<!-- Skip capsuleRetriever if it uses require -->
+<!-- <script src="src/echo/memory/capsuleRetriever.js"></script> -->
+<!-- Skip ContextInjector if it uses require -->
+<!-- <script src="src/echo/memory/ContextInjector.js"></script> -->
+
+<script>
+  console.log('[Memory] Modules loaded:', {
+    VaultInterface: typeof window.VaultInterface !== 'undefined',
+    CapsuleRetriever: typeof window.CapsuleRetriever !== 'undefined',
+    ContextInjector: typeof window.ContextInjector !== 'undefined'
+  });
+</script>
+
+<script>
+  // Update loading status
+  function updateStatus(id, status, message) {
+    const element = document.getElementById(id);
+    if (element) {
+      element.className = `component-status status-${status}`;
+      element.textContent = message;
+    }
+  }
+
+  // Check React
+  if (window.React && window.ReactDOM) {
+    updateStatus('react-status', 'ok', '✅ React loaded');
+  }
+
+  // Listen for AuthChallenge to load (it's loaded via Babel)
+  window.addEventListener('authchallenge-loaded', () => {
+    console.log('[AuthChallenge] Loading component...');
+    if (window.AuthChallenge) {
+      console.log('[AuthChallenge] Component loaded and exposed to window');
+    }
+  });
+
+  // Dispatch event when AuthChallenge is ready
+  if (window.AuthChallenge) {
+    console.log('[AuthChallenge] Already loaded, dispatching event');
+    window.dispatchEvent(new Event('authchallenge-loaded'));
+  }
+
+  // Enhanced waitForComponents with better error handling
+  let componentCheckAttempts = 0;
+  const MAX_ATTEMPTS = 200; // 10 seconds at 50ms intervals
+  
+  function waitForComponents() {
+    componentCheckAttempts++;
+    
+    // Check if MyAI is loaded and not just our stub
+    if (window.MyAI && !window.MyAI.pending) {
+      updateStatus('myai-status', 'ok', '✅ MyAI loaded');
+      console.log('[Bootstrap] MyAI component loaded, initializing app...');
+      setTimeout(initializeApp, 100);
+    } else if (componentCheckAttempts >= MAX_ATTEMPTS) {
+      updateStatus('myai-status', 'error', '❌ MyAI timeout');
+      console.error('[Bootstrap] MyAI failed to load after 10 seconds');
+      // Attempt force load
+      if (window.forceLoadMyAI) {
+        window.forceLoadMyAI();
+      }
+    } else {
+      console.log(`[Bootstrap] Waiting for MyAI component... (${componentCheckAttempts}/${MAX_ATTEMPTS})`);
+      setTimeout(waitForComponents, 50);
+    }
+  }
+
+  // Listen for myai-ready event as backup
+  window.addEventListener('myai-ready', () => {
+    console.log('[Bootstrap] Received myai-ready event');
+    if (window.MyAI && !window.MyAI.pending) {
+      updateStatus('myai-status', 'ok', '✅ MyAI loaded via event');
+      clearTimeout(window.componentCheckTimeout);
+      setTimeout(initializeApp, 100);
+    }
+  });
+
+  function initializeApp() {
+    const rootElement = document.getElementById('myai-root');
+    if (!rootElement) {
+      console.error('[MyAI] myai-root element not found!');
+      return;
+    }
+
+    console.log('[MyAI] Initializing app with security');
+    // Add debugging
+  console.log('[MyAI] Available components:', {
+    MyAI: !!window.MyAI,
+    AuthProvider: !!window.AuthProvider,
+    AuthChallenge: !!window.AuthChallenge,
+    MyAIInterface: !!window.MyAIInterface,
+    Registry: window.MyAIRegistry
+  });
+
+    try {
+      // Clear loading screen
+      rootElement.innerHTML = '';
+      
+      const App = () => {
+        return React.createElement(
+          window.AuthProvider || 'div',
+          null,
+          React.createElement(window.MyAI)
+        );
+      };
+      
+      // Render the app
+      if (ReactDOM.createRoot) {
+        const root = ReactDOM.createRoot(rootElement);
+        root.render(React.createElement(App));
+      } else {
+        ReactDOM.render(React.createElement(App), rootElement);
+      }
+      
+      console.log('[MyAI] App rendered - security check will be handled by MyAI component');
+    } catch (error) {
+      console.error('[MyAI] Failed to render app:', error);
+      rootElement.innerHTML = `
+        <div class="loading-screen">
+          <h2>Error Loading Echo Rubicon</h2>
+          <p style="color: #f44336;">Failed to initialize: ${error.message}</p>
+          <p>Check console for details</p>
+        </div>
+      `;
+    }
+  }
+
+  // Start checking when DOM is ready
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log('[Bootstrap] DOM ready, checking components...');
+    
+    // Log current state
+    console.log('[Bootstrap] Current state:', {
+      MyAI: !!window.MyAI,
+      MyAIisPending: window.MyAI?.pending,
+      AuthChallenge: !!window.AuthChallenge,
+      useAuth: !!window.useAuth,
+      electronAPI: !!window.electronAPI
+    });
+    
+    // Also check if preload is ready
+    if (window.electronAPI) {
+      console.log('[Bootstrap] electronAPI available:', Object.keys(window.electronAPI));
+    } else {
+      console.warn('[Bootstrap] electronAPI not yet available');
+    }
+    
+    waitForComponents();
+  });
+
+  // Listen for preload ready event
+  window.addEventListener('preload-ready', (event) => {
+    console.log('[Bootstrap] Preload ready event received:', event.detail);
+  });
+</script>
+
+<!-- Debug Output -->
+<div id="debug-console" style="position: fixed; bottom: 0; left: 0; right: 0; height: 200px; background: rgba(0,0,0,0.9); color: #0f0; font-family: monospace; font-size: 12px; overflow-y: auto; z-index: 99999; padding: 10px; display: none;">
+  <button onclick="document.getElementById('debug-console').style.display='none'" style="position: absolute; top: 5px; right: 5px;">X</button>
+  <div id="debug-output"></div>
+</div>
+<button onclick="document.getElementById('debug-console').style.display='block'" style="position: fixed; top: 10px; right: 10px; z-index: 99999; background: red; color: white; padding: 5px;">Show Debug</button>
+
+<script>
+  // Override console.log to show in our debug panel
+  const debugOutput = document.getElementById('debug-output');
+  const originalLog = console.log;
+  console.log = function(...args) {
+    originalLog.apply(console, args);
+    if (debugOutput) {
+      const msg = document.createElement('div');
+      msg.textContent = new Date().toISOString().substr(11, 8) + ' ' + args.join(' ');
+      msg.style.color = '#00ff00';
+      debugOutput.appendChild(msg);
+      debugOutput.scrollTop = debugOutput.scrollHeight;
+    }
+  };
+  
+  // Function to add colored debug messages
+  function addDebugLog(text, color = '#00ff00') {
+    if (debugOutput) {
+      const msg = document.createElement('div');
+      msg.textContent = new Date().toISOString().substr(11, 8) + ' ' + text;
+      msg.style.color = color;
+      debugOutput.appendChild(msg);
+      debugOutput.scrollTop = debugOutput.scrollHeight;
+    }
+  }
+  
+  // Log initial state
+  console.log('[Debug] Page loaded');
+  console.log('[Debug] MyAI exists:', !!window.MyAI);
+  console.log('[Debug] Auth exists:', !!window.useAuth);
+  
+  // Force load fallback
+  window.forceLoadMyAI = function() {
+    console.warn('[Force] Attempting to load MyAI manually...');
+    const script = document.createElement('script');
+    script.src = 'components/MyAI.js';
+    script.onload = () => console.log('[Force] MyAI.js loaded');
+    script.onerror = () => console.error('[Force] Failed to load MyAI.js');
+    document.head.appendChild(script);
+  };
+</script>
+</body>
+</html>

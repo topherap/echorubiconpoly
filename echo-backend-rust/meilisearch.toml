@@ -1,0 +1,6 @@
+env = "production"
+master_key = "HfcjPnJMXnoXpF3iFk24_M-phz95JesleVwcyOqCaY"
+http_addr = "127.0.0.1:7700"
+db_path = "./data.ms"
+no_analytics = true
+log_level = "INFO"

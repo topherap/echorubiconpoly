@@ -1,0 +1,64 @@
+{
+  "memoryModules": {
+    "MemoryCapsule.js": {
+      "file": "MemoryCapsule.js",
+      "status": "\u2705 live",
+      "type": "data-structure",
+      "connectedTo": []
+    },
+    "MemoryVaultManager.js": {
+      "file": "MemoryVaultManager.js",
+      "status": "\u2705 live",
+      "type": "storage/indexer",
+      "connectedTo": []
+    },
+    "PromptBuilder.js": {
+      "file": "PromptBuilder.js",
+      "status": "\u2705 live",
+      "type": "prompt-generator",
+      "connectedTo": []
+    },
+    "SessionStitcher.js": {
+      "file": "SessionStitcher.js",
+      "status": "\u2705 live",
+      "type": "session-tracker",
+      "connectedTo": []
+    },
+    "TokenBudgetManager.js": {
+      "file": "TokenBudgetManager.js",
+      "status": "\u2705 live",
+      "type": "token-budget",
+      "connectedTo": []
+    },
+    "vault.js": {
+      "file": "vault.js",
+      "status": "\u2705 live",
+      "type": "obsidian-interface",
+      "connectedTo": []
+    },
+    "ChatOrchestrator.js": {
+      "file": "ChatOrchestrator.js",
+      "status": "\u2705 live",
+      "type": "core-orchestrator",
+      "connectedTo": []
+    },
+    "context.js": {
+      "file": "context.js",
+      "status": "\u2705 live",
+      "type": "context-selector",
+      "connectedTo": []
+    },
+    "index.js": {
+      "file": "index.js",
+      "status": "\u2705 live",
+      "type": "entrypoint",
+      "connectedTo": []
+    },
+    "integration.js": {
+      "file": "integration.js",
+      "status": "\u2705 live",
+      "type": "system-initializer",
+      "connectedTo": []
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+    "llm_model":  "llama2",
+    "llm_provider":  "ollama",
+    "models":  null,
+    "local_models":  null,
+    "system_prompts":  null,
+    "openai_key":  null,
+    "openai_api_key":  null,
+    "anthropic_key":  null,
+    "elevenlabs_api_key":  null,
+    "tts_provider":  null,
+    "stt_provider":  "whisper",
+    "ollama_base_url":  "http://localhost:11434",
+    "elevenlabs_voice_id":  null,
+    "openai_voice_id":  null,
+    "vault_structure":  {
+                            "public":  "Public",
+                            "private":  "Private"
+                        },
+    "server_host":  "0.0.0.0",
+    "server_port":  3000,
+    "proxy_providers":  null,
+    "meilisearch":  {
+                        "url":  "http://127.0.0.1:7700",
+                        "api_key":  "HfcjPnJMXnoXpF3iFk24_M-phz95JesleVwcyOqCaY"
+                    },
+    "vault_path":  "D:\\Obsidian Vault",
+    "qlib_path":  "C:\\Users\\tophe\\Documents\\Echo Rubicon\\qlib"
+}

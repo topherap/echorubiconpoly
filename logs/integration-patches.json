@@ -1,0 +1,96 @@
+{
+  "generated": "2025-07-12T19:06:27.775Z",
+  "total": 10,
+  "files": [
+    {
+      "targetFile": "components/MyAI-global.js",
+      "orphans": [
+        "components/legacy/DevPanel.jsx",
+        "components/legacy/ObsidianNotes.jsx",
+        "components/legacy/SettingsPanel.jsx"
+      ],
+      "patches": [
+        {
+          "type": "insert",
+          "line": 1170,
+          "code": "import DevPanel from './legacy/DevPanel.jsx';",
+          "description": "Import DevPanel component"
+        },
+        {
+          "type": "insert",
+          "line": 10,
+          "code": "  const [showDevPanel, setShowDevPanel] = useState(false);",
+          "description": "Add state for DevPanel"
+        },
+        {
+          "type": "insert",
+          "line": 150,
+          "code": "        {showDevPanel && <DevPanel />}",
+          "description": "Render DevPanel in JSX"
+        },
+        {
+          "type": "insert",
+          "line": 1171,
+          "code": "import ObsidianNotes from './legacy/ObsidianNotes.jsx';",
+          "description": "Import ObsidianNotes component"
+        },
+        {
+          "type": "insert",
+          "line": 11,
+          "code": "  const [showObsidianNotes, setShowObsidianNotes] = useState(false);",
+          "description": "Add state for ObsidianNotes"
+        },
+        {
+          "type": "insert",
+          "line": 200,
+          "code": "        {showObsidianNotes && <ObsidianNotes />}",
+          "description": "Render ObsidianNotes in JSX"
+        },
+        {
+          "type": "insert",
+          "line": 1172,
+          "code": "import SettingsPanel from './legacy/SettingsPanel.jsx';",
+          "description": "Import SettingsPanel component"
+        },
+        {
+          "type": "insert",
+          "line": 12,
+          "code": "  const [showSettingsPanel, setShowSettingsPanel] = useState(false);",
+          "description": "Add state for SettingsPanel"
+        },
+        {
+          "type": "insert",
+          "line": 250,
+          "code": "        {showSettingsPanel && <SettingsPanel />}",
+          "description": "Render SettingsPanel in JSX"
+        }
+      ],
+      "summary": {
+        "lines": 4549,
+        "imports": 1,
+        "jsx": 0,
+        "funcs": 153
+      }
+    },
+    {
+      "targetFile": "src/memory/index.js",
+      "orphans": [
+        "backend/qlib/threader/threaderEngine.js"
+      ],
+      "patches": [
+        {
+          "type": "insert",
+          "line": 4,
+          "code": "  const threader = require('../../backend/qlib/threader/threaderEngine');\n  threader.initialize();",
+          "description": "Initialize threader engine"
+        }
+      ],
+      "summary": {
+        "lines": 145,
+        "imports": 7,
+        "jsx": 0,
+        "funcs": 12
+      }
+    }
+  ]
+}

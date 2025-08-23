@@ -1,0 +1,6053 @@
+{
+  "scan_timestamp": "20250722_113054",
+  "project_root": "C:\\Users\\tophe\\Documents\\Echo Rubicon",
+  "statistics": {
+    "total_files_scanned": 213,
+    "memory_files_found": 162,
+    "missing_imports": 59,
+    "dead_files": 111
+  },
+  "memory_files": {
+    "auth-context.js": {
+      "categories": {
+        "retrieval": [
+          "fetch"
+        ],
+        "context": [
+          "context"
+        ]
+      },
+      "size": 2678,
+      "lines": 99,
+      "imports": [],
+      "exports": [],
+      "functions": []
+    },
+    "bootstrap-validator.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "context": [
+          "context"
+        ],
+        "capsule": [
+          "capsule"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 11789,
+      "lines": 295,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        }
+      ],
+      "exports": [
+        "module.exports",
+        "diagnosticResults"
+      ],
+      "functions": [
+        "detectRuntimeEnvironment"
+      ]
+    },
+    "cappaths.js": {
+      "categories": {
+        "context": [
+          "context"
+        ],
+        "capsule": [
+          "capsule",
+          "capsules"
+        ]
+      },
+      "size": 1527,
+      "lines": 61,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        }
+      ],
+      "exports": [],
+      "functions": []
+    },
+    "check-capsules.js": {
+      "categories": {
+        "retrieval": [
+          "find"
+        ],
+        "capsule": [
+          "capsule",
+          "capsules"
+        ],
+        "vault": [
+          "vault"
+        ]
+      },
+      "size": 1858,
+      "lines": 49,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        }
+      ],
+      "exports": [],
+      "functions": []
+    },
+    "contextDebugger.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "retrieval": [
+          "find"
+        ],
+        "context": [
+          "context",
+          "buildcontext"
+        ],
+        "injection": [
+          "inject",
+          "injection"
+        ],
+        "capsule": [
+          "capsule"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 3804,
+      "lines": 91,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        }
+      ],
+      "exports": [],
+      "functions": [
+        "checkTimelineInjection",
+        "checkMemoryRoutes",
+        "runContextDebugger"
+      ]
+    },
+    "diagnose-echo.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "retrieval": [
+          "search",
+          "query",
+          "find"
+        ],
+        "context": [
+          "context"
+        ],
+        "vault": [
+          "vault"
+        ],
+        "epoch": [
+          "time"
+        ],
+        "scoring": [
+          "score"
+        ]
+      },
+      "size": 8662,
+      "lines": 244,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "electron",
+          "resolved": "electron"
+        }
+      ],
+      "exports": [],
+      "functions": []
+    },
+    "diagnose-memory-pipeline.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "retrieval": [
+          "search"
+        ],
+        "vault": [
+          "vault"
+        ]
+      },
+      "size": 5207,
+      "lines": 138,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        }
+      ],
+      "exports": [],
+      "functions": []
+    },
+    "echo-audit-usage.js": {
+      "categories": {
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 3527,
+      "lines": 114,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        }
+      ],
+      "exports": [],
+      "functions": []
+    },
+    "echo-boot-manager.js": {
+      "categories": {
+        "vault": [
+          "vault"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 6273,
+      "lines": 213,
+      "imports": [
+        {
+          "type": "require",
+          "path": "child_process",
+          "resolved": "child_process"
+        },
+        {
+          "type": "require",
+          "path": "net",
+          "resolved": "net"
+        },
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        }
+      ],
+      "exports": [],
+      "functions": [
+        "startMeilisearch"
+      ]
+    },
+    "echo-diagnose-unified.js": {
+      "categories": {
+        "retrieval": [
+          "lookup"
+        ],
+        "context": [
+          "context"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 4436,
+      "lines": 144,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "chalk",
+          "resolved": "chalk"
+        }
+      ],
+      "exports": [],
+      "functions": []
+    },
+    "echo-diagnostic-v2.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "retrieval": [
+          "find"
+        ],
+        "injection": [
+          "inject",
+          "injection"
+        ],
+        "capsule": [
+          "capsule",
+          "capsules"
+        ],
+        "vault": [
+          "vault"
+        ]
+      },
+      "size": 5076,
+      "lines": 171,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        }
+      ],
+      "exports": [],
+      "functions": [
+        "findVaultPath",
+        "simulateFactInjectionCheck"
+      ]
+    },
+    "echo-prune-orphans.js": {
+      "categories": {
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 1553,
+      "lines": 49,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        }
+      ],
+      "exports": [],
+      "functions": []
+    },
+    "echo-restore-archive.js": {
+      "categories": {
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 1521,
+      "lines": 46,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        }
+      ],
+      "exports": [],
+      "functions": []
+    },
+    "echo-truth-table.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "context": [
+          "context"
+        ],
+        "injection": [
+          "inject",
+          "prompt"
+        ],
+        "capsule": [
+          "capsule"
+        ],
+        "vault": [
+          "vault"
+        ]
+      },
+      "size": 3148,
+      "lines": 107,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "chalk",
+          "resolved": "chalk"
+        }
+      ],
+      "exports": [],
+      "functions": []
+    },
+    "echomemory710.js": {
+      "categories": {
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 4710,
+      "lines": 130,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "net",
+          "resolved": "net"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        }
+      ],
+      "exports": [],
+      "functions": []
+    },
+    "index.html": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "context": [
+          "context"
+        ],
+        "capsule": [
+          "capsule"
+        ],
+        "vault": [
+          "vault"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 10217,
+      "lines": 313,
+      "imports": [],
+      "exports": [],
+      "functions": []
+    },
+    "interactiveTest.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "vault": [
+          "vault"
+        ]
+      },
+      "size": 960,
+      "lines": 41,
+      "imports": [
+        {
+          "type": "import",
+          "path": "./src/echo/core/SessionMesh.js",
+          "resolved": "src\\echo\\core\\SessionMesh.js"
+        },
+        {
+          "type": "import",
+          "path": "readline",
+          "resolved": "readline"
+        }
+      ],
+      "exports": [],
+      "functions": []
+    },
+    "main.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "retrieval": [
+          "retriev"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 7356,
+      "lines": 246,
+      "imports": [
+        {
+          "type": "require",
+          "path": "electron",
+          "resolved": "electron"
+        },
+        {
+          "type": "require",
+          "path": "child_process",
+          "resolved": "child_process"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "./src/installer/qlib-setup",
+          "resolved": "src\\installer\\qlib-setup.js"
+        },
+        {
+          "type": "require",
+          "path": "./main/app",
+          "resolved": "main\\app.js"
+        },
+        {
+          "type": "require",
+          "path": "./main/ipc-handlers",
+          "resolved": "main\\ipc-handlers.js"
+        },
+        {
+          "type": "require",
+          "path": "./main/windows",
+          "resolved": "main\\windows.js"
+        },
+        {
+          "type": "require",
+          "path": "electron",
+          "resolved": "electron"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "spawnMemoryProcess"
+      ]
+    },
+    "map-memory-pipeline.js": {
+      "categories": {
+        "memory": [
+          "memory",
+          "memoryvault"
+        ],
+        "retrieval": [
+          "retriev",
+          "fetch",
+          "search"
+        ],
+        "context": [
+          "context"
+        ],
+        "injection": [
+          "inject",
+          "injection",
+          "prompt"
+        ],
+        "capsule": [
+          "capsule"
+        ],
+        "vault": [
+          "vault",
+          "storage"
+        ]
+      },
+      "size": 9555,
+      "lines": 248,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        }
+      ],
+      "exports": [],
+      "functions": []
+    },
+    "master-diag-lite.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "retrieval": [
+          "search",
+          "find"
+        ],
+        "context": [
+          "context",
+          "buildcontext"
+        ],
+        "capsule": [
+          "capsule",
+          "capsules"
+        ],
+        "vault": [
+          "vault"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 13329,
+      "lines": 415,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "net",
+          "resolved": "net"
+        },
+        {
+          "type": "require",
+          "path": "./ipc-handlers",
+          "resolved": null
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "testMemorySystem",
+        "testVaultAccess"
+      ]
+    },
+    "master-diag.js": {
+      "categories": {
+        "memory": [
+          "memory",
+          "memoryvault"
+        ],
+        "retrieval": [
+          "fetch",
+          "search"
+        ],
+        "context": [
+          "context",
+          "buildcontext"
+        ],
+        "capsule": [
+          "capsule",
+          "capsules"
+        ],
+        "vault": [
+          "vault"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 21760,
+      "lines": 630,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "child_process",
+          "resolved": "child_process"
+        },
+        {
+          "type": "require",
+          "path": "net",
+          "resolved": "net"
+        },
+        {
+          "type": "require",
+          "path": "./ipc-handlers",
+          "resolved": null
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "analyzeMemorySystem",
+        "analyzeVaultIntegration"
+      ]
+    },
+    "memory-crawler.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "retrieval": [
+          "find"
+        ]
+      },
+      "size": 7458,
+      "lines": 247,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "chalk",
+          "resolved": "chalk"
+        }
+      ],
+      "exports": [],
+      "functions": [
+        "findImportMentions"
+      ]
+    },
+    "MyAI_cleaned.css": {
+      "categories": {
+        "injection": [
+          "prompt"
+        ],
+        "scoring": [
+          "weight"
+        ]
+      },
+      "size": 13322,
+      "lines": 717,
+      "imports": [],
+      "exports": [],
+      "functions": []
+    },
+    "onboarding.html": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "retrieval": [
+          "fetch",
+          "query"
+        ],
+        "injection": [
+          "prompt"
+        ],
+        "vault": [
+          "vault",
+          "storage",
+          "persist"
+        ],
+        "epoch": [
+          "time"
+        ],
+        "scoring": [
+          "weight"
+        ]
+      },
+      "size": 93474,
+      "lines": 2245,
+      "imports": [],
+      "exports": [],
+      "functions": [
+        "selectVault"
+      ]
+    },
+    "precision-patcher.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "retrieval": [
+          "find"
+        ],
+        "injection": [
+          "inject",
+          "injection"
+        ]
+      },
+      "size": 8429,
+      "lines": 284,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "chalk",
+          "resolved": "chalk"
+        },
+        {
+          "type": "require",
+          "path": "../../backend/qlib/threader/threaderEngine",
+          "resolved": null
+        },
+        {
+          "type": "import",
+          "path": "./legacy/${name}.jsx",
+          "resolved": null
+        }
+      ],
+      "exports": [],
+      "functions": []
+    },
+    "preload.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "retrieval": [
+          "search",
+          "query"
+        ],
+        "context": [
+          "context",
+          "buildcontext"
+        ],
+        "injection": [
+          "prompt"
+        ],
+        "vault": [
+          "vault"
+        ]
+      },
+      "size": 6891,
+      "lines": 226,
+      "imports": [
+        {
+          "type": "require",
+          "path": "electron",
+          "resolved": "electron"
+        }
+      ],
+      "exports": [],
+      "functions": []
+    },
+    "qlib-diag.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "vault": [
+          "vault"
+        ]
+      },
+      "size": 594,
+      "lines": 21,
+      "imports": [
+        {
+          "type": "require",
+          "path": "./src/memory/QLibInterface",
+          "resolved": "src\\memory\\QLibInterface.js"
+        }
+      ],
+      "exports": [],
+      "functions": []
+    },
+    "security-challenge.html": {
+      "categories": {
+        "retrieval": [
+          "query"
+        ],
+        "injection": [
+          "prompt"
+        ]
+      },
+      "size": 4610,
+      "lines": 148,
+      "imports": [],
+      "exports": [],
+      "functions": []
+    },
+    "security-challenge.js": {
+      "categories": {
+        "injection": [
+          "prompt"
+        ]
+      },
+      "size": 1103,
+      "lines": 25,
+      "imports": [],
+      "exports": [],
+      "functions": []
+    },
+    "test-auth.html": {
+      "categories": {
+        "retrieval": [
+          "fetch"
+        ],
+        "scoring": [
+          "weight"
+        ]
+      },
+      "size": 8375,
+      "lines": 287,
+      "imports": [],
+      "exports": [],
+      "functions": []
+    },
+    "test-memory.html": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "context": [
+          "context"
+        ],
+        "capsule": [
+          "capsule"
+        ],
+        "vault": [
+          "vault"
+        ]
+      },
+      "size": 1648,
+      "lines": 46,
+      "imports": [],
+      "exports": [],
+      "functions": []
+    },
+    "testSession.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "capsule": [
+          "capsule"
+        ],
+        "vault": [
+          "vault"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 1298,
+      "lines": 46,
+      "imports": [
+        {
+          "type": "import",
+          "path": "./src/echo/core/SessionMesh.js",
+          "resolved": "src\\echo\\core\\SessionMesh.js"
+        }
+      ],
+      "exports": [],
+      "functions": []
+    },
+    "theme-enhancer.js": {
+      "categories": {
+        "retrieval": [
+          "query"
+        ]
+      },
+      "size": 367,
+      "lines": 12,
+      "imports": [],
+      "exports": [],
+      "functions": []
+    },
+    "trace-message-flow.js": {
+      "categories": {
+        "memory": [
+          "memories"
+        ],
+        "retrieval": [
+          "search"
+        ]
+      },
+      "size": 1584,
+      "lines": 46,
+      "imports": [
+        {
+          "type": "require",
+          "path": "electron",
+          "resolved": "electron"
+        }
+      ],
+      "exports": [],
+      "functions": []
+    },
+    "trial-expired.html": {
+      "categories": {
+        "epoch": [
+          "time"
+        ],
+        "scoring": [
+          "weight"
+        ]
+      },
+      "size": 5773,
+      "lines": 184,
+      "imports": [],
+      "exports": [],
+      "functions": []
+    },
+    "VoiceManager.js": {
+      "categories": {
+        "retrieval": [
+          "fetch",
+          "query"
+        ]
+      },
+      "size": 8548,
+      "lines": 326,
+      "imports": [],
+      "exports": [],
+      "functions": []
+    },
+    "backend\\qlib\\auditCapsulePipeline (1).js": {
+      "categories": {
+        "capsule": [
+          "capsule"
+        ]
+      },
+      "size": 2056,
+      "lines": 73,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "auditCapsulePipeline"
+      ]
+    },
+    "backend\\qlib\\auditCapsulePipeline.js": {
+      "categories": {
+        "capsule": [
+          "capsule"
+        ]
+      },
+      "size": 2212,
+      "lines": 80,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "auditCapsulePipeline"
+      ]
+    },
+    "backend\\qlib\\chaosanalyzer.js": {
+      "categories": {
+        "capsule": [
+          "capsule"
+        ]
+      },
+      "size": 2373,
+      "lines": 75,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "analyzeAndCleanCapsule",
+        "scanAllCapsules"
+      ]
+    },
+    "backend\\qlib\\epochClassifier.js": {
+      "categories": {
+        "capsule": [
+          "capsule"
+        ],
+        "epoch": [
+          "epoch"
+        ],
+        "scoring": [
+          "weight"
+        ]
+      },
+      "size": 507,
+      "lines": 16,
+      "imports": [],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "assignEpochAndWeight"
+      ]
+    },
+    "backend\\qlib\\filterCapsulesByQuery.js": {
+      "categories": {
+        "retrieval": [
+          "query"
+        ],
+        "capsule": [
+          "capsule",
+          "capsules"
+        ]
+      },
+      "size": 1088,
+      "lines": 30,
+      "imports": [
+        {
+          "type": "require",
+          "path": "./loadVerbatimRules",
+          "resolved": "backend\\qlib\\loadVerbatimRules.js"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "filterCapsulesByQuery"
+      ]
+    },
+    "backend\\qlib\\findExactCapsuleMatch.js": {
+      "categories": {
+        "retrieval": [
+          "query",
+          "find"
+        ],
+        "capsule": [
+          "capsule",
+          "capsules"
+        ]
+      },
+      "size": 815,
+      "lines": 24,
+      "imports": [],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "findExactCapsuleMatch"
+      ]
+    },
+    "backend\\qlib\\folderLister.js": {
+      "categories": {
+        "vault": [
+          "vault"
+        ]
+      },
+      "size": 739,
+      "lines": 27,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "vaultSafeList"
+      ]
+    },
+    "backend\\qlib\\folderScopedRetriever.js": {
+      "categories": {
+        "memory": [
+          "memory",
+          "memoryvault"
+        ],
+        "capsule": [
+          "capsule",
+          "capsules"
+        ],
+        "vault": [
+          "vault"
+        ],
+        "scoring": [
+          "score"
+        ]
+      },
+      "size": 1064,
+      "lines": 34,
+      "imports": [
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "../../src/memory/MemoryVaultManager",
+          "resolved": "src\\memory\\MemoryVaultManager.js"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "getCapsulesByFolder"
+      ]
+    },
+    "backend\\qlib\\injectionScorer.js": {
+      "categories": {
+        "retrieval": [
+          "search",
+          "query"
+        ],
+        "injection": [
+          "inject",
+          "injection"
+        ],
+        "capsule": [
+          "capsule"
+        ],
+        "epoch": [
+          "epoch"
+        ],
+        "scoring": [
+          "score",
+          "scoring"
+        ]
+      },
+      "size": 1580,
+      "lines": 56,
+      "imports": [],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "generateSearchText",
+        "blendedInjectionScore"
+      ]
+    },
+    "backend\\qlib\\loadCapsules.js": {
+      "categories": {
+        "capsule": [
+          "capsule",
+          "capsules"
+        ],
+        "vault": [
+          "vault"
+        ]
+      },
+      "size": 1021,
+      "lines": 35,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "loadCapsules"
+      ]
+    },
+    "backend\\qlib\\rerankCapsulesByQuery.js": {
+      "categories": {
+        "retrieval": [
+          "query"
+        ],
+        "capsule": [
+          "capsule",
+          "capsules"
+        ],
+        "scoring": [
+          "score",
+          "rerank"
+        ]
+      },
+      "size": 1013,
+      "lines": 39,
+      "imports": [],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "rerankCapsulesByQuery",
+        "score"
+      ]
+    },
+    "backend\\qlib\\retagger.js": {
+      "categories": {
+        "capsule": [
+          "capsule"
+        ]
+      },
+      "size": 1640,
+      "lines": 51,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "retagCapsuleFile",
+        "retagAllCapsules"
+      ]
+    },
+    "components\\AuthChallenge.jsx": {
+      "categories": {
+        "injection": [
+          "prompt"
+        ]
+      },
+      "size": 17692,
+      "lines": 533,
+      "imports": [],
+      "exports": [],
+      "functions": []
+    },
+    "components\\capsuleWriter.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "context": [
+          "context"
+        ],
+        "capsule": [
+          "capsule"
+        ]
+      },
+      "size": 715,
+      "lines": 28,
+      "imports": [],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "saveCapsule"
+      ]
+    },
+    "components\\ChatPanel.jsx": {
+      "categories": {
+        "injection": [
+          "prompt"
+        ]
+      },
+      "size": 1465,
+      "lines": 52,
+      "imports": [
+        {
+          "type": "require",
+          "path": "react",
+          "resolved": "react"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": []
+    },
+    "components\\components.css": {
+      "categories": {
+        "scoring": [
+          "weight"
+        ]
+      },
+      "size": 10447,
+      "lines": 486,
+      "imports": [],
+      "exports": [],
+      "functions": []
+    },
+    "components\\contextBuilder.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "retrieval": [
+          "query"
+        ],
+        "context": [
+          "context"
+        ],
+        "injection": [
+          "inject"
+        ],
+        "capsule": [
+          "capsule"
+        ],
+        "vault": [
+          "vault"
+        ],
+        "scoring": [
+          "score"
+        ]
+      },
+      "size": 2794,
+      "lines": 86,
+      "imports": [
+        {
+          "type": "require",
+          "path": "./capsuleWriter",
+          "resolved": "components\\capsuleWriter.js"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "injectQLibFacts"
+      ]
+    },
+    "components\\contextPipeline.js": {
+      "categories": {
+        "memory": [
+          "memory",
+          "memories"
+        ],
+        "retrieval": [
+          "search",
+          "query"
+        ],
+        "context": [
+          "context",
+          "contextbuilder"
+        ],
+        "injection": [
+          "inject",
+          "prompt",
+          "promptbuilder"
+        ],
+        "vault": [
+          "vault"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 4552,
+      "lines": 143,
+      "imports": [
+        {
+          "type": "require",
+          "path": "./vaultSearch",
+          "resolved": "components\\vaultSearch.js"
+        },
+        {
+          "type": "require",
+          "path": "./contextBuilder",
+          "resolved": "components\\contextBuilder.js"
+        },
+        {
+          "type": "require",
+          "path": "../../tools/memory/threaderEngine",
+          "resolved": null
+        },
+        {
+          "type": "require",
+          "path": "../src/memory/PromptBuilder",
+          "resolved": "src\\memory\\PromptBuilder.js"
+        },
+        {
+          "type": "require",
+          "path": "./keywordMap",
+          "resolved": null
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": []
+    },
+    "components\\conversationParser.js": {
+      "categories": {
+        "context": [
+          "context"
+        ]
+      },
+      "size": 662,
+      "lines": 21,
+      "imports": [],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "getConversationContext"
+      ]
+    },
+    "components\\conversationSaver.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "retrieval": [
+          "search",
+          "query",
+          "find"
+        ],
+        "capsule": [
+          "capsule"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 6158,
+      "lines": 155,
+      "imports": [],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": []
+    },
+    "components\\DevPanel-global.js": {
+      "categories": {
+        "vault": [
+          "storage"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 3104,
+      "lines": 101,
+      "imports": [],
+      "exports": [],
+      "functions": []
+    },
+    "components\\DevPanel.jsx": {
+      "categories": {
+        "memory": [
+          "memory"
+        ]
+      },
+      "size": 784,
+      "lines": 25,
+      "imports": [
+        {
+          "type": "require",
+          "path": "react",
+          "resolved": "react"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": []
+    },
+    "components\\layout.css": {
+      "categories": {
+        "scoring": [
+          "weight"
+        ]
+      },
+      "size": 1948,
+      "lines": 98,
+      "imports": [],
+      "exports": [],
+      "functions": []
+    },
+    "components\\main.js": {
+      "categories": {
+        "retrieval": [
+          "find"
+        ]
+      },
+      "size": 650,
+      "lines": 23,
+      "imports": [],
+      "exports": [],
+      "functions": []
+    },
+    "components\\MyAI.css": {
+      "categories": {
+        "injection": [
+          "prompt"
+        ],
+        "scoring": [
+          "weight"
+        ]
+      },
+      "size": 13825,
+      "lines": 735,
+      "imports": [],
+      "exports": [],
+      "functions": []
+    },
+    "components\\MyAI.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "retrieval": [
+          "search",
+          "query"
+        ],
+        "injection": [
+          "inject"
+        ],
+        "capsule": [
+          "capsule",
+          "capsules"
+        ],
+        "vault": [
+          "vault"
+        ],
+        "scoring": [
+          "score"
+        ]
+      },
+      "size": 4061,
+      "lines": 129,
+      "imports": [],
+      "exports": [],
+      "functions": []
+    },
+    "components\\MyAICore.js": {
+      "categories": {
+        "retrieval": [
+          "fetch"
+        ],
+        "injection": [
+          "prompt"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 6530,
+      "lines": 226,
+      "imports": [],
+      "exports": [],
+      "functions": [
+        "fetchNotes"
+      ]
+    },
+    "components\\MyAIInterface - Copy.js": {
+      "categories": {
+        "injection": [
+          "prompt"
+        ]
+      },
+      "size": 3355,
+      "lines": 120,
+      "imports": [],
+      "exports": [],
+      "functions": []
+    },
+    "components\\NotesPanel.jsx": {
+      "categories": {
+        "vault": [
+          "vault"
+        ]
+      },
+      "size": 681,
+      "lines": 23,
+      "imports": [
+        {
+          "type": "require",
+          "path": "react",
+          "resolved": "react"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": []
+    },
+    "components\\obsidianInterface.js": {
+      "categories": {
+        "context": [
+          "context"
+        ],
+        "injection": [
+          "inject",
+          "prompt"
+        ],
+        "vault": [
+          "vault"
+        ]
+      },
+      "size": 4475,
+      "lines": 139,
+      "imports": [
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "./utils/logToObsidianMaster",
+          "resolved": "components\\utils\\logToObsidianMaster.js"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "injectNoteAsSystemContext"
+      ]
+    },
+    "components\\SettingsPanel-global.js": {
+      "categories": {
+        "retrieval": [
+          "find"
+        ],
+        "injection": [
+          "prompt"
+        ],
+        "epoch": [
+          "time"
+        ],
+        "scoring": [
+          "weight"
+        ]
+      },
+      "size": 26141,
+      "lines": 768,
+      "imports": [],
+      "exports": [],
+      "functions": [
+        "updateAIPrompt"
+      ]
+    },
+    "components\\speechEngine.js": {
+      "categories": {
+        "injection": [
+          "prompt"
+        ]
+      },
+      "size": 1627,
+      "lines": 64,
+      "imports": [
+        {
+          "type": "require",
+          "path": "./utils/logToObsidianMaster",
+          "resolved": "components\\utils\\logToObsidianMaster.js"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": []
+    },
+    "components\\vaultSearch.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "retrieval": [
+          "search",
+          "query"
+        ],
+        "context": [
+          "context"
+        ],
+        "injection": [
+          "inject"
+        ],
+        "vault": [
+          "vault"
+        ]
+      },
+      "size": 4401,
+      "lines": 113,
+      "imports": [],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": []
+    },
+    "components\\voiceCommandHandler.js": {
+      "categories": {
+        "memory": [
+          "memory",
+          "memories"
+        ],
+        "retrieval": [
+          "search",
+          "find"
+        ],
+        "context": [
+          "context",
+          "contextbuilder"
+        ],
+        "injection": [
+          "inject",
+          "prompt",
+          "promptbuilder"
+        ],
+        "capsule": [
+          "capsule"
+        ],
+        "vault": [
+          "vault"
+        ],
+        "epoch": [
+          "time"
+        ],
+        "scoring": [
+          "rerank"
+        ]
+      },
+      "size": 6498,
+      "lines": 196,
+      "imports": [
+        {
+          "type": "require",
+          "path": "./vaultSearch",
+          "resolved": "components\\vaultSearch.js"
+        },
+        {
+          "type": "require",
+          "path": "./contextBuilder",
+          "resolved": "components\\contextBuilder.js"
+        },
+        {
+          "type": "require",
+          "path": "./memory/CapsuleRetriever",
+          "resolved": null
+        },
+        {
+          "type": "require",
+          "path": "./PromptBuilder",
+          "resolved": null
+        },
+        {
+          "type": "require",
+          "path": "./utils/logToObsidianMaster",
+          "resolved": "components\\utils\\logToObsidianMaster.js"
+        },
+        {
+          "type": "require",
+          "path": "./echo/core/BaseEngine",
+          "resolved": null
+        },
+        {
+          "type": "require",
+          "path": "./utils/getRecentMessages",
+          "resolved": "components\\utils\\getRecentMessages.js"
+        },
+        {
+          "type": "require",
+          "path": "../../backend/qlib/loadCapsules",
+          "resolved": null
+        },
+        {
+          "type": "require",
+          "path": "../../backend/qlib/filterCapsulesByQuery",
+          "resolved": null
+        },
+        {
+          "type": "require",
+          "path": "../../backend/qlib/loadCapsules",
+          "resolved": null
+        },
+        {
+          "type": "require",
+          "path": "../../backend/qlib/filterCapsulesByQuery",
+          "resolved": null
+        },
+        {
+          "type": "require",
+          "path": "../../backend/qlib/rerankCapsulesByQuery",
+          "resolved": null
+        },
+        {
+          "type": "require",
+          "path": "../../backend/qlib/loadCapsules",
+          "resolved": null
+        },
+        {
+          "type": "require",
+          "path": "../../backend/qlib/filterCapsulesByQuery",
+          "resolved": null
+        },
+        {
+          "type": "require",
+          "path": "../../backend/qlib/rerankCapsulesByQuery",
+          "resolved": null
+        },
+        {
+          "type": "require",
+          "path": "../../backend/qlib/findExactCapsuleMatch",
+          "resolved": null
+        },
+        {
+          "type": "require",
+          "path": "./memory/ContextInjector",
+          "resolved": null
+        },
+        {
+          "type": "require",
+          "path": "./PromptBuilder",
+          "resolved": null
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": []
+    },
+    "components\\css\\additional.css": {
+      "categories": {
+        "scoring": [
+          "weight"
+        ]
+      },
+      "size": 5245,
+      "lines": 295,
+      "imports": [],
+      "exports": [],
+      "functions": []
+    },
+    "components\\css\\DevPanel.css": {
+      "categories": {
+        "scoring": [
+          "weight"
+        ]
+      },
+      "size": 2502,
+      "lines": 125,
+      "imports": [],
+      "exports": [],
+      "functions": []
+    },
+    "components\\legacy\\DevPanel.jsx": {
+      "categories": {
+        "retrieval": [
+          "fetch"
+        ],
+        "injection": [
+          "prompt"
+        ],
+        "epoch": [
+          "time"
+        ],
+        "scoring": [
+          "score"
+        ]
+      },
+      "size": 14901,
+      "lines": 434,
+      "imports": [
+        {
+          "type": "import",
+          "path": "react",
+          "resolved": "react"
+        },
+        {
+          "type": "import",
+          "path": "@mui/icons-material/Refresh",
+          "resolved": "@mui/icons-material/Refresh"
+        },
+        {
+          "type": "import",
+          "path": "@mui/icons-material/Download",
+          "resolved": "@mui/icons-material/Download"
+        },
+        {
+          "type": "import",
+          "path": "@mui/icons-material/Sync",
+          "resolved": "@mui/icons-material/Sync"
+        },
+        {
+          "type": "import",
+          "path": "@mui/icons-material/DeleteSweep",
+          "resolved": "@mui/icons-material/DeleteSweep"
+        },
+        {
+          "type": "import",
+          "path": "@mui/icons-material/Settings",
+          "resolved": "@mui/icons-material/Settings"
+        },
+        {
+          "type": "import",
+          "path": "recharts",
+          "resolved": "recharts"
+        },
+        {
+          "type": "import",
+          "path": "./utils/hotkey-logic",
+          "resolved": null
+        }
+      ],
+      "exports": [
+        "DevPanel",
+        "JSON"
+      ],
+      "functions": [
+        "fetchModelData",
+        "fetchBenchmarkData"
+      ]
+    },
+    "components\\legacy\\model-benchmarks.jsx": {
+      "categories": {
+        "retrieval": [
+          "fetch"
+        ],
+        "epoch": [
+          "time"
+        ],
+        "scoring": [
+          "score"
+        ]
+      },
+      "size": 13189,
+      "lines": 433,
+      "imports": [
+        {
+          "type": "import",
+          "path": "react",
+          "resolved": "react"
+        },
+        {
+          "type": "import",
+          "path": "prop-types",
+          "resolved": "prop-types"
+        }
+      ],
+      "exports": [
+        "ModelBenchmarks"
+      ],
+      "functions": [
+        "fetchData"
+      ]
+    },
+    "components\\legacy\\SettingsPanel.jsx": {
+      "categories": {
+        "retrieval": [
+          "find"
+        ],
+        "vault": [
+          "vault",
+          "persist"
+        ]
+      },
+      "size": 9832,
+      "lines": 282,
+      "imports": [
+        {
+          "type": "import",
+          "path": "react",
+          "resolved": "react"
+        }
+      ],
+      "exports": [
+        "SettingsPanel"
+      ],
+      "functions": [
+        "persistConfig",
+        "handleVaultChange",
+        "handleReloadVaultIndex"
+      ]
+    },
+    "components\\utils\\getRecentMessages.js": {
+      "categories": {
+        "context": [
+          "context"
+        ]
+      },
+      "size": 683,
+      "lines": 25,
+      "imports": [],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": []
+    },
+    "components\\utils\\identityManager.js": {
+      "categories": {
+        "memory": [
+          "memory",
+          "memories"
+        ],
+        "retrieval": [
+          "retriev"
+        ],
+        "vault": [
+          "vault",
+          "storage",
+          "persist"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 2803,
+      "lines": 83,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": []
+    },
+    "components\\utils\\logToObsidianMaster.js": {
+      "categories": {
+        "injection": [
+          "prompt"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 860,
+      "lines": 23,
+      "imports": [],
+      "exports": [
+        "logToObsidianMaster"
+      ],
+      "functions": []
+    },
+    "components\\utils\\vaultIndexer.js": {
+      "categories": {
+        "vault": [
+          "vault"
+        ]
+      },
+      "size": 2496,
+      "lines": 98,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "indexVault"
+      ]
+    },
+    "components-backup\\DevPanel-global.js": {
+      "categories": {
+        "vault": [
+          "storage"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 3040,
+      "lines": 98,
+      "imports": [],
+      "exports": [],
+      "functions": []
+    },
+    "components-backup\\MyAI-global.js": {
+      "categories": {
+        "retrieval": [
+          "fetch",
+          "find"
+        ],
+        "context": [
+          "context"
+        ],
+        "injection": [
+          "prompt"
+        ],
+        "epoch": [
+          "time"
+        ],
+        "scoring": [
+          "score"
+        ]
+      },
+      "size": 28582,
+      "lines": 786,
+      "imports": [],
+      "exports": [],
+      "functions": []
+    },
+    "components-backup\\MyAI.css": {
+      "categories": {
+        "injection": [
+          "prompt"
+        ],
+        "scoring": [
+          "weight"
+        ]
+      },
+      "size": 12874,
+      "lines": 657,
+      "imports": [],
+      "exports": [],
+      "functions": []
+    },
+    "components-backup\\MyAI.js": {
+      "categories": {
+        "retrieval": [
+          "fetch",
+          "find"
+        ],
+        "context": [
+          "context"
+        ],
+        "injection": [
+          "prompt"
+        ],
+        "epoch": [
+          "time"
+        ],
+        "scoring": [
+          "score"
+        ]
+      },
+      "size": 40865,
+      "lines": 1195,
+      "imports": [
+        {
+          "type": "import",
+          "path": "react",
+          "resolved": "react"
+        },
+        {
+          "type": "import",
+          "path": "./SettingsPanel.jsx",
+          "resolved": null
+        },
+        {
+          "type": "import",
+          "path": "./ObsidianNotes.jsx",
+          "resolved": null
+        },
+        {
+          "type": "import",
+          "path": "./utils/logToObsidianMaster.js",
+          "resolved": "components-backup\\utils\\logToObsidianMaster.js"
+        },
+        {
+          "type": "import",
+          "path": "../assets/hotword.png",
+          "resolved": null
+        },
+        {
+          "type": "import",
+          "path": "../assets/send.png",
+          "resolved": null
+        },
+        {
+          "type": "import",
+          "path": "../assets/notes.png",
+          "resolved": null
+        },
+        {
+          "type": "import",
+          "path": "../assets/sync.png",
+          "resolved": null
+        },
+        {
+          "type": "import",
+          "path": "../assets/settings.png",
+          "resolved": null
+        },
+        {
+          "type": "import",
+          "path": "../assets/uploads.png",
+          "resolved": null
+        },
+        {
+          "type": "import",
+          "path": "../assets/mic.png",
+          "resolved": null
+        },
+        {
+          "type": "import",
+          "path": "axios",
+          "resolved": "axios"
+        },
+        {
+          "type": "import",
+          "path": "./DevPanel.jsx",
+          "resolved": null
+        },
+        {
+          "type": "import",
+          "path": "./utils/hotkey-logic.js",
+          "resolved": "components-backup\\utils\\hotkey-logic.js"
+        }
+      ],
+      "exports": [
+        "MyAI"
+      ],
+      "functions": []
+    },
+    "components-backup\\preload.js": {
+      "categories": {
+        "context": [
+          "context"
+        ]
+      },
+      "size": 6086,
+      "lines": 186,
+      "imports": [
+        {
+          "type": "require",
+          "path": "electron",
+          "resolved": "electron"
+        }
+      ],
+      "exports": [],
+      "functions": []
+    },
+    "components-backup\\SettingsPanel-global.js": {
+      "categories": {
+        "retrieval": [
+          "find"
+        ],
+        "injection": [
+          "prompt"
+        ],
+        "epoch": [
+          "time"
+        ],
+        "scoring": [
+          "weight"
+        ]
+      },
+      "size": 26141,
+      "lines": 768,
+      "imports": [],
+      "exports": [],
+      "functions": [
+        "updateAIPrompt"
+      ]
+    },
+    "components-backup\\css\\additional.css": {
+      "categories": {
+        "scoring": [
+          "weight"
+        ]
+      },
+      "size": 5245,
+      "lines": 295,
+      "imports": [],
+      "exports": [],
+      "functions": []
+    },
+    "components-backup\\css\\DevPanel.css": {
+      "categories": {
+        "scoring": [
+          "weight"
+        ]
+      },
+      "size": 2502,
+      "lines": 125,
+      "imports": [],
+      "exports": [],
+      "functions": []
+    },
+    "components-backup\\legacy\\DevPanel.jsx": {
+      "categories": {
+        "retrieval": [
+          "fetch"
+        ],
+        "injection": [
+          "prompt"
+        ],
+        "epoch": [
+          "time"
+        ],
+        "scoring": [
+          "score"
+        ]
+      },
+      "size": 14901,
+      "lines": 434,
+      "imports": [
+        {
+          "type": "import",
+          "path": "react",
+          "resolved": "react"
+        },
+        {
+          "type": "import",
+          "path": "@mui/icons-material/Refresh",
+          "resolved": "@mui/icons-material/Refresh"
+        },
+        {
+          "type": "import",
+          "path": "@mui/icons-material/Download",
+          "resolved": "@mui/icons-material/Download"
+        },
+        {
+          "type": "import",
+          "path": "@mui/icons-material/Sync",
+          "resolved": "@mui/icons-material/Sync"
+        },
+        {
+          "type": "import",
+          "path": "@mui/icons-material/DeleteSweep",
+          "resolved": "@mui/icons-material/DeleteSweep"
+        },
+        {
+          "type": "import",
+          "path": "@mui/icons-material/Settings",
+          "resolved": "@mui/icons-material/Settings"
+        },
+        {
+          "type": "import",
+          "path": "recharts",
+          "resolved": "recharts"
+        },
+        {
+          "type": "import",
+          "path": "./utils/hotkey-logic",
+          "resolved": null
+        }
+      ],
+      "exports": [
+        "DevPanel",
+        "JSON"
+      ],
+      "functions": [
+        "fetchModelData",
+        "fetchBenchmarkData"
+      ]
+    },
+    "components-backup\\legacy\\model-benchmarks.jsx": {
+      "categories": {
+        "retrieval": [
+          "fetch"
+        ],
+        "epoch": [
+          "time"
+        ],
+        "scoring": [
+          "score"
+        ]
+      },
+      "size": 13189,
+      "lines": 433,
+      "imports": [
+        {
+          "type": "import",
+          "path": "react",
+          "resolved": "react"
+        },
+        {
+          "type": "import",
+          "path": "prop-types",
+          "resolved": "prop-types"
+        }
+      ],
+      "exports": [
+        "ModelBenchmarks"
+      ],
+      "functions": [
+        "fetchData"
+      ]
+    },
+    "components-backup\\legacy\\SettingsPanel.jsx": {
+      "categories": {
+        "retrieval": [
+          "find"
+        ],
+        "vault": [
+          "vault",
+          "persist"
+        ]
+      },
+      "size": 9832,
+      "lines": 282,
+      "imports": [
+        {
+          "type": "import",
+          "path": "react",
+          "resolved": "react"
+        }
+      ],
+      "exports": [
+        "SettingsPanel"
+      ],
+      "functions": [
+        "persistConfig",
+        "handleVaultChange",
+        "handleReloadVaultIndex"
+      ]
+    },
+    "components-backup\\utils\\logToObsidianMaster.js": {
+      "categories": {
+        "injection": [
+          "prompt"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 860,
+      "lines": 23,
+      "imports": [],
+      "exports": [
+        "logToObsidianMaster"
+      ],
+      "functions": []
+    },
+    "components-backup\\utils\\vaultIndexer.js": {
+      "categories": {
+        "vault": [
+          "vault"
+        ]
+      },
+      "size": 1486,
+      "lines": 71,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "indexVault"
+      ]
+    },
+    "config\\ConfigManager.js": {
+      "categories": {
+        "vault": [
+          "vault",
+          "storage"
+        ]
+      },
+      "size": 6443,
+      "lines": 236,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "crypto",
+          "resolved": "crypto"
+        },
+        {
+          "type": "require",
+          "path": "electron",
+          "resolved": "electron"
+        },
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": []
+    },
+    "diagnostic-output-20250627-220749\\checkAuthenticationStatus-SECOND.js": {
+      "categories": {
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 3927,
+      "lines": 111,
+      "imports": [],
+      "exports": [],
+      "functions": []
+    },
+    "diagnostic-output-20250627-220749\\runtime-test.js": {
+      "categories": {
+        "retrieval": [
+          "find"
+        ]
+      },
+      "size": 2023,
+      "lines": 54,
+      "imports": [],
+      "exports": [],
+      "functions": []
+    },
+    "main\\app.js": {
+      "categories": {
+        "vault": [
+          "vault"
+        ]
+      },
+      "size": 1988,
+      "lines": 87,
+      "imports": [
+        {
+          "type": "require",
+          "path": "electron",
+          "resolved": "electron"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "./server",
+          "resolved": "main\\server.js"
+        },
+        {
+          "type": "require",
+          "path": "./models",
+          "resolved": "main\\models.js"
+        },
+        {
+          "type": "require",
+          "path": "./ipc-handlers",
+          "resolved": "main\\ipc-handlers.js"
+        },
+        {
+          "type": "require",
+          "path": "../src/db.js",
+          "resolved": "src\\db.js"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": []
+    },
+    "main\\ipc-handlers.js": {
+      "categories": {
+        "memory": [
+          "memory",
+          "memories",
+          "memoryvault"
+        ],
+        "retrieval": [
+          "retriev",
+          "fetch",
+          "search",
+          "query",
+          "find"
+        ],
+        "context": [
+          "context",
+          "contextual",
+          "buildcontext"
+        ],
+        "injection": [
+          "inject",
+          "injection",
+          "prompt"
+        ],
+        "capsule": [
+          "capsule",
+          "capsules"
+        ],
+        "vault": [
+          "vault"
+        ],
+        "epoch": [
+          "time"
+        ],
+        "scoring": [
+          "score"
+        ]
+      },
+      "size": 101046,
+      "lines": 3092,
+      "imports": [
+        {
+          "type": "require",
+          "path": "electron",
+          "resolved": "electron"
+        },
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "./app",
+          "resolved": "main\\app.js"
+        },
+        {
+          "type": "require",
+          "path": "./models",
+          "resolved": "main\\models.js"
+        },
+        {
+          "type": "require",
+          "path": "./store",
+          "resolved": "main\\store.js"
+        },
+        {
+          "type": "require",
+          "path": "../src/db.js",
+          "resolved": "src\\db.js"
+        },
+        {
+          "type": "require",
+          "path": "../src/memory/MemoryVaultManager",
+          "resolved": "src\\memory\\MemoryVaultManager.js"
+        },
+        {
+          "type": "require",
+          "path": "../src/echo/memory/MemoryService",
+          "resolved": "src\\echo\\memory\\MemoryService.js"
+        },
+        {
+          "type": "require",
+          "path": "../src/echo/memory/capsuleRetriever",
+          "resolved": "src\\echo\\memory\\capsuleRetriever.js"
+        },
+        {
+          "type": "require",
+          "path": "../src/echo/memory/ContextInjector",
+          "resolved": "src\\echo\\memory\\ContextInjector.js"
+        },
+        {
+          "type": "require",
+          "path": "../src/memory/QLibInterface",
+          "resolved": "src\\memory\\QLibInterface.js"
+        },
+        {
+          "type": "require",
+          "path": "../src/memory/index.js",
+          "resolved": "src\\memory\\index.js"
+        },
+        {
+          "type": "require",
+          "path": "../src/memory/QLibInterface",
+          "resolved": "src\\memory\\QLibInterface.js"
+        },
+        {
+          "type": "require",
+          "path": "../src/memory/ChaosAnalyzer",
+          "resolved": "src\\memory\\ChaosAnalyzer.js"
+        },
+        {
+          "type": "require",
+          "path": "../src/memory/index.js",
+          "resolved": "src\\memory\\index.js"
+        },
+        {
+          "type": "require",
+          "path": "../src/memory/MemoryVaultManager",
+          "resolved": "src\\memory\\MemoryVaultManager.js"
+        },
+        {
+          "type": "require",
+          "path": "../backend/qlib/ipc-injection-clientFolder",
+          "resolved": null
+        },
+        {
+          "type": "require",
+          "path": "../src/installer/qlib-setup",
+          "resolved": "src\\installer\\qlib-setup.js"
+        },
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "./windows",
+          "resolved": "main\\windows.js"
+        },
+        {
+          "type": "require",
+          "path": "../src/memory/index.js",
+          "resolved": "src\\memory\\index.js"
+        },
+        {
+          "type": "require",
+          "path": "../src/memory/MemoryVaultManager",
+          "resolved": "src\\memory\\MemoryVaultManager.js"
+        },
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "getVaultPath",
+        "initializeMemorySystems",
+        "searchSpecificFolder",
+        "searchFullVault",
+        "searchDir",
+        "searchConversations",
+        "implementLayeredSearch",
+        "classifyQuery",
+        "implementLayeredSearch",
+        "searchSpecificFolder",
+        "searchFullVault",
+        "searchDir",
+        "searchConversations",
+        "score",
+        "search_notes_handler",
+        "searchNotes",
+        "searchDir"
+      ]
+    },
+    "main\\models.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "retrieval": [
+          "fetch"
+        ],
+        "vault": [
+          "storage"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 5075,
+      "lines": 178,
+      "imports": [
+        {
+          "type": "require",
+          "path": "node-cache",
+          "resolved": "node-cache"
+        },
+        {
+          "type": "require",
+          "path": "axios",
+          "resolved": "axios"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "fetchModelRegistry"
+      ]
+    },
+    "main\\server.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "retrieval": [
+          "retriev",
+          "fetch",
+          "search",
+          "query",
+          "find"
+        ],
+        "context": [
+          "context"
+        ],
+        "injection": [
+          "inject",
+          "injection",
+          "prompt"
+        ],
+        "vault": [
+          "vault",
+          "persist"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 23218,
+      "lines": 711,
+      "imports": [
+        {
+          "type": "require",
+          "path": "express",
+          "resolved": "express"
+        },
+        {
+          "type": "require",
+          "path": "cors",
+          "resolved": "cors"
+        },
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "bcryptjs",
+          "resolved": "bcryptjs"
+        },
+        {
+          "type": "require",
+          "path": "jsonwebtoken",
+          "resolved": "jsonwebtoken"
+        },
+        {
+          "type": "require",
+          "path": "electron",
+          "resolved": "electron"
+        },
+        {
+          "type": "require",
+          "path": "../src/db.js",
+          "resolved": "src\\db.js"
+        },
+        {
+          "type": "require",
+          "path": "../components/utils/vaultIndexer",
+          "resolved": "components\\utils\\vaultIndexer.js"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": []
+    },
+    "main\\store.js": {
+      "categories": {
+        "vault": [
+          "vault"
+        ]
+      },
+      "size": 997,
+      "lines": 49,
+      "imports": [
+        {
+          "type": "require",
+          "path": "electron",
+          "resolved": "electron"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": []
+    },
+    "main\\windows.js": {
+      "categories": {
+        "context": [
+          "context"
+        ],
+        "vault": [
+          "vault"
+        ]
+      },
+      "size": 6450,
+      "lines": 247,
+      "imports": [
+        {
+          "type": "require",
+          "path": "electron",
+          "resolved": "electron"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "os",
+          "resolved": "os"
+        },
+        {
+          "type": "require",
+          "path": "electron",
+          "resolved": "electron"
+        },
+        {
+          "type": "require",
+          "path": "./app",
+          "resolved": "main\\app.js"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "getVaultPath"
+      ]
+    },
+    "security\\SecurityManager.js": {
+      "categories": {
+        "injection": [
+          "prompt"
+        ],
+        "vault": [
+          "vault"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 8112,
+      "lines": 310,
+      "imports": [
+        {
+          "type": "require",
+          "path": "crypto",
+          "resolved": "crypto"
+        },
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "electron",
+          "resolved": "electron"
+        },
+        {
+          "type": "require",
+          "path": "os",
+          "resolved": "os"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": []
+    },
+    "src\\auth.css": {
+      "categories": {
+        "scoring": [
+          "weight"
+        ]
+      },
+      "size": 3633,
+      "lines": 205,
+      "imports": [],
+      "exports": [],
+      "functions": []
+    },
+    "src\\db.js": {
+      "categories": {
+        "vault": [
+          "vault"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 2668,
+      "lines": 101,
+      "imports": [
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "better-sqlite3",
+          "resolved": "better-sqlite3"
+        },
+        {
+          "type": "require",
+          "path": "crypto",
+          "resolved": "crypto"
+        },
+        {
+          "type": "require",
+          "path": "os",
+          "resolved": "os"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "createShadowVault",
+        "destroyVault"
+      ]
+    },
+    "src\\MyAI.css": {
+      "categories": {
+        "injection": [
+          "prompt"
+        ],
+        "scoring": [
+          "weight"
+        ]
+      },
+      "size": 27864,
+      "lines": 1463,
+      "imports": [],
+      "exports": [],
+      "functions": []
+    },
+    "src\\SystemCheck.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "retrieval": [
+          "fetch",
+          "search",
+          "query"
+        ],
+        "vault": [
+          "storage"
+        ],
+        "epoch": [
+          "time"
+        ],
+        "scoring": [
+          "score",
+          "scoring"
+        ]
+      },
+      "size": 10165,
+      "lines": 357,
+      "imports": [],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": []
+    },
+    "src\\components\\AuthPanel.js": {
+      "categories": {
+        "retrieval": [
+          "fetch"
+        ]
+      },
+      "size": 2575,
+      "lines": 93,
+      "imports": [],
+      "exports": [],
+      "functions": []
+    },
+    "src\\components\\Login.js": {
+      "categories": {
+        "retrieval": [
+          "fetch"
+        ]
+      },
+      "size": 4520,
+      "lines": 145,
+      "imports": [],
+      "exports": [],
+      "functions": []
+    },
+    "src\\components\\ModelSelector.js": {
+      "categories": {
+        "retrieval": [
+          "fetch"
+        ]
+      },
+      "size": 1396,
+      "lines": 48,
+      "imports": [],
+      "exports": [],
+      "functions": [
+        "fetchModels"
+      ]
+    },
+    "src\\components\\preload.js": {
+      "categories": {
+        "retrieval": [
+          "search",
+          "query"
+        ],
+        "context": [
+          "context"
+        ],
+        "injection": [
+          "prompt"
+        ],
+        "vault": [
+          "vault"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 11648,
+      "lines": 378,
+      "imports": [
+        {
+          "type": "require",
+          "path": "electron",
+          "resolved": "electron"
+        }
+      ],
+      "exports": [],
+      "functions": []
+    },
+    "src\\components\\useAuth.js": {
+      "categories": {
+        "context": [
+          "context"
+        ]
+      },
+      "size": 876,
+      "lines": 36,
+      "imports": [],
+      "exports": [],
+      "functions": []
+    },
+    "src\\contexts\\AuthContext.js": {
+      "categories": {
+        "retrieval": [
+          "fetch"
+        ],
+        "context": [
+          "context"
+        ]
+      },
+      "size": 3014,
+      "lines": 119,
+      "imports": [],
+      "exports": [
+        "useAuth",
+        "AuthProvider"
+      ],
+      "functions": []
+    },
+    "src\\echo\\echo-diagnostic.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "retrieval": [
+          "search",
+          "query"
+        ],
+        "capsule": [
+          "capsule",
+          "capsules"
+        ],
+        "vault": [
+          "vault"
+        ],
+        "scoring": [
+          "score"
+        ]
+      },
+      "size": 8972,
+      "lines": 240,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "child_process",
+          "resolved": "child_process"
+        }
+      ],
+      "exports": [],
+      "functions": [
+        "searchForRecipes",
+        "simulateSearchDir",
+        "searchRecursive",
+        "testLayeredSearch"
+      ]
+    },
+    "src\\echo\\core\\aiManager.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "retrieval": [
+          "find"
+        ],
+        "vault": [
+          "vault"
+        ]
+      },
+      "size": 3254,
+      "lines": 118,
+      "imports": [
+        {
+          "type": "import",
+          "path": "./SpineGuardian.js",
+          "resolved": "src\\echo\\core\\SpineGuardian.js"
+        },
+        {
+          "type": "import",
+          "path": "../engines/WriterEngine.js",
+          "resolved": "src\\echo\\engines\\WriterEngine.js"
+        },
+        {
+          "type": "import",
+          "path": "../engines/CodeEngine.js",
+          "resolved": "src\\echo\\engines\\CodeEngine.js"
+        },
+        {
+          "type": "import",
+          "path": "../engines/BusinessEngine.js",
+          "resolved": "src\\echo\\engines\\BusinessEngine.js"
+        },
+        {
+          "type": "import",
+          "path": "../engines/GeneralEngine.js",
+          "resolved": "src\\echo\\engines\\GeneralEngine.js"
+        },
+        {
+          "type": "import",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "import",
+          "path": "fs",
+          "resolved": "fs"
+        }
+      ],
+      "exports": [
+        "AIManager",
+        "loadAgent",
+        "export"
+      ],
+      "functions": []
+    },
+    "src\\echo\\core\\BaseEngine.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "retrieval": [
+          "search",
+          "query"
+        ],
+        "context": [
+          "context"
+        ],
+        "injection": [
+          "prompt"
+        ],
+        "capsule": [
+          "capsule",
+          "capsules"
+        ],
+        "vault": [
+          "vault"
+        ]
+      },
+      "size": 4039,
+      "lines": 120,
+      "imports": [
+        {
+          "type": "require",
+          "path": "../../utils/getRecentMessages",
+          "resolved": null
+        },
+        {
+          "type": "import",
+          "path": "../memory/capsuleRetriever.js",
+          "resolved": "src\\echo\\memory\\capsuleRetriever.js"
+        },
+        {
+          "type": "import",
+          "path": "../memory/ContextInjector.js",
+          "resolved": "src\\echo\\memory\\ContextInjector.js"
+        },
+        {
+          "type": "import",
+          "path": "../memory/MemoryWriter.js",
+          "resolved": "src\\echo\\memory\\MemoryWriter.js"
+        },
+        {
+          "type": "import",
+          "path": "../memory/ModelInterface.js",
+          "resolved": "src\\echo\\memory\\ModelInterface.js"
+        },
+        {
+          "type": "import",
+          "path": "../memory/capsule.js",
+          "resolved": null
+        },
+        {
+          "type": "import",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "import",
+          "path": "fs",
+          "resolved": "fs"
+        }
+      ],
+      "exports": [
+        "BaseEngine",
+        "BaseEngine"
+      ],
+      "functions": []
+    },
+    "src\\echo\\core\\SessionMesh.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "retrieval": [
+          "search"
+        ],
+        "context": [
+          "context"
+        ],
+        "injection": [
+          "inject",
+          "injector",
+          "prompt"
+        ],
+        "capsule": [
+          "capsule"
+        ],
+        "vault": [
+          "vault"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 2394,
+      "lines": 86,
+      "imports": [
+        {
+          "type": "import",
+          "path": "./aiManager.js",
+          "resolved": "src\\echo\\core\\aiManager.js"
+        },
+        {
+          "type": "import",
+          "path": "../memory/capsuleRetriever.js",
+          "resolved": "src\\echo\\memory\\capsuleRetriever.js"
+        },
+        {
+          "type": "import",
+          "path": "../memory/ContextInjector.js",
+          "resolved": "src\\echo\\memory\\ContextInjector.js"
+        }
+      ],
+      "exports": [
+        "import",
+        "SessionMesh"
+      ],
+      "functions": []
+    },
+    "src\\echo\\core\\SpineGuardian.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "injection": [
+          "inject",
+          "prompt"
+        ]
+      },
+      "size": 1454,
+      "lines": 48,
+      "imports": [
+        {
+          "type": "import",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "import",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "import",
+          "path": "url",
+          "resolved": "url"
+        }
+      ],
+      "exports": [
+        "SpineGuardian",
+        "verifySpine",
+        "for",
+        "SpineGuardian"
+      ],
+      "functions": []
+    },
+    "src\\echo\\engines\\BusinessEngine.js": {
+      "categories": {
+        "retrieval": [
+          "query"
+        ],
+        "injection": [
+          "inject",
+          "prompt"
+        ]
+      },
+      "size": 486,
+      "lines": 16,
+      "imports": [
+        {
+          "type": "import",
+          "path": "../core/BaseEngine.js",
+          "resolved": "src\\echo\\core\\BaseEngine.js"
+        },
+        {
+          "type": "import",
+          "path": "../core/SpineGuardian.js",
+          "resolved": "src\\echo\\core\\SpineGuardian.js"
+        }
+      ],
+      "exports": [
+        "BusinessEngine"
+      ],
+      "functions": []
+    },
+    "src\\echo\\engines\\CodeEngine.js": {
+      "categories": {
+        "retrieval": [
+          "query"
+        ],
+        "injection": [
+          "inject",
+          "prompt"
+        ]
+      },
+      "size": 494,
+      "lines": 16,
+      "imports": [
+        {
+          "type": "import",
+          "path": "../core/BaseEngine.js",
+          "resolved": "src\\echo\\core\\BaseEngine.js"
+        },
+        {
+          "type": "import",
+          "path": "../core/SpineGuardian.js",
+          "resolved": "src\\echo\\core\\SpineGuardian.js"
+        }
+      ],
+      "exports": [
+        "CodeEngine"
+      ],
+      "functions": []
+    },
+    "src\\echo\\engines\\GeneralEngine.js": {
+      "categories": {
+        "capsule": [
+          "capsule"
+        ]
+      },
+      "size": 510,
+      "lines": 17,
+      "imports": [
+        {
+          "type": "import",
+          "path": "../core/BaseEngine.js",
+          "resolved": "src\\echo\\core\\BaseEngine.js"
+        },
+        {
+          "type": "import",
+          "path": "../core/SpineGuardian.js",
+          "resolved": "src\\echo\\core\\SpineGuardian.js"
+        }
+      ],
+      "exports": [
+        "GeneralEngine"
+      ],
+      "functions": []
+    },
+    "src\\echo\\engines\\WriterEngine.js": {
+      "categories": {
+        "retrieval": [
+          "query"
+        ],
+        "injection": [
+          "inject",
+          "prompt"
+        ]
+      },
+      "size": 505,
+      "lines": 16,
+      "imports": [
+        {
+          "type": "import",
+          "path": "../core/BaseEngine.js",
+          "resolved": "src\\echo\\core\\BaseEngine.js"
+        },
+        {
+          "type": "import",
+          "path": "../core/SpineGuardian.js",
+          "resolved": "src\\echo\\core\\SpineGuardian.js"
+        }
+      ],
+      "exports": [
+        "WriterEngine"
+      ],
+      "functions": []
+    },
+    "src\\echo\\memory\\api-wrapper.js": {
+      "categories": {
+        "retrieval": [
+          "fetch"
+        ],
+        "injection": [
+          "prompt"
+        ]
+      },
+      "size": 1012,
+      "lines": 37,
+      "imports": [],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "fetch"
+      ]
+    },
+    "src\\echo\\memory\\capsuleRetriever.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "retrieval": [
+          "search"
+        ],
+        "capsule": [
+          "capsule",
+          "capsules"
+        ],
+        "vault": [
+          "vault"
+        ]
+      },
+      "size": 1662,
+      "lines": 56,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "../../memory/capsule",
+          "resolved": "src\\memory\\capsule.js"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "getCapsulesByDate",
+        "searchCapsules",
+        "isCapsule"
+      ]
+    },
+    "src\\echo\\memory\\ContextInjector.js": {
+      "categories": {
+        "memory": [
+          "memory",
+          "memories"
+        ],
+        "context": [
+          "context"
+        ],
+        "injection": [
+          "inject",
+          "prompt"
+        ],
+        "capsule": [
+          "capsule",
+          "capsules"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 4389,
+      "lines": 152,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": []
+    },
+    "src\\echo\\memory\\LoRAManager.js": {
+      "categories": {
+        "injection": [
+          "prompt"
+        ],
+        "vault": [
+          "vault"
+        ]
+      },
+      "size": 1561,
+      "lines": 46,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": []
+    },
+    "src\\echo\\memory\\memory-runner.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "retrieval": [
+          "retriev"
+        ],
+        "capsule": [
+          "capsule",
+          "capsules"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 2297,
+      "lines": 79,
+      "imports": [
+        {
+          "type": "import",
+          "path": "./core/SessionMesh.js",
+          "resolved": null
+        },
+        {
+          "type": "import",
+          "path": "./some-path/QLib.js",
+          "resolved": null
+        }
+      ],
+      "exports": [],
+      "functions": []
+    },
+    "src\\echo\\memory\\MemoryOrchestrator.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "capsule": [
+          "capsule"
+        ],
+        "vault": [
+          "vault"
+        ]
+      },
+      "size": 879,
+      "lines": 26,
+      "imports": [],
+      "exports": [],
+      "functions": [
+        "runMemoryPipeline"
+      ]
+    },
+    "src\\echo\\memory\\MemoryService.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "retrieval": [
+          "search",
+          "query"
+        ],
+        "context": [
+          "context"
+        ],
+        "injection": [
+          "prompt"
+        ],
+        "capsule": [
+          "capsule",
+          "capsules"
+        ],
+        "vault": [
+          "vault"
+        ],
+        "epoch": [
+          "time"
+        ],
+        "scoring": [
+          "score"
+        ]
+      },
+      "size": 13797,
+      "lines": 408,
+      "imports": [
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "../../installer/qlib-setup",
+          "resolved": "src\\installer\\qlib-setup.js"
+        },
+        {
+          "type": "require",
+          "path": "./NoteTools",
+          "resolved": "src\\echo\\memory\\NoteTools.js"
+        },
+        {
+          "type": "require",
+          "path": "./NoteTools",
+          "resolved": "src\\echo\\memory\\NoteTools.js"
+        },
+        {
+          "type": "require",
+          "path": "./api-wrapper",
+          "resolved": "src\\echo\\memory\\api-wrapper.js"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "score"
+      ]
+    },
+    "src\\echo\\memory\\MemoryWriter.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "capsule": [
+          "capsule",
+          "capsules"
+        ],
+        "vault": [
+          "vault"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 2789,
+      "lines": 101,
+      "imports": [
+        {
+          "type": "import",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "import",
+          "path": "path",
+          "resolved": "path"
+        }
+      ],
+      "exports": [
+        "MemoryWriter"
+      ],
+      "functions": []
+    },
+    "src\\echo\\memory\\ModelInterface.js": {
+      "categories": {
+        "retrieval": [
+          "fetch"
+        ],
+        "context": [
+          "context"
+        ],
+        "injection": [
+          "prompt"
+        ]
+      },
+      "size": 2932,
+      "lines": 81,
+      "imports": [
+        {
+          "type": "require",
+          "path": "./LoRAManager",
+          "resolved": "src\\echo\\memory\\LoRAManager.js"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": []
+    },
+    "src\\echo\\memory\\NoteTools.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "retrieval": [
+          "find"
+        ],
+        "vault": [
+          "vault"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 1961,
+      "lines": 53,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": []
+    },
+    "src\\echo\\memory\\VaultInterface.js": {
+      "categories": {
+        "capsule": [
+          "capsule",
+          "capsules"
+        ],
+        "vault": [
+          "vault"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 3457,
+      "lines": 125,
+      "imports": [],
+      "exports": [
+        "window"
+      ],
+      "functions": []
+    },
+    "src\\installer\\qlib-installer-standalone.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "retrieval": [
+          "search"
+        ],
+        "vault": [
+          "storage"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 7634,
+      "lines": 248,
+      "imports": [
+        {
+          "type": "require",
+          "path": "child_process",
+          "resolved": "child_process"
+        },
+        {
+          "type": "require",
+          "path": "util",
+          "resolved": "util"
+        },
+        {
+          "type": "require",
+          "path": "readline",
+          "resolved": "readline"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "child_process",
+          "resolved": "child_process"
+        },
+        {
+          "type": "require",
+          "path": "child_process",
+          "resolved": "child_process"
+        },
+        {
+          "type": "require",
+          "path": "child_process",
+          "resolved": "child_process"
+        },
+        {
+          "type": "require",
+          "path": "child_process",
+          "resolved": "child_process"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": []
+    },
+    "src\\memory\\capsule.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "capsule": [
+          "capsule",
+          "capsules"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 3382,
+      "lines": 121,
+      "imports": [
+        {
+          "type": "require",
+          "path": "crypto",
+          "resolved": "crypto"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": []
+    },
+    "src\\memory\\ChaosAnalyzer.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "vault": [
+          "vault"
+        ],
+        "scoring": [
+          "score",
+          "weight"
+        ]
+      },
+      "size": 12288,
+      "lines": 394,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": []
+    },
+    "src\\memory\\ChatOrchestrator.js": {
+      "categories": {
+        "memory": [
+          "memory",
+          "memories",
+          "memorymanager",
+          "memoryvault"
+        ],
+        "retrieval": [
+          "retriev",
+          "search",
+          "find"
+        ],
+        "context": [
+          "context"
+        ],
+        "injection": [
+          "prompt",
+          "promptbuilder"
+        ],
+        "capsule": [
+          "capsule"
+        ],
+        "vault": [
+          "vault"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 5734,
+      "lines": 192,
+      "imports": [
+        {
+          "type": "require",
+          "path": "./MemoryVaultManager",
+          "resolved": "src\\memory\\MemoryVaultManager.js"
+        },
+        {
+          "type": "require",
+          "path": "./CapsuleRetriever",
+          "resolved": null
+        },
+        {
+          "type": "require",
+          "path": "./PromptBuilder",
+          "resolved": "src\\memory\\PromptBuilder.js"
+        },
+        {
+          "type": "require",
+          "path": "./TokenBudgetManager",
+          "resolved": "src\\memory\\TokenBudgetManager.js"
+        },
+        {
+          "type": "require",
+          "path": "./SessionStitcher",
+          "resolved": "src\\memory\\SessionStitcher.js"
+        },
+        {
+          "type": "require",
+          "path": "fs/promises",
+          "resolved": "fs/promises"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": []
+    },
+    "src\\memory\\context.js": {
+      "categories": {
+        "memory": [
+          "memory",
+          "memories"
+        ],
+        "retrieval": [
+          "query"
+        ],
+        "context": [
+          "context",
+          "contextbuilder",
+          "buildcontext"
+        ],
+        "epoch": [
+          "time",
+          "decay"
+        ],
+        "scoring": [
+          "score"
+        ]
+      },
+      "size": 4269,
+      "lines": 150,
+      "imports": [],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": []
+    },
+    "src\\memory\\index.js": {
+      "categories": {
+        "memory": [
+          "memory",
+          "memories",
+          "memoryvault"
+        ],
+        "retrieval": [
+          "search",
+          "query"
+        ],
+        "context": [
+          "context",
+          "contextbuilder",
+          "buildcontext"
+        ],
+        "injection": [
+          "inject",
+          "injection"
+        ],
+        "capsule": [
+          "capsule",
+          "capsules"
+        ],
+        "vault": [
+          "vault"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 8204,
+      "lines": 245,
+      "imports": [
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "./MemoryVaultManager",
+          "resolved": "src\\memory\\MemoryVaultManager.js"
+        },
+        {
+          "type": "require",
+          "path": "./context",
+          "resolved": "src\\memory\\context.js"
+        },
+        {
+          "type": "require",
+          "path": "./MemoryCapsule",
+          "resolved": "src\\memory\\MemoryCapsule.js"
+        },
+        {
+          "type": "require",
+          "path": "./ChaosAnalyzer",
+          "resolved": "src\\memory\\ChaosAnalyzer.js"
+        },
+        {
+          "type": "require",
+          "path": "../../tools/memory/threaderEngine",
+          "resolved": null
+        },
+        {
+          "type": "require",
+          "path": "../echo/memory/NoteTools",
+          "resolved": "src\\echo\\memory\\NoteTools.js"
+        },
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "./QLibInterface",
+          "resolved": "src\\memory\\QLibInterface.js"
+        },
+        {
+          "type": "require",
+          "path": "../echo/memory/NoteTools",
+          "resolved": "src\\echo\\memory\\NoteTools.js"
+        },
+        {
+          "type": "require",
+          "path": "./annotateVaultNoteWithQlib",
+          "resolved": null
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": []
+    },
+    "src\\memory\\integration.js": {
+      "categories": {
+        "memory": [
+          "memory",
+          "memoryvault"
+        ],
+        "retrieval": [
+          "search",
+          "query"
+        ],
+        "context": [
+          "context",
+          "buildcontext"
+        ],
+        "capsule": [
+          "capsule"
+        ],
+        "vault": [
+          "vault"
+        ]
+      },
+      "size": 2504,
+      "lines": 99,
+      "imports": [
+        {
+          "type": "require",
+          "path": "./index",
+          "resolved": "src\\memory\\index.js"
+        },
+        {
+          "type": "require",
+          "path": "./vault",
+          "resolved": "src\\memory\\vault.js"
+        },
+        {
+          "type": "require",
+          "path": "../vault/VaultManager",
+          "resolved": null
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "getMemoryIntegration"
+      ]
+    },
+    "src\\memory\\MemoryCapsule.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "capsule": [
+          "capsule"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 1322,
+      "lines": 54,
+      "imports": [],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": []
+    },
+    "src\\memory\\MemoryVaultManager.js": {
+      "categories": {
+        "memory": [
+          "memory",
+          "memoryvault"
+        ],
+        "retrieval": [
+          "search",
+          "query"
+        ],
+        "injection": [
+          "inject",
+          "injection"
+        ],
+        "capsule": [
+          "capsule",
+          "capsules"
+        ],
+        "vault": [
+          "vault",
+          "persist"
+        ],
+        "epoch": [
+          "epoch",
+          "time"
+        ],
+        "scoring": [
+          "score",
+          "scoring",
+          "weight"
+        ]
+      },
+      "size": 8755,
+      "lines": 271,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs/promises",
+          "resolved": "fs/promises"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "../../backend/qlib/epochClassifier",
+          "resolved": "backend\\qlib\\epochClassifier.js"
+        },
+        {
+          "type": "require",
+          "path": "../../backend/qlib/injectionScorer",
+          "resolved": "backend\\qlib\\injectionScorer.js"
+        },
+        {
+          "type": "require",
+          "path": "./MemoryCapsule",
+          "resolved": "src\\memory\\MemoryCapsule.js"
+        },
+        {
+          "type": "require",
+          "path": "./ChaosAnalyzer",
+          "resolved": "src\\memory\\ChaosAnalyzer.js"
+        },
+        {
+          "type": "require",
+          "path": "../../backend/qlib/injectionScorer",
+          "resolved": "backend\\qlib\\injectionScorer.js"
+        },
+        {
+          "type": "require",
+          "path": "../../backend/qlib/folderScopedRetriever",
+          "resolved": "backend\\qlib\\folderScopedRetriever.js"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": []
+    },
+    "src\\memory\\PromptBuilder.js": {
+      "categories": {
+        "memory": [
+          "memory",
+          "memories"
+        ],
+        "retrieval": [
+          "query",
+          "find"
+        ],
+        "context": [
+          "context"
+        ],
+        "injection": [
+          "inject",
+          "prompt",
+          "promptbuilder"
+        ],
+        "capsule": [
+          "capsule",
+          "capsules"
+        ],
+        "vault": [
+          "vault"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 4667,
+      "lines": 132,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs/promises",
+          "resolved": "fs/promises"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "../../backend/qlib/loadVerbatimRules",
+          "resolved": "backend\\qlib\\loadVerbatimRules.js"
+        },
+        {
+          "type": "require",
+          "path": "../utils/getRecentMessages",
+          "resolved": null
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "shouldInjectVerbatim"
+      ]
+    },
+    "src\\memory\\QLibInterface.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "retrieval": [
+          "fetch",
+          "search",
+          "query"
+        ],
+        "injection": [
+          "prompt"
+        ],
+        "vault": [
+          "vault"
+        ]
+      },
+      "size": 6173,
+      "lines": 210,
+      "imports": [
+        {
+          "type": "require",
+          "path": "child_process",
+          "resolved": "child_process"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "fs/promises",
+          "resolved": "fs/promises"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "fetch"
+      ]
+    },
+    "src\\memory\\SessionStitcher.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "context": [
+          "context"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 3451,
+      "lines": 136,
+      "imports": [
+        {
+          "type": "require",
+          "path": "crypto",
+          "resolved": "crypto"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": []
+    },
+    "src\\memory\\TokenBudgetManager.js": {
+      "categories": {
+        "memory": [
+          "memory",
+          "memories"
+        ],
+        "context": [
+          "context"
+        ],
+        "capsule": [
+          "capsule",
+          "capsules"
+        ],
+        "vault": [
+          "vault"
+        ]
+      },
+      "size": 2063,
+      "lines": 70,
+      "imports": [],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": []
+    },
+    "src\\memory\\vault.js": {
+      "categories": {
+        "memory": [
+          "memory",
+          "memoryvault"
+        ],
+        "retrieval": [
+          "search",
+          "query",
+          "find"
+        ],
+        "capsule": [
+          "capsule",
+          "capsules"
+        ],
+        "vault": [
+          "vault"
+        ],
+        "epoch": [
+          "time"
+        ],
+        "scoring": [
+          "score"
+        ]
+      },
+      "size": 8026,
+      "lines": 280,
+      "imports": [
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "./capsule",
+          "resolved": "src\\memory\\capsule.js"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "findJsonFiles"
+      ]
+    },
+    "test\\test-injection-scores.js": {
+      "categories": {
+        "retrieval": [
+          "query"
+        ],
+        "injection": [
+          "inject",
+          "injection"
+        ],
+        "capsule": [
+          "capsule",
+          "capsules"
+        ],
+        "epoch": [
+          "epoch"
+        ],
+        "scoring": [
+          "score"
+        ]
+      },
+      "size": 1320,
+      "lines": 45,
+      "imports": [
+        {
+          "type": "require",
+          "path": "assert",
+          "resolved": "assert"
+        },
+        {
+          "type": "require",
+          "path": "../backend/qlib/injectionScorer",
+          "resolved": "backend\\qlib\\injectionScorer.js"
+        }
+      ],
+      "exports": [],
+      "functions": [
+        "mockCapsule"
+      ]
+    },
+    "tools\\breakpointFinder.js": {
+      "categories": {
+        "retrieval": [
+          "find"
+        ]
+      },
+      "size": 1162,
+      "lines": 41,
+      "imports": [],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "findBreakPoints"
+      ]
+    },
+    "tools\\retagCapsules.js": {
+      "categories": {
+        "capsule": [
+          "capsule",
+          "capsules"
+        ],
+        "vault": [
+          "vault"
+        ]
+      },
+      "size": 745,
+      "lines": 24,
+      "imports": [
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "../backend/qlib/retagger",
+          "resolved": "backend\\qlib\\retagger.js"
+        }
+      ],
+      "exports": [],
+      "functions": []
+    },
+    "tools\\runCapsuleAudit.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "capsule": [
+          "capsule",
+          "capsules"
+        ],
+        "vault": [
+          "vault"
+        ]
+      },
+      "size": 1013,
+      "lines": 31,
+      "imports": [
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "../backend/qlib/auditCapsulePipeline",
+          "resolved": "backend\\qlib\\auditCapsulePipeline.js"
+        }
+      ],
+      "exports": [],
+      "functions": []
+    },
+    "tools\\runCapsuleAudit_debug.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "capsule": [
+          "capsule",
+          "capsules"
+        ],
+        "vault": [
+          "vault"
+        ]
+      },
+      "size": 1272,
+      "lines": 37,
+      "imports": [
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "../backend/qlib/auditCapsulePipeline",
+          "resolved": "backend\\qlib\\auditCapsulePipeline.js"
+        }
+      ],
+      "exports": [],
+      "functions": []
+    },
+    "tools\\runChaosAnalyzer.js": {
+      "categories": {
+        "capsule": [
+          "capsule",
+          "capsules"
+        ],
+        "vault": [
+          "vault"
+        ]
+      },
+      "size": 758,
+      "lines": 24,
+      "imports": [
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "../backend/qlib/chaosanalyzer",
+          "resolved": "backend\\qlib\\chaosanalyzer.js"
+        }
+      ],
+      "exports": [],
+      "functions": []
+    },
+    "tools\\scopeAnalyzer.js": {
+      "categories": {
+        "retrieval": [
+          "find"
+        ]
+      },
+      "size": 3585,
+      "lines": 126,
+      "imports": [],
+      "exports": [
+        "module.exports",
+        "exports.push"
+      ],
+      "functions": [
+        "findFunctionName",
+        "findClassName",
+        "findVariableNames",
+        "isDeclarationContext"
+      ]
+    },
+    "tools\\splitter.js": {
+      "categories": {
+        "retrieval": [
+          "find"
+        ]
+      },
+      "size": 2412,
+      "lines": 80,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "./tokenizer",
+          "resolved": "tools\\tokenizer.js"
+        },
+        {
+          "type": "require",
+          "path": "./scopeAnalyzer",
+          "resolved": "tools\\scopeAnalyzer.js"
+        },
+        {
+          "type": "require",
+          "path": "./breakpointFinder",
+          "resolved": "tools\\breakpointFinder.js"
+        },
+        {
+          "type": "require",
+          "path": "./dependencyGraph",
+          "resolved": "tools\\dependencyGraph.js"
+        }
+      ],
+      "exports": [
+        "module.exports",
+        "exports.length",
+        "exports.push",
+        "exports.length"
+      ],
+      "functions": []
+    },
+    "tools\\summarizeVault.js": {
+      "categories": {
+        "memory": [
+          "memory",
+          "memoryvault"
+        ],
+        "capsule": [
+          "capsule",
+          "capsules"
+        ],
+        "vault": [
+          "vault"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 4237,
+      "lines": 133,
+      "imports": [
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "fs/promises",
+          "resolved": "fs/promises"
+        },
+        {
+          "type": "require",
+          "path": "readline",
+          "resolved": "readline"
+        },
+        {
+          "type": "require",
+          "path": "tty",
+          "resolved": "tty"
+        },
+        {
+          "type": "require",
+          "path": "../src/memory/MemoryVaultManager",
+          "resolved": "src\\memory\\MemoryVaultManager.js"
+        },
+        {
+          "type": "require",
+          "path": "../src/memory/capsule",
+          "resolved": "src\\memory\\capsule.js"
+        },
+        {
+          "type": "require",
+          "path": "../src/memory/QLibInterface",
+          "resolved": "src\\memory\\QLibInterface.js"
+        },
+        {
+          "type": "require",
+          "path": "../backend/qlib/loadVerbatimRules",
+          "resolved": "backend\\qlib\\loadVerbatimRules.js"
+        }
+      ],
+      "exports": [],
+      "functions": []
+    },
+    "tools\\threaderEngine.js": {
+      "categories": {
+        "memory": [
+          "memory",
+          "memoryvault"
+        ],
+        "context": [
+          "buildcontext"
+        ],
+        "capsule": [
+          "capsule",
+          "capsules"
+        ],
+        "vault": [
+          "vault"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 1943,
+      "lines": 73,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs/promises",
+          "resolved": "fs/promises"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "buildThreadedMemory",
+        "buildContextTimeline"
+      ]
+    },
+    "tools\\validateEchoMemory.js": {
+      "categories": {
+        "retrieval": [
+          "find"
+        ],
+        "capsule": [
+          "capsule",
+          "capsules"
+        ],
+        "vault": [
+          "vault"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 3417,
+      "lines": 109,
+      "imports": [
+        {
+          "type": "require",
+          "path": "fs",
+          "resolved": "fs"
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        }
+      ],
+      "exports": [],
+      "functions": [
+        "validateCapsuleStructure",
+        "loadAllCapsules",
+        "findOrphansAndBrokenChains"
+      ]
+    },
+    "venv\\Lib\\site-packages\\tokenizers\\tools\\visualizer-styles.css": {
+      "categories": {
+        "epoch": [
+          "time"
+        ],
+        "scoring": [
+          "weight"
+        ]
+      },
+      "size": 4850,
+      "lines": 170,
+      "imports": [],
+      "exports": [],
+      "functions": []
+    },
+    "venv\\Lib\\site-packages\\torch\\utils\\model_dump\\code.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "retrieval": [
+          "fetch"
+        ],
+        "vault": [
+          "storage"
+        ]
+      },
+      "size": 19251,
+      "lines": 689,
+      "imports": [
+        {
+          "type": "import",
+          "path": "https://unpkg.com/preact?module",
+          "resolved": "https://unpkg.com/preact?module"
+        },
+        {
+          "type": "import",
+          "path": "https://unpkg.com/htm?module",
+          "resolved": "https://unpkg.com/htm?module"
+        }
+      ],
+      "exports": [],
+      "functions": [
+        "assertStorageAreEqual",
+        "computeTensorMemory",
+        "getTensorStorages",
+        "getTensorMemoryByDevice",
+        "TensorMemorySection"
+      ]
+    },
+    "venv\\Lib\\site-packages\\urllib3\\contrib\\emscripten\\emscripten_fetch_worker.js": {
+      "categories": {
+        "retrieval": [
+          "fetch"
+        ]
+      },
+      "size": 3655,
+      "lines": 110,
+      "imports": [],
+      "exports": [],
+      "functions": []
+    },
+    "z__archive\\backend\\qlib\\threader\\test-threader.js": {
+      "categories": {
+        "memory": [
+          "memory"
+        ],
+        "context": [
+          "context",
+          "buildcontext"
+        ],
+        "vault": [
+          "vault"
+        ],
+        "epoch": [
+          "time"
+        ]
+      },
+      "size": 521,
+      "lines": 19,
+      "imports": [
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "./threaderEngine",
+          "resolved": null
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": []
+    },
+    "z__archive\\components\\MyAI-global.rewired.js": {
+      "categories": {
+        "memory": [
+          "memory",
+          "memories"
+        ],
+        "retrieval": [
+          "fetch",
+          "search",
+          "query",
+          "find"
+        ],
+        "context": [
+          "context",
+          "contextbuilder",
+          "buildcontext"
+        ],
+        "injection": [
+          "inject",
+          "injection",
+          "prompt",
+          "promptbuilder"
+        ],
+        "vault": [
+          "vault",
+          "storage",
+          "persist"
+        ],
+        "epoch": [
+          "time"
+        ],
+        "scoring": [
+          "score"
+        ]
+      },
+      "size": 83078,
+      "lines": 2280,
+      "imports": [
+        {
+          "type": "require",
+          "path": "./legacy/DevPanel.jsx",
+          "resolved": null
+        },
+        {
+          "type": "require",
+          "path": "./legacy/ObsidianNotes.jsx",
+          "resolved": null
+        },
+        {
+          "type": "require",
+          "path": "./legacy/SettingsPanel.jsx",
+          "resolved": null
+        },
+        {
+          "type": "require",
+          "path": "./contextBuilder",
+          "resolved": null
+        },
+        {
+          "type": "require",
+          "path": "path",
+          "resolved": "path"
+        },
+        {
+          "type": "require",
+          "path": "os",
+          "resolved": "os"
+        },
+        {
+          "type": "require",
+          "path": "./conversationSaver",
+          "resolved": null
+        },
+        {
+          "type": "require",
+          "path": "./vaultSearch",
+          "resolved": null
+        },
+        {
+          "type": "require",
+          "path": "./speechEngine",
+          "resolved": null
+        },
+        {
+          "type": "require",
+          "path": "./contextPipeline",
+          "resolved": null
+        },
+        {
+          "type": "require",
+          "path": "./contextBuilder",
+          "resolved": null
+        },
+        {
+          "type": "require",
+          "path": "./obsidianInterface",
+          "resolved": null
+        },
+        {
+          "type": "require",
+          "path": "./vaultSearch",
+          "resolved": null
+        },
+        {
+          "type": "require",
+          "path": "./contextBuilder",
+          "resolved": null
+        },
+        {
+          "type": "require",
+          "path": "../backend/qlib/threader/threaderEngine",
+          "resolved": null
+        },
+        {
+          "type": "require",
+          "path": "../src/memory/PromptBuilder",
+          "resolved": null
+        },
+        {
+          "type": "require",
+          "path": "./components/MyAIInterface",
+          "resolved": null
+        },
+        {
+          "type": "require",
+          "path": "react",
+          "resolved": "react"
+        },
+        {
+          "type": "require",
+          "path": "./keywordMap",
+          "resolved": null
+        }
+      ],
+      "exports": [
+        "module.exports"
+      ],
+      "functions": [
+        "useVault",
+        "indexVault",
+        "searchVault"
+      ]
+    }
+  },
+  "import_graph": {
+    "interactiveTest.js": [
+      "src\\echo\\core\\SessionMesh.js"
+    ],
+    "main.js": [
+      "main\\app.js",
+      "main\\ipc-handlers.js",
+      "main\\windows.js"
+    ],
+    "qlib-diag.js": [
+      "src\\memory\\QLibInterface.js"
+    ],
+    "testSession.js": [
+      "src\\echo\\core\\SessionMesh.js"
+    ],
+    "backend\\qlib\\folderScopedRetriever.js": [
+      "src\\memory\\MemoryVaultManager.js"
+    ],
+    "components\\contextBuilder.js": [
+      "components\\capsuleWriter.js"
+    ],
+    "components\\contextPipeline.js": [
+      "components\\vaultSearch.js",
+      "components\\contextBuilder.js",
+      "src\\memory\\PromptBuilder.js"
+    ],
+    "components\\obsidianInterface.js": [
+      "components\\utils\\logToObsidianMaster.js"
+    ],
+    "components\\speechEngine.js": [
+      "components\\utils\\logToObsidianMaster.js"
+    ],
+    "components\\voiceCommandHandler.js": [
+      "components\\vaultSearch.js",
+      "components\\contextBuilder.js",
+      "components\\utils\\logToObsidianMaster.js",
+      "components\\utils\\getRecentMessages.js"
+    ],
+    "components-backup\\MyAI.js": [
+      "components-backup\\utils\\logToObsidianMaster.js"
+    ],
+    "main\\app.js": [
+      "main\\server.js",
+      "main\\models.js",
+      "main\\ipc-handlers.js",
+      "src\\db.js"
+    ],
+    "main\\ipc-handlers.js": [
+      "main\\app.js",
+      "main\\models.js",
+      "main\\store.js",
+      "src\\db.js",
+      "src\\memory\\MemoryVaultManager.js",
+      "src\\echo\\memory\\MemoryService.js",
+      "src\\echo\\memory\\capsuleRetriever.js",
+      "src\\echo\\memory\\ContextInjector.js",
+      "src\\memory\\QLibInterface.js",
+      "src\\memory\\index.js",
+      "src\\memory\\QLibInterface.js",
+      "src\\memory\\ChaosAnalyzer.js",
+      "src\\memory\\index.js",
+      "src\\memory\\MemoryVaultManager.js",
+      "main\\windows.js",
+      "src\\memory\\index.js",
+      "src\\memory\\MemoryVaultManager.js"
+    ],
+    "main\\server.js": [
+      "src\\db.js",
+      "components\\utils\\vaultIndexer.js"
+    ],
+    "main\\windows.js": [
+      "main\\app.js"
+    ],
+    "src\\echo\\core\\aiManager.js": [
+      "src\\echo\\core\\SpineGuardian.js",
+      "src\\echo\\engines\\WriterEngine.js",
+      "src\\echo\\engines\\CodeEngine.js",
+      "src\\echo\\engines\\BusinessEngine.js",
+      "src\\echo\\engines\\GeneralEngine.js"
+    ],
+    "src\\echo\\core\\BaseEngine.js": [
+      "src\\echo\\memory\\capsuleRetriever.js",
+      "src\\echo\\memory\\ContextInjector.js",
+      "src\\echo\\memory\\MemoryWriter.js",
+      "src\\echo\\memory\\ModelInterface.js"
+    ],
+    "src\\echo\\core\\SessionMesh.js": [
+      "src\\echo\\core\\aiManager.js",
+      "src\\echo\\memory\\capsuleRetriever.js",
+      "src\\echo\\memory\\ContextInjector.js"
+    ],
+    "src\\echo\\engines\\BusinessEngine.js": [
+      "src\\echo\\core\\BaseEngine.js",
+      "src\\echo\\core\\SpineGuardian.js"
+    ],
+    "src\\echo\\engines\\CodeEngine.js": [
+      "src\\echo\\core\\BaseEngine.js",
+      "src\\echo\\core\\SpineGuardian.js"
+    ],
+    "src\\echo\\engines\\GeneralEngine.js": [
+      "src\\echo\\core\\BaseEngine.js",
+      "src\\echo\\core\\SpineGuardian.js"
+    ],
+    "src\\echo\\engines\\WriterEngine.js": [
+      "src\\echo\\core\\BaseEngine.js",
+      "src\\echo\\core\\SpineGuardian.js"
+    ],
+    "src\\echo\\memory\\capsuleRetriever.js": [
+      "src\\memory\\capsule.js"
+    ],
+    "src\\echo\\memory\\MemoryService.js": [
+      "src\\echo\\memory\\NoteTools.js",
+      "src\\echo\\memory\\NoteTools.js",
+      "src\\echo\\memory\\api-wrapper.js"
+    ],
+    "src\\echo\\memory\\ModelInterface.js": [
+      "src\\echo\\memory\\LoRAManager.js"
+    ],
+    "src\\memory\\ChatOrchestrator.js": [
+      "src\\memory\\MemoryVaultManager.js",
+      "src\\memory\\PromptBuilder.js",
+      "src\\memory\\TokenBudgetManager.js",
+      "src\\memory\\SessionStitcher.js"
+    ],
+    "src\\memory\\index.js": [
+      "src\\memory\\MemoryVaultManager.js",
+      "src\\memory\\context.js",
+      "src\\memory\\MemoryCapsule.js",
+      "src\\memory\\ChaosAnalyzer.js",
+      "src\\echo\\memory\\NoteTools.js",
+      "src\\memory\\QLibInterface.js",
+      "src\\echo\\memory\\NoteTools.js"
+    ],
+    "src\\memory\\integration.js": [
+      "src\\memory\\index.js",
+      "src\\memory\\vault.js"
+    ],
+    "src\\memory\\MemoryVaultManager.js": [
+      "backend\\qlib\\epochClassifier.js",
+      "backend\\qlib\\injectionScorer.js",
+      "src\\memory\\MemoryCapsule.js",
+      "src\\memory\\ChaosAnalyzer.js",
+      "backend\\qlib\\injectionScorer.js",
+      "backend\\qlib\\folderScopedRetriever.js"
+    ],
+    "src\\memory\\vault.js": [
+      "src\\memory\\capsule.js"
+    ],
+    "test\\test-injection-scores.js": [
+      "backend\\qlib\\injectionScorer.js"
+    ],
+    "tools\\retagCapsules.js": [
+      "backend\\qlib\\retagger.js"
+    ],
+    "tools\\runCapsuleAudit.js": [
+      "backend\\qlib\\auditCapsulePipeline.js"
+    ],
+    "tools\\runCapsuleAudit_debug.js": [
+      "backend\\qlib\\auditCapsulePipeline.js"
+    ],
+    "tools\\runChaosAnalyzer.js": [
+      "backend\\qlib\\chaosanalyzer.js"
+    ],
+    "tools\\splitter.js": [
+      "tools\\scopeAnalyzer.js",
+      "tools\\breakpointFinder.js"
+    ],
+    "tools\\summarizeVault.js": [
+      "src\\memory\\MemoryVaultManager.js",
+      "src\\memory\\capsule.js",
+      "src\\memory\\QLibInterface.js"
+    ]
+  },
+  "missing_imports": [
+    {
+      "from": "master-diag-lite.js",
+      "import": "./ipc-handlers",
+      "expected": "ipc-handlers"
+    },
+    {
+      "from": "master-diag.js",
+      "import": "./ipc-handlers",
+      "expected": "ipc-handlers"
+    },
+    {
+      "from": "precision-patcher.js",
+      "import": "../../backend/qlib/threader/threaderEngine",
+      "expected": "..\\..\\backend\\qlib\\threader\\threaderEngine"
+    },
+    {
+      "from": "precision-patcher.js",
+      "import": "./legacy/${name}.jsx",
+      "expected": "legacy\\${name}.jsx"
+    },
+    {
+      "from": "components\\contextPipeline.js",
+      "import": "../../tools/memory/threaderEngine",
+      "expected": "..\\tools\\memory\\threaderEngine"
+    },
+    {
+      "from": "components\\contextPipeline.js",
+      "import": "./keywordMap",
+      "expected": "components\\keywordMap"
+    },
+    {
+      "from": "components\\voiceCommandHandler.js",
+      "import": "./memory/CapsuleRetriever",
+      "expected": "components\\memory\\CapsuleRetriever"
+    },
+    {
+      "from": "components\\voiceCommandHandler.js",
+      "import": "./PromptBuilder",
+      "expected": "components\\PromptBuilder"
+    },
+    {
+      "from": "components\\voiceCommandHandler.js",
+      "import": "./echo/core/BaseEngine",
+      "expected": "components\\echo\\core\\BaseEngine"
+    },
+    {
+      "from": "components\\voiceCommandHandler.js",
+      "import": "../../backend/qlib/loadCapsules",
+      "expected": "..\\backend\\qlib\\loadCapsules"
+    },
+    {
+      "from": "components\\voiceCommandHandler.js",
+      "import": "../../backend/qlib/filterCapsulesByQuery",
+      "expected": "..\\backend\\qlib\\filterCapsulesByQuery"
+    },
+    {
+      "from": "components\\voiceCommandHandler.js",
+      "import": "../../backend/qlib/loadCapsules",
+      "expected": "..\\backend\\qlib\\loadCapsules"
+    },
+    {
+      "from": "components\\voiceCommandHandler.js",
+      "import": "../../backend/qlib/filterCapsulesByQuery",
+      "expected": "..\\backend\\qlib\\filterCapsulesByQuery"
+    },
+    {
+      "from": "components\\voiceCommandHandler.js",
+      "import": "../../backend/qlib/rerankCapsulesByQuery",
+      "expected": "..\\backend\\qlib\\rerankCapsulesByQuery"
+    },
+    {
+      "from": "components\\voiceCommandHandler.js",
+      "import": "../../backend/qlib/loadCapsules",
+      "expected": "..\\backend\\qlib\\loadCapsules"
+    },
+    {
+      "from": "components\\voiceCommandHandler.js",
+      "import": "../../backend/qlib/filterCapsulesByQuery",
+      "expected": "..\\backend\\qlib\\filterCapsulesByQuery"
+    },
+    {
+      "from": "components\\voiceCommandHandler.js",
+      "import": "../../backend/qlib/rerankCapsulesByQuery",
+      "expected": "..\\backend\\qlib\\rerankCapsulesByQuery"
+    },
+    {
+      "from": "components\\voiceCommandHandler.js",
+      "import": "../../backend/qlib/findExactCapsuleMatch",
+      "expected": "..\\backend\\qlib\\findExactCapsuleMatch"
+    },
+    {
+      "from": "components\\voiceCommandHandler.js",
+      "import": "./memory/ContextInjector",
+      "expected": "components\\memory\\ContextInjector"
+    },
+    {
+      "from": "components\\voiceCommandHandler.js",
+      "import": "./PromptBuilder",
+      "expected": "components\\PromptBuilder"
+    },
+    {
+      "from": "components\\legacy\\DevPanel.jsx",
+      "import": "./utils/hotkey-logic",
+      "expected": "components\\legacy\\utils\\hotkey-logic"
+    },
+    {
+      "from": "components-backup\\MyAI.js",
+      "import": "./SettingsPanel.jsx",
+      "expected": "components-backup\\SettingsPanel.jsx"
+    },
+    {
+      "from": "components-backup\\MyAI.js",
+      "import": "./ObsidianNotes.jsx",
+      "expected": "components-backup\\ObsidianNotes.jsx"
+    },
+    {
+      "from": "components-backup\\MyAI.js",
+      "import": "../assets/hotword.png",
+      "expected": "assets\\hotword.png"
+    },
+    {
+      "from": "components-backup\\MyAI.js",
+      "import": "../assets/send.png",
+      "expected": "assets\\send.png"
+    },
+    {
+      "from": "components-backup\\MyAI.js",
+      "import": "../assets/notes.png",
+      "expected": "assets\\notes.png"
+    },
+    {
+      "from": "components-backup\\MyAI.js",
+      "import": "../assets/sync.png",
+      "expected": "assets\\sync.png"
+    },
+    {
+      "from": "components-backup\\MyAI.js",
+      "import": "../assets/settings.png",
+      "expected": "assets\\settings.png"
+    },
+    {
+      "from": "components-backup\\MyAI.js",
+      "import": "../assets/uploads.png",
+      "expected": "assets\\uploads.png"
+    },
+    {
+      "from": "components-backup\\MyAI.js",
+      "import": "../assets/mic.png",
+      "expected": "assets\\mic.png"
+    },
+    {
+      "from": "components-backup\\MyAI.js",
+      "import": "./DevPanel.jsx",
+      "expected": "components-backup\\DevPanel.jsx"
+    },
+    {
+      "from": "components-backup\\legacy\\DevPanel.jsx",
+      "import": "./utils/hotkey-logic",
+      "expected": "components-backup\\legacy\\utils\\hotkey-logic"
+    },
+    {
+      "from": "main\\ipc-handlers.js",
+      "import": "../backend/qlib/ipc-injection-clientFolder",
+      "expected": "backend\\qlib\\ipc-injection-clientFolder"
+    },
+    {
+      "from": "src\\echo\\core\\BaseEngine.js",
+      "import": "../../utils/getRecentMessages",
+      "expected": "src\\utils\\getRecentMessages"
+    },
+    {
+      "from": "src\\echo\\core\\BaseEngine.js",
+      "import": "../memory/capsule.js",
+      "expected": "src\\echo\\memory\\capsule.js"
+    },
+    {
+      "from": "src\\echo\\memory\\memory-runner.js",
+      "import": "./core/SessionMesh.js",
+      "expected": "src\\echo\\memory\\core\\SessionMesh.js"
+    },
+    {
+      "from": "src\\echo\\memory\\memory-runner.js",
+      "import": "./some-path/QLib.js",
+      "expected": "src\\echo\\memory\\some-path\\QLib.js"
+    },
+    {
+      "from": "src\\memory\\ChatOrchestrator.js",
+      "import": "./CapsuleRetriever",
+      "expected": "src\\memory\\CapsuleRetriever"
+    },
+    {
+      "from": "src\\memory\\index.js",
+      "import": "../../tools/memory/threaderEngine",
+      "expected": "tools\\memory\\threaderEngine"
+    },
+    {
+      "from": "src\\memory\\index.js",
+      "import": "./annotateVaultNoteWithQlib",
+      "expected": "src\\memory\\annotateVaultNoteWithQlib"
+    },
+    {
+      "from": "src\\memory\\integration.js",
+      "import": "../vault/VaultManager",
+      "expected": "src\\vault\\VaultManager"
+    },
+    {
+      "from": "src\\memory\\PromptBuilder.js",
+      "import": "../utils/getRecentMessages",
+      "expected": "src\\utils\\getRecentMessages"
+    },
+    {
+      "from": "z__archive\\backend\\qlib\\threader\\test-threader.js",
+      "import": "./threaderEngine",
+      "expected": "z__archive\\backend\\qlib\\threader\\threaderEngine"
+    },
+    {
+      "from": "z__archive\\components\\MyAI-global.rewired.js",
+      "import": "./legacy/DevPanel.jsx",
+      "expected": "z__archive\\components\\legacy\\DevPanel.jsx"
+    },
+    {
+      "from": "z__archive\\components\\MyAI-global.rewired.js",
+      "import": "./legacy/ObsidianNotes.jsx",
+      "expected": "z__archive\\components\\legacy\\ObsidianNotes.jsx"
+    },
+    {
+      "from": "z__archive\\components\\MyAI-global.rewired.js",
+      "import": "./legacy/SettingsPanel.jsx",
+      "expected": "z__archive\\components\\legacy\\SettingsPanel.jsx"
+    },
+    {
+      "from": "z__archive\\components\\MyAI-global.rewired.js",
+      "import": "./contextBuilder",
+      "expected": "z__archive\\components\\contextBuilder"
+    },
+    {
+      "from": "z__archive\\components\\MyAI-global.rewired.js",
+      "import": "./conversationSaver",
+      "expected": "z__archive\\components\\conversationSaver"
+    },
+    {
+      "from": "z__archive\\components\\MyAI-global.rewired.js",
+      "import": "./vaultSearch",
+      "expected": "z__archive\\components\\vaultSearch"
+    },
+    {
+      "from": "z__archive\\components\\MyAI-global.rewired.js",
+      "import": "./speechEngine",
+      "expected": "z__archive\\components\\speechEngine"
+    },
+    {
+      "from": "z__archive\\components\\MyAI-global.rewired.js",
+      "import": "./contextPipeline",
+      "expected": "z__archive\\components\\contextPipeline"
+    },
+    {
+      "from": "z__archive\\components\\MyAI-global.rewired.js",
+      "import": "./contextBuilder",
+      "expected": "z__archive\\components\\contextBuilder"
+    },
+    {
+      "from": "z__archive\\components\\MyAI-global.rewired.js",
+      "import": "./obsidianInterface",
+      "expected": "z__archive\\components\\obsidianInterface"
+    },
+    {
+      "from": "z__archive\\components\\MyAI-global.rewired.js",
+      "import": "./vaultSearch",
+      "expected": "z__archive\\components\\vaultSearch"
+    },
+    {
+      "from": "z__archive\\components\\MyAI-global.rewired.js",
+      "import": "./contextBuilder",
+      "expected": "z__archive\\components\\contextBuilder"
+    },
+    {
+      "from": "z__archive\\components\\MyAI-global.rewired.js",
+      "import": "../backend/qlib/threader/threaderEngine",
+      "expected": "z__archive\\backend\\qlib\\threader\\threaderEngine"
+    },
+    {
+      "from": "z__archive\\components\\MyAI-global.rewired.js",
+      "import": "../src/memory/PromptBuilder",
+      "expected": "z__archive\\src\\memory\\PromptBuilder"
+    },
+    {
+      "from": "z__archive\\components\\MyAI-global.rewired.js",
+      "import": "./components/MyAIInterface",
+      "expected": "z__archive\\components\\components\\MyAIInterface"
+    },
+    {
+      "from": "z__archive\\components\\MyAI-global.rewired.js",
+      "import": "./keywordMap",
+      "expected": "z__archive\\components\\keywordMap"
+    }
+  ],
+  "dead_files": [
+    "tools\\runCapsuleAudit_debug.js",
+    "venv\\Lib\\site-packages\\urllib3\\contrib\\emscripten\\emscripten_fetch_worker.js",
+    "echo-diagnose-unified.js",
+    "echo-prune-orphans.js",
+    "src\\components\\preload.js",
+    "components-backup\\preload.js",
+    "echo-diagnostic-v2.js",
+    "trace-message-flow.js",
+    "venv\\Lib\\site-packages\\tokenizers\\tools\\visualizer-styles.css",
+    "test-memory.html",
+    "test\\test-injection-scores.js",
+    "diagnostic-output-20250627-220749\\checkAuthenticationStatus-SECOND.js",
+    "master-diag-lite.js",
+    "src\\components\\useAuth.js",
+    "components-backup\\MyAI-global.js",
+    "venv\\Lib\\site-packages\\torch\\utils\\model_dump\\code.js",
+    "src\\echo\\memory\\memory-runner.js",
+    "backend\\qlib\\loadCapsules.js",
+    "src\\SystemCheck.js",
+    "cappaths.js",
+    "components\\legacy\\model-benchmarks.jsx",
+    "components\\legacy\\SettingsPanel.jsx",
+    "src\\auth.css",
+    "src\\MyAI.css",
+    "master-diag.js",
+    "diagnose-echo.js",
+    "security-challenge.js",
+    "testSession.js",
+    "echo-truth-table.js",
+    "backend\\qlib\\auditCapsulePipeline (1).js",
+    "src\\components\\Login.js",
+    "auth-context.js",
+    "backend\\qlib\\filterCapsulesByQuery.js",
+    "security-challenge.html",
+    "components\\DevPanel-global.js",
+    "components\\legacy\\DevPanel.jsx",
+    "tools\\retagCapsules.js",
+    "components-backup\\utils\\vaultIndexer.js",
+    "components\\AuthChallenge.jsx",
+    "tools\\threaderEngine.js",
+    "src\\components\\AuthPanel.js",
+    "check-capsules.js",
+    "interactiveTest.js",
+    "echo-audit-usage.js",
+    "components\\MyAI.css",
+    "tools\\runCapsuleAudit.js",
+    "trial-expired.html",
+    "test-auth.html",
+    "components\\MyAIInterface - Copy.js",
+    "tools\\runChaosAnalyzer.js",
+    "echomemory710.js",
+    "src\\echo\\memory\\MemoryOrchestrator.js",
+    "components\\voiceCommandHandler.js",
+    "tools\\validateEchoMemory.js",
+    "preload.js",
+    "src\\echo\\memory\\VaultInterface.js",
+    "contextDebugger.js",
+    "backend\\qlib\\folderLister.js",
+    "diagnostic-output-20250627-220749\\runtime-test.js",
+    "components\\MyAICore.js",
+    "memory-crawler.js",
+    "components\\NotesPanel.jsx",
+    "components\\css\\additional.css",
+    "components-backup\\legacy\\SettingsPanel.jsx",
+    "map-memory-pipeline.js",
+    "security\\SecurityManager.js",
+    "echo-boot-manager.js",
+    "src\\contexts\\AuthContext.js",
+    "components-backup\\DevPanel-global.js",
+    "components-backup\\MyAI.js",
+    "components\\conversationParser.js",
+    "components\\conversationSaver.js",
+    "components\\SettingsPanel-global.js",
+    "tools\\summarizeVault.js",
+    "components\\MyAI.js",
+    "diagnose-memory-pipeline.js",
+    "index.html",
+    "components-backup\\MyAI.css",
+    "components-backup\\css\\additional.css",
+    "precision-patcher.js",
+    "tools\\splitter.js",
+    "components\\layout.css",
+    "components-backup\\legacy\\model-benchmarks.jsx",
+    "backend\\qlib\\rerankCapsulesByQuery.js",
+    "components\\contextPipeline.js",
+    "src\\memory\\ChatOrchestrator.js",
+    "components\\utils\\identityManager.js",
+    "components-backup\\css\\DevPanel.css",
+    "z__archive\\backend\\qlib\\threader\\test-threader.js",
+    "z__archive\\components\\MyAI-global.rewired.js",
+    "components\\DevPanel.jsx",
+    "echo-restore-archive.js",
+    "src\\memory\\integration.js",
+    "components\\ChatPanel.jsx",
+    "backend\\qlib\\findExactCapsuleMatch.js",
+    "components\\obsidianInterface.js",
+    "theme-enhancer.js",
+    "components-backup\\legacy\\DevPanel.jsx",
+    "bootstrap-validator.js",
+    "MyAI_cleaned.css",
+    "components\\speechEngine.js",
+    "components\\css\\DevPanel.css",
+    "components-backup\\SettingsPanel-global.js",
+    "VoiceManager.js",
+    "onboarding.html",
+    "qlib-diag.js",
+    "src\\components\\ModelSelector.js",
+    "config\\ConfigManager.js",
+    "components\\components.css",
+    "src\\installer\\qlib-installer-standalone.js",
+    "src\\echo\\echo-diagnostic.js"
+  ],
+  "function_map": {}
+}

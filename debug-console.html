@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Echo Debug</title>
+</head>
+<body>
+    <h1>Echo Rubicon Debug Console</h1>
+    <pre id="output"></pre>
+    <script>
+        const output = document.getElementById('output');
+        
+        // Override console methods
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            output.textContent += '[LOG] ' + args.join(' ') + '\n';
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            output.textContent += '[ERROR] ' + args.join(' ') + '\n';
+        };
+        
+        console.warn = function(...args) {
+            originalWarn.apply(console, args);
+            output.textContent += '[WARN] ' + args.join(' ') + '\n';
+        };
+        
+        // Check localStorage
+        output.textContent += '=== LOCALSTORAGE ===\n';
+        Object.keys(localStorage).forEach(key => {
+            output.textContent += key + ': ' + localStorage.getItem(key).substring(0, 50) + '...\n';
+        });
+        
+        // Listen for errors
+        window.addEventListener('error', (e) => {
+            output.textContent += '[WINDOW ERROR] ' + e.message + ' at ' + e.filename + ':' + e.lineno + '\n';
+        });
+    </script>
+</body>
+</html>

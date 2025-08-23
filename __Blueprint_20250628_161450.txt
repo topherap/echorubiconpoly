@@ -1,0 +1,12 @@
+ECHO RUBICON FOLDER BLUEPRINT
+Generated: 06/28/2025 16:14:52
+
+STRUCTURE SUMMARY:
+Total Items: 56357
+File Types: 162 unique
+
+TOP FILE TYPES:
+  .py: 10019 files   .pyc: 9890 files   .h: 9251 files   .js: 4798 files   : 4452 files
+
+ORGANIZATIONAL PATTERN:
+  General: 6009 folders   Testing: 202 folders   Compiled Output: 90 folders   Documentation: 15 folders   Source Code: 50 folders   Configuration: 25 folders   Source Code Testing: 5 folders   Resources: 1 folders

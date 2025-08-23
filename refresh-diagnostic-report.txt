@@ -1,0 +1,6 @@
+ECHO RUBICON REFRESH DIAGNOSTIC REPORT
+Generated: 06/28/2025 11:29:16
+
+POTENTIAL ISSUES FOUND:
+- Line 213 in MyAI-global.js:   const useVault = () => {
+- Line 2726 in MyAI-global.js:     useEffect(function() {

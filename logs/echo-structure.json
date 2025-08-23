@@ -1,0 +1,3017 @@
+{
+  "files": [
+    {
+      "file": "app-wrapper.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "auth-context.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "backend\\qlib\\summarizeVault.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": true,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "backend\\qlib\\threader\\threaderEngine.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "bootstrap-validator.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "bundle.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "check-capsules.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "clean-myai.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "components\\AuthChallenge.jsx",
+      "status": "🟨 orphaned-live",
+      "type": "jsx",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "components\\capsuleWriter.js",
+      "status": "✅ live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": true,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "components\\ChatPanel.jsx",
+      "status": "🟨 orphaned-live",
+      "type": "jsx",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "components\\contextBuilder.js",
+      "status": "✅ live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": true,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [
+        "./capsuleWriter"
+      ],
+      "exports": 1
+    },
+    {
+      "file": "components\\contextPipeline.js",
+      "status": "✅ live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": true,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [
+        "./vaultSearch",
+        "./contextBuilder",
+        "./keywordMap"
+      ],
+      "exports": 1
+    },
+    {
+      "file": "components\\conversationParser.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "components\\conversationSaver.js",
+      "status": "✅ live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "components\\DevPanel-global.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "components\\DevPanel.jsx",
+      "status": "🟨 orphaned-live",
+      "type": "jsx",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "components\\legacy\\DevPanel.jsx",
+      "status": "🟨 orphaned-live",
+      "type": "jsx",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 2
+    },
+    {
+      "file": "components\\legacy\\model-benchmarks.jsx",
+      "status": "🟨 orphaned-live",
+      "type": "jsx",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "components\\legacy\\ObsidianNotes.jsx",
+      "status": "🟨 orphaned-live",
+      "type": "jsx",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "components\\legacy\\SettingsPanel.jsx",
+      "status": "🟨 orphaned-live",
+      "type": "jsx",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "components\\main.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "components\\memory\\CapsuleRetriever.js",
+      "status": "✅ live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "components\\modelIdentity.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "components\\MyAI-global.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "components\\MyAI-global.rewired.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": true,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [
+        "./legacy/DevPanel.jsx",
+        "./legacy/ObsidianNotes.jsx",
+        "./legacy/SettingsPanel.jsx",
+        "./contextBuilder",
+        "./conversationSaver",
+        "./vaultSearch",
+        "./speechEngine",
+        "./contextPipeline",
+        "./contextBuilder",
+        "./obsidianInterface",
+        "./vaultSearch",
+        "./contextBuilder",
+        "./components/MyAIInterface",
+        "./keywordMap"
+      ],
+      "exports": 1
+    },
+    {
+      "file": "components\\MyAI.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "components\\MyAICore.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "components\\MyAIInterface.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "components\\MyAIWrapper.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "components\\NotesPanel.jsx",
+      "status": "🟨 orphaned-live",
+      "type": "jsx",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "components\\obsidianInterface.js",
+      "status": "✅ live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [
+        "./utils/logToObsidianMaster"
+      ],
+      "exports": 1
+    },
+    {
+      "file": "components\\ObsidianNotes-global.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "components\\SettingsPanel-global.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "components\\SettingsPanel.jsx",
+      "status": "🟨 orphaned-live",
+      "type": "jsx",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "components\\speechEngine.js",
+      "status": "✅ live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [
+        "./utils/logToObsidianMaster"
+      ],
+      "exports": 1
+    },
+    {
+      "file": "components\\tailwind.config.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "components\\utils\\config.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "components\\utils\\hotkey-logic.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "components\\utils\\identityManager.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "components\\utils\\logToObsidianMaster.js",
+      "status": "✅ live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "components\\utils\\vaultIndexer.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "components\\vaultSearch.js",
+      "status": "✅ live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "components\\voiceCommandHandler.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": true,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [
+        "./vaultSearch",
+        "./contextBuilder",
+        "./memory/CapsuleRetriever",
+        "./PromptBuilder",
+        "./utils/logToObsidianMaster"
+      ],
+      "exports": 1
+    },
+    {
+      "file": "components-backup\\DevPanel-global.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "components-backup\\legacy\\DevPanel.jsx",
+      "status": "🟨 orphaned-live",
+      "type": "jsx",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 2
+    },
+    {
+      "file": "components-backup\\legacy\\model-benchmarks.jsx",
+      "status": "🟨 orphaned-live",
+      "type": "jsx",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "components-backup\\legacy\\ObsidianNotes.jsx",
+      "status": "🟨 orphaned-live",
+      "type": "jsx",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "components-backup\\legacy\\SettingsPanel.jsx",
+      "status": "🟨 orphaned-live",
+      "type": "jsx",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "components-backup\\main.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "components-backup\\MyAI-global.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "components-backup\\MyAI.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "components-backup\\ObsidianNotes-global.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "components-backup\\preload.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": true
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "components-backup\\SettingsPanel-global.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "components-backup\\tailwind.config.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "components-backup\\utils\\config.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "components-backup\\utils\\hotkey-logic.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "components-backup\\utils\\logToObsidianMaster.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "components-backup\\utils\\vaultIndexer.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "config\\ConfigManager.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "contextDebugger.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": true,
+        "ipcMain.handle": true,
+        "contextBridge.exposeInMainWorld": true
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "diagnose-echo.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "diagnose-memory-pipeline.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "diagnostic-output-20250627-220749\\checkAuthenticationStatus-FIRST.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "diagnostic-output-20250627-220749\\checkAuthenticationStatus-SECOND.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "diagnostic-output-20250627-220749\\mount-effect-calling-auth.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "diagnostic-output-20250627-220749\\runtime-test.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "echo-audit-usage.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "echo-boot-manager.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "echo-check-archive.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "echo-diagnose-unified.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": true,
+        "buildSystemPrompt": true,
+        "saveCapsule": true,
+        "extractFacts": true,
+        "context +=": true,
+        "ipcMain.handle": true,
+        "contextBridge.exposeInMainWorld": true
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "echo-diagnostic-v2.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "echo-fix-unified.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 5
+    },
+    {
+      "file": "echo-living-map.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "echo-prune-orphans.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "echo-restore-archive.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "echo-truth-table.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "echomemory710.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "interactiveTest.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "ipc-test.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "main\\app.js",
+      "status": "✅ live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [
+        "./server",
+        "./models"
+      ],
+      "exports": 1
+    },
+    {
+      "file": "main\\ipc-handlers.js",
+      "status": "✅ live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": true,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [
+        "./app",
+        "./models",
+        "./store",
+        "./windows"
+      ],
+      "exports": 1
+    },
+    {
+      "file": "main\\models.js",
+      "status": "✅ live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "main\\models.js.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "main\\server.js",
+      "status": "✅ live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "main\\server.js.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "main\\store.js",
+      "status": "✅ live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "main\\windows.js",
+      "status": "✅ live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": true,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [
+        "./app"
+      ],
+      "exports": 1
+    },
+    {
+      "file": "main.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [
+        "./src/installer/qlib-setup",
+        "./main/app",
+        "./main/ipc-handlers",
+        "./main/windows"
+      ],
+      "exports": 1
+    },
+    {
+      "file": "map-memory-pipeline.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": true,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "memory-crawler.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "precision-patcher.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "preload.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": true
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "qlib-diag.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [
+        "./src/memory/QLibInterface"
+      ],
+      "exports": 0
+    },
+    {
+      "file": "reconnect-orphans-safe.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "reconnect-orphans.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "scripts\\dev-auth.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "security\\SecurityManager.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "security-challenge.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "src\\CapsuleRetriever.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "src\\components\\AuthPanel.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "src\\components\\Login.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "src\\components\\ModelSelector.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "src\\components\\ObsidianNotes-global.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "src\\components\\PassphraseModal.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "src\\components\\preload.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": true
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "src\\components\\useAuth.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "src\\contexts\\AuthContext.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 2
+    },
+    {
+      "file": "src\\db.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "src\\db.js.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "src\\echo\\core\\aiManager.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 3
+    },
+    {
+      "file": "src\\echo\\core\\BaseEngine.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 2
+    },
+    {
+      "file": "src\\echo\\core\\SessionMesh.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "src\\echo\\core\\SpineGuardian.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 4
+    },
+    {
+      "file": "src\\echo\\echo-diagnostic.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "src\\echo\\engines\\BusinessEngine.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "src\\echo\\engines\\CodeEngine.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "src\\echo\\engines\\GeneralEngine.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "src\\echo\\engines\\WriterEngine.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "src\\echo\\memory\\api-wrapper.js",
+      "status": "✅ live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "src\\echo\\memory\\capsuleRetriever.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "src\\echo\\memory\\ContextInjector.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": true,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "src\\echo\\memory\\LoRAManager.js",
+      "status": "✅ live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "src\\echo\\memory\\memory-runner.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "src\\echo\\memory\\MemoryOrchestrator.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": true,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "src\\echo\\memory\\MemoryService.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [
+        "./api-wrapper"
+      ],
+      "exports": 1
+    },
+    {
+      "file": "src\\echo\\memory\\MemoryWriter.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "src\\echo\\memory\\ModelInterface.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [
+        "./LoRAManager"
+      ],
+      "exports": 1
+    },
+    {
+      "file": "src\\echo\\memory\\VaultInterface.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": true,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "src\\installer\\qlib-installer-standalone.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "src\\installer\\qlib-setup.js",
+      "status": "✅ live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "src\\memory\\capsule.js",
+      "status": "✅ live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "src\\memory\\CapsuleRetriever.js",
+      "status": "✅ live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "src\\memory\\ChaosAnalyzer.js",
+      "status": "✅ live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "src\\memory\\ChatOrchestrator.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": true,
+        "buildSystemPrompt": true,
+        "saveCapsule": false,
+        "extractFacts": true,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [
+        "./MemoryVaultManager",
+        "./CapsuleRetriever",
+        "./PromptBuilder",
+        "./TokenBudgetManager",
+        "./SessionStitcher"
+      ],
+      "exports": 1
+    },
+    {
+      "file": "src\\memory\\context.js",
+      "status": "✅ live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": true,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "src\\memory\\index.js",
+      "status": "✅ live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": true,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [
+        "./MemoryVaultManager",
+        "./context",
+        "./MemoryCapsule",
+        "./ChaosAnalyzer",
+        "./annotateVaultNoteWithQlib"
+      ],
+      "exports": 1
+    },
+    {
+      "file": "src\\memory\\integration.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [
+        "./index",
+        "./vault"
+      ],
+      "exports": 1
+    },
+    {
+      "file": "src\\memory\\MemoryCapsule.js",
+      "status": "✅ live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "src\\memory\\MemoryVaultManager.js",
+      "status": "✅ live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": true,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [
+        "./MemoryCapsule",
+        "./ChaosAnalyzer"
+      ],
+      "exports": 1
+    },
+    {
+      "file": "src\\memory\\PromptBuilder.js",
+      "status": "✅ live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": true,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "src\\memory\\QLibInterface.js",
+      "status": "✅ live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "src\\memory\\SessionStitcher.js",
+      "status": "✅ live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "src\\memory\\TokenBudgetManager.js",
+      "status": "✅ live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "src\\memory\\vault.js",
+      "status": "✅ live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": true,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [
+        "./capsule"
+      ],
+      "exports": 1
+    },
+    {
+      "file": "src\\QLib.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": true,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [
+        "./QLibInterface"
+      ],
+      "exports": 1
+    },
+    {
+      "file": "src\\SystemCheck.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 2
+    },
+    {
+      "file": "testSession.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "theme-enhancer.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "tools\\breakpointFinder.js",
+      "status": "✅ live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "tools\\dependencyGraph.js",
+      "status": "✅ live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [
+        "./scopeAnalyzer"
+      ],
+      "exports": 2
+    },
+    {
+      "file": "tools\\scopeAnalyzer.js",
+      "status": "✅ live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "tools\\splitter.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [
+        "./tokenizer",
+        "./scopeAnalyzer",
+        "./breakpointFinder",
+        "./dependencyGraph"
+      ],
+      "exports": 1
+    },
+    {
+      "file": "tools\\tokenizer.js",
+      "status": "✅ live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "tools\\touch-refactor.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "trace-message-flow.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "vendor\\react-dom.development.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 1
+    },
+    {
+      "file": "vendor\\react.development.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 4
+    },
+    {
+      "file": "VoiceManager.js",
+      "status": "🟨 orphaned-live",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [],
+      "exports": 0
+    },
+    {
+      "file": "z__archive\\backend\\qlib\\threader\\test-threader.js",
+      "status": "🟥 archived",
+      "type": "js",
+      "patterns": {
+        "processUserInput": false,
+        "buildSystemPrompt": false,
+        "saveCapsule": false,
+        "extractFacts": false,
+        "context +=": false,
+        "ipcMain.handle": false,
+        "contextBridge.exposeInMainWorld": false
+      },
+      "imports": [
+        "./threaderEngine"
+      ],
+      "exports": 1
+    }
+  ],
+  "links": [
+    {
+      "from": "components\\contextBuilder.js",
+      "to": "components\\capsuleWriter.js"
+    },
+    {
+      "from": "components\\contextPipeline.js",
+      "to": "components\\vaultSearch.js"
+    },
+    {
+      "from": "components\\contextPipeline.js",
+      "to": "components\\contextBuilder.js"
+    },
+    {
+      "from": "components\\MyAI-global.rewired.js",
+      "to": "components\\contextBuilder.js"
+    },
+    {
+      "from": "components\\MyAI-global.rewired.js",
+      "to": "components\\conversationSaver.js"
+    },
+    {
+      "from": "components\\MyAI-global.rewired.js",
+      "to": "components\\vaultSearch.js"
+    },
+    {
+      "from": "components\\MyAI-global.rewired.js",
+      "to": "components\\speechEngine.js"
+    },
+    {
+      "from": "components\\MyAI-global.rewired.js",
+      "to": "components\\contextPipeline.js"
+    },
+    {
+      "from": "components\\MyAI-global.rewired.js",
+      "to": "components\\contextBuilder.js"
+    },
+    {
+      "from": "components\\MyAI-global.rewired.js",
+      "to": "components\\obsidianInterface.js"
+    },
+    {
+      "from": "components\\MyAI-global.rewired.js",
+      "to": "components\\vaultSearch.js"
+    },
+    {
+      "from": "components\\MyAI-global.rewired.js",
+      "to": "components\\contextBuilder.js"
+    },
+    {
+      "from": "components\\obsidianInterface.js",
+      "to": "components\\utils\\logToObsidianMaster.js"
+    },
+    {
+      "from": "components\\speechEngine.js",
+      "to": "components\\utils\\logToObsidianMaster.js"
+    },
+    {
+      "from": "components\\voiceCommandHandler.js",
+      "to": "components\\vaultSearch.js"
+    },
+    {
+      "from": "components\\voiceCommandHandler.js",
+      "to": "components\\contextBuilder.js"
+    },
+    {
+      "from": "components\\voiceCommandHandler.js",
+      "to": "components\\memory\\CapsuleRetriever.js"
+    },
+    {
+      "from": "components\\voiceCommandHandler.js",
+      "to": "components\\utils\\logToObsidianMaster.js"
+    },
+    {
+      "from": "main\\app.js",
+      "to": "main\\server.js"
+    },
+    {
+      "from": "main\\app.js",
+      "to": "main\\models.js"
+    },
+    {
+      "from": "main\\ipc-handlers.js",
+      "to": "main\\app.js"
+    },
+    {
+      "from": "main\\ipc-handlers.js",
+      "to": "main\\models.js"
+    },
+    {
+      "from": "main\\ipc-handlers.js",
+      "to": "main\\store.js"
+    },
+    {
+      "from": "main\\ipc-handlers.js",
+      "to": "main\\windows.js"
+    },
+    {
+      "from": "main\\windows.js",
+      "to": "main\\app.js"
+    },
+    {
+      "from": "main.js",
+      "to": "src\\installer\\qlib-setup.js"
+    },
+    {
+      "from": "main.js",
+      "to": "main\\app.js"
+    },
+    {
+      "from": "main.js",
+      "to": "main\\ipc-handlers.js"
+    },
+    {
+      "from": "main.js",
+      "to": "main\\windows.js"
+    },
+    {
+      "from": "qlib-diag.js",
+      "to": "src\\memory\\QLibInterface.js"
+    },
+    {
+      "from": "src\\echo\\memory\\MemoryService.js",
+      "to": "src\\echo\\memory\\api-wrapper.js"
+    },
+    {
+      "from": "src\\echo\\memory\\ModelInterface.js",
+      "to": "src\\echo\\memory\\LoRAManager.js"
+    },
+    {
+      "from": "src\\memory\\ChatOrchestrator.js",
+      "to": "src\\memory\\MemoryVaultManager.js"
+    },
+    {
+      "from": "src\\memory\\ChatOrchestrator.js",
+      "to": "src\\memory\\CapsuleRetriever.js"
+    },
+    {
+      "from": "src\\memory\\ChatOrchestrator.js",
+      "to": "src\\memory\\PromptBuilder.js"
+    },
+    {
+      "from": "src\\memory\\ChatOrchestrator.js",
+      "to": "src\\memory\\TokenBudgetManager.js"
+    },
+    {
+      "from": "src\\memory\\ChatOrchestrator.js",
+      "to": "src\\memory\\SessionStitcher.js"
+    },
+    {
+      "from": "src\\memory\\index.js",
+      "to": "src\\memory\\MemoryVaultManager.js"
+    },
+    {
+      "from": "src\\memory\\index.js",
+      "to": "src\\memory\\context.js"
+    },
+    {
+      "from": "src\\memory\\index.js",
+      "to": "src\\memory\\MemoryCapsule.js"
+    },
+    {
+      "from": "src\\memory\\index.js",
+      "to": "src\\memory\\ChaosAnalyzer.js"
+    },
+    {
+      "from": "src\\memory\\integration.js",
+      "to": "src\\memory\\index.js"
+    },
+    {
+      "from": "src\\memory\\integration.js",
+      "to": "src\\memory\\vault.js"
+    },
+    {
+      "from": "src\\memory\\MemoryVaultManager.js",
+      "to": "src\\memory\\MemoryCapsule.js"
+    },
+    {
+      "from": "src\\memory\\MemoryVaultManager.js",
+      "to": "src\\memory\\ChaosAnalyzer.js"
+    },
+    {
+      "from": "src\\memory\\vault.js",
+      "to": "src\\memory\\capsule.js"
+    },
+    {
+      "from": "tools\\dependencyGraph.js",
+      "to": "tools\\scopeAnalyzer.js"
+    },
+    {
+      "from": "tools\\splitter.js",
+      "to": "tools\\tokenizer.js"
+    },
+    {
+      "from": "tools\\splitter.js",
+      "to": "tools\\scopeAnalyzer.js"
+    },
+    {
+      "from": "tools\\splitter.js",
+      "to": "tools\\breakpointFinder.js"
+    },
+    {
+      "from": "tools\\splitter.js",
+      "to": "tools\\dependencyGraph.js"
+    }
+  ],
+  "missing": [
+    "components\\contextPipeline.js → ./keywordMap",
+    "components\\MyAI-global.rewired.js → ./legacy/DevPanel.jsx",
+    "components\\MyAI-global.rewired.js → ./legacy/ObsidianNotes.jsx",
+    "components\\MyAI-global.rewired.js → ./legacy/SettingsPanel.jsx",
+    "components\\MyAI-global.rewired.js → ./components/MyAIInterface",
+    "components\\MyAI-global.rewired.js → ./keywordMap",
+    "components\\voiceCommandHandler.js → ./PromptBuilder",
+    "src\\memory\\index.js → ./annotateVaultNoteWithQlib",
+    "src\\QLib.js → ./QLibInterface",
+    "z__archive\\backend\\qlib\\threader\\test-threader.js → ./threaderEngine"
+  ],
+  "orphaned": [
+    "app-wrapper.js",
+    "auth-context.js",
+    "backend\\qlib\\summarizeVault.js",
+    "backend\\qlib\\threader\\threaderEngine.js",
+    "bootstrap-validator.js",
+    "bundle.js",
+    "check-capsules.js",
+    "clean-myai.js",
+    "components\\AuthChallenge.jsx",
+    "components\\ChatPanel.jsx",
+    "components\\conversationParser.js",
+    "components\\DevPanel-global.js",
+    "components\\DevPanel.jsx",
+    "components\\legacy\\DevPanel.jsx",
+    "components\\legacy\\model-benchmarks.jsx",
+    "components\\legacy\\ObsidianNotes.jsx",
+    "components\\legacy\\SettingsPanel.jsx",
+    "components\\main.js",
+    "components\\modelIdentity.js",
+    "components\\MyAI-global.js",
+    "components\\MyAI-global.rewired.js",
+    "components\\MyAI.js",
+    "components\\MyAICore.js",
+    "components\\MyAIInterface.js",
+    "components\\MyAIWrapper.js",
+    "components\\NotesPanel.jsx",
+    "components\\ObsidianNotes-global.js",
+    "components\\SettingsPanel-global.js",
+    "components\\SettingsPanel.jsx",
+    "components\\tailwind.config.js",
+    "components\\utils\\config.js",
+    "components\\utils\\hotkey-logic.js",
+    "components\\utils\\identityManager.js",
+    "components\\utils\\vaultIndexer.js",
+    "components\\voiceCommandHandler.js",
+    "components-backup\\DevPanel-global.js",
+    "components-backup\\legacy\\DevPanel.jsx",
+    "components-backup\\legacy\\model-benchmarks.jsx",
+    "components-backup\\legacy\\ObsidianNotes.jsx",
+    "components-backup\\legacy\\SettingsPanel.jsx",
+    "components-backup\\main.js",
+    "components-backup\\MyAI-global.js",
+    "components-backup\\MyAI.js",
+    "components-backup\\ObsidianNotes-global.js",
+    "components-backup\\preload.js",
+    "components-backup\\SettingsPanel-global.js",
+    "components-backup\\tailwind.config.js",
+    "components-backup\\utils\\config.js",
+    "components-backup\\utils\\hotkey-logic.js",
+    "components-backup\\utils\\logToObsidianMaster.js",
+    "components-backup\\utils\\vaultIndexer.js",
+    "config\\ConfigManager.js",
+    "contextDebugger.js",
+    "diagnose-echo.js",
+    "diagnose-memory-pipeline.js",
+    "diagnostic-output-20250627-220749\\checkAuthenticationStatus-FIRST.js",
+    "diagnostic-output-20250627-220749\\checkAuthenticationStatus-SECOND.js",
+    "diagnostic-output-20250627-220749\\mount-effect-calling-auth.js",
+    "diagnostic-output-20250627-220749\\runtime-test.js",
+    "echo-audit-usage.js",
+    "echo-boot-manager.js",
+    "echo-check-archive.js",
+    "echo-diagnose-unified.js",
+    "echo-diagnostic-v2.js",
+    "echo-fix-unified.js",
+    "echo-living-map.js",
+    "echo-prune-orphans.js",
+    "echo-restore-archive.js",
+    "echo-truth-table.js",
+    "echomemory710.js",
+    "interactiveTest.js",
+    "ipc-test.js",
+    "main\\models.js.js",
+    "main\\server.js.js",
+    "main.js",
+    "map-memory-pipeline.js",
+    "memory-crawler.js",
+    "precision-patcher.js",
+    "preload.js",
+    "qlib-diag.js",
+    "reconnect-orphans-safe.js",
+    "reconnect-orphans.js",
+    "scripts\\dev-auth.js",
+    "security\\SecurityManager.js",
+    "security-challenge.js",
+    "src\\CapsuleRetriever.js",
+    "src\\components\\AuthPanel.js",
+    "src\\components\\Login.js",
+    "src\\components\\ModelSelector.js",
+    "src\\components\\ObsidianNotes-global.js",
+    "src\\components\\PassphraseModal.js",
+    "src\\components\\preload.js",
+    "src\\components\\useAuth.js",
+    "src\\contexts\\AuthContext.js",
+    "src\\db.js",
+    "src\\db.js.js",
+    "src\\echo\\core\\aiManager.js",
+    "src\\echo\\core\\BaseEngine.js",
+    "src\\echo\\core\\SessionMesh.js",
+    "src\\echo\\core\\SpineGuardian.js",
+    "src\\echo\\echo-diagnostic.js",
+    "src\\echo\\engines\\BusinessEngine.js",
+    "src\\echo\\engines\\CodeEngine.js",
+    "src\\echo\\engines\\GeneralEngine.js",
+    "src\\echo\\engines\\WriterEngine.js",
+    "src\\echo\\memory\\capsuleRetriever.js",
+    "src\\echo\\memory\\ContextInjector.js",
+    "src\\echo\\memory\\memory-runner.js",
+    "src\\echo\\memory\\MemoryOrchestrator.js",
+    "src\\echo\\memory\\MemoryService.js",
+    "src\\echo\\memory\\MemoryWriter.js",
+    "src\\echo\\memory\\ModelInterface.js",
+    "src\\echo\\memory\\VaultInterface.js",
+    "src\\installer\\qlib-installer-standalone.js",
+    "src\\memory\\ChatOrchestrator.js",
+    "src\\memory\\integration.js",
+    "src\\QLib.js",
+    "src\\SystemCheck.js",
+    "testSession.js",
+    "theme-enhancer.js",
+    "tools\\splitter.js",
+    "tools\\touch-refactor.js",
+    "trace-message-flow.js",
+    "vendor\\react-dom.development.js",
+    "vendor\\react.development.js",
+    "VoiceManager.js"
+  ],
+  "dead": [],
+  "archived": [
+    "z__archive\\backend\\qlib\\threader\\test-threader.js"
+  ],
+  "breaks": [
+    "⚠️ qlib-diag.js requires others but exports nothing"
+  ],
+  "timestamp": "2025-07-15T16:57:59.788Z"
+}

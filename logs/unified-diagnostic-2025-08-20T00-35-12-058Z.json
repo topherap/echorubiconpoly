@@ -1,0 +1,334 @@
+{
+  "meta": {
+    "timestamp": "2025-08-20T00:35:09.720Z",
+    "version": "1.0.0",
+    "test_queries": [
+      "what are my clients?",
+      "list my recipes",
+      "what are my lifts?"
+    ],
+    "vault_path": "D:\\Obsidian Vault"
+  },
+  "system_health": {
+    "memory_system": {
+      "status": "HEALTHY",
+      "details": [
+        "MemorySystem class exported"
+      ],
+      "errors": []
+    },
+    "ipc_handlers": {
+      "status": "HEALTHY",
+      "details": [],
+      "errors": []
+    },
+    "vault_access": {
+      "status": "HEALTHY",
+      "details": [
+        "4/4 directories accessible"
+      ],
+      "errors": []
+    },
+    "gui_interface": {
+      "status": "HEALTHY",
+      "details": [],
+      "errors": []
+    },
+    "services": {
+      "status": "BROKEN",
+      "details": [],
+      "ports": {
+        "Ollama": {
+          "port": 11434,
+          "status": "UP",
+          "critical": true
+        },
+        "Express": {
+          "port": 49200,
+          "status": "DOWN",
+          "critical": true
+        },
+        "Rust": {
+          "port": 3000,
+          "status": "DOWN",
+          "critical": false
+        },
+        "MeiliSearch": {
+          "port": 7700,
+          "status": "DOWN",
+          "critical": false
+        }
+      }
+    }
+  },
+  "pipeline_stages": {
+    "gui_send": {
+      "status": "HEALTHY",
+      "found": [
+        "sendVoiceCommand = (typeof props?.sendVoiceCommand",
+        "actualSendVoiceCommand"
+      ],
+      "missing": [],
+      "code_snippets": []
+    },
+    "ipc_receive": {
+      "status": "HEALTHY",
+      "found": [
+        "chat:send",
+        "chat-completion",
+        "appendCapsule",
+        "qlib-extract",
+        "memory:build-context"
+      ],
+      "missing": [],
+      "handlers": {
+        "chat:send": "FOUND",
+        "chat-completion": "FOUND",
+        "appendCapsule": "FOUND",
+        "qlib-extract": "FOUND",
+        "memory:build-context": "FOUND"
+      }
+    },
+    "memory_search": {
+      "status": "BROKEN",
+      "found": [],
+      "missing": [],
+      "test_results": {}
+    },
+    "context_build": {
+      "status": "BROKEN",
+      "found": [],
+      "missing": [],
+      "variables": {}
+    },
+    "prompt_injection": {
+      "status": "BROKEN",
+      "found": [],
+      "missing": [],
+      "injection_points": []
+    },
+    "model_call": {
+      "status": "BROKEN",
+      "found": [],
+      "missing": [],
+      "call_chain": []
+    },
+    "response_display": {
+      "status": "BROKEN",
+      "found": [],
+      "missing": []
+    }
+  },
+  "memory_analysis": {
+    "capsules": {
+      "total": 3,
+      "by_project": {
+        "general": 3,
+        "capsules": 0
+      },
+      "by_type": {}
+    },
+    "search_tests": {
+      "what are my clients?": {
+        "results_count": 3,
+        "status": "FOUND",
+        "sample": {
+          "id": "capsule_1755619558758"
+        }
+      },
+      "list my recipes": {
+        "results_count": 3,
+        "status": "FOUND",
+        "sample": {
+          "id": "capsule_1755619558758"
+        }
+      },
+      "what are my lifts?": {
+        "results_count": 3,
+        "status": "FOUND",
+        "sample": {
+          "id": "capsule_1755619558758"
+        }
+      }
+    },
+    "index_status": {},
+    "retrieval_chain": []
+  },
+  "critical_issues": [],
+  "data_flow_breaks": [],
+  "nuclear_tests": [],
+  "file_analysis": {
+    "missing_critical": [],
+    "dead_code": [],
+    "living_files": 230,
+    "suspicious_patterns": [
+      {
+        "file": "src/memory/index.js",
+        "pattern": "threaderEngine loading failure",
+        "match": "threaderEngine not loaded"
+      }
+    ]
+  },
+  "recommendations": {
+    "immediate": [
+      "Start critical services (Ollama, Express)"
+    ],
+    "priority": [],
+    "optimization": [
+      "Optimize memory search pipeline",
+      "Clean up suspicious code patterns"
+    ]
+  },
+  "tests": {
+    "passed": 21,
+    "failed": 1,
+    "warnings": 2,
+    "results": [
+      {
+        "name": "Critical File: main/app.js",
+        "status": "PASS",
+        "details": "",
+        "timestamp": "2025-08-20T00:35:09.724Z"
+      },
+      {
+        "name": "Critical File: main/ipc-handlers.js",
+        "status": "PASS",
+        "details": "",
+        "timestamp": "2025-08-20T00:35:09.724Z"
+      },
+      {
+        "name": "Critical File: src/memory/index.js",
+        "status": "PASS",
+        "details": "",
+        "timestamp": "2025-08-20T00:35:09.724Z"
+      },
+      {
+        "name": "Critical File: components/MyAIInterface.js",
+        "status": "PASS",
+        "details": "",
+        "timestamp": "2025-08-20T00:35:09.724Z"
+      },
+      {
+        "name": "Memory System Import",
+        "status": "PASS",
+        "details": "",
+        "timestamp": "2025-08-20T00:35:09.734Z"
+      },
+      {
+        "name": "Memory System Instantiation",
+        "status": "PASS",
+        "details": "",
+        "timestamp": "2025-08-20T00:35:09.734Z"
+      },
+      {
+        "name": "Memory Method: buildContextForInput",
+        "status": "PASS",
+        "details": "",
+        "timestamp": "2025-08-20T00:35:09.734Z"
+      },
+      {
+        "name": "Memory Method: processConversation",
+        "status": "PASS",
+        "details": "",
+        "timestamp": "2025-08-20T00:35:09.734Z"
+      },
+      {
+        "name": "Memory Method: search",
+        "status": "PASS",
+        "details": "",
+        "timestamp": "2025-08-20T00:35:09.734Z"
+      },
+      {
+        "name": "IPC Handler: chat:send",
+        "status": "PASS",
+        "details": "",
+        "timestamp": "2025-08-20T00:35:09.736Z"
+      },
+      {
+        "name": "IPC Handler: chat-completion",
+        "status": "PASS",
+        "details": "",
+        "timestamp": "2025-08-20T00:35:09.736Z"
+      },
+      {
+        "name": "IPC Handler: appendCapsule",
+        "status": "PASS",
+        "details": "",
+        "timestamp": "2025-08-20T00:35:09.736Z"
+      },
+      {
+        "name": "IPC Handler: qlib-extract",
+        "status": "PASS",
+        "details": "",
+        "timestamp": "2025-08-20T00:35:09.736Z"
+      },
+      {
+        "name": "IPC Handler: memory:build-context",
+        "status": "PASS",
+        "details": "",
+        "timestamp": "2025-08-20T00:35:09.736Z"
+      },
+      {
+        "name": "Memory Retrieval Test",
+        "status": "PASS",
+        "details": "Tested 3 queries",
+        "timestamp": "2025-08-20T00:35:09.755Z"
+      },
+      {
+        "name": "Service: Ollama",
+        "status": "PASS",
+        "details": "Port 11434",
+        "timestamp": "2025-08-20T00:35:09.757Z"
+      },
+      {
+        "name": "Service: Express",
+        "status": "FAIL",
+        "details": "Port 49200",
+        "timestamp": "2025-08-20T00:35:09.761Z"
+      },
+      {
+        "name": "Service: Rust",
+        "status": "WARN",
+        "details": "Port 3000",
+        "timestamp": "2025-08-20T00:35:09.761Z"
+      },
+      {
+        "name": "Service: MeiliSearch",
+        "status": "WARN",
+        "details": "Port 7700",
+        "timestamp": "2025-08-20T00:35:09.762Z"
+      },
+      {
+        "name": "Vault Path Access",
+        "status": "PASS",
+        "details": "",
+        "timestamp": "2025-08-20T00:35:09.762Z"
+      },
+      {
+        "name": "Vault Dir: .echo",
+        "status": "PASS",
+        "details": "",
+        "timestamp": "2025-08-20T00:35:09.762Z"
+      },
+      {
+        "name": "Vault Dir: .echo/capsules",
+        "status": "PASS",
+        "details": "",
+        "timestamp": "2025-08-20T00:35:09.762Z"
+      },
+      {
+        "name": "Vault Dir: clients",
+        "status": "PASS",
+        "details": "",
+        "timestamp": "2025-08-20T00:35:09.762Z"
+      },
+      {
+        "name": "Vault Dir: foods",
+        "status": "PASS",
+        "details": "",
+        "timestamp": "2025-08-20T00:35:09.762Z"
+      }
+    ]
+  },
+  "overall_status": "HEALTHY"
+}

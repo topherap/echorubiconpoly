@@ -1,0 +1,213 @@
+🔍 PROMPT CONSTRUCTION FINDER
+
+📁 Scanning: C:\Users\tophe\Documents\Echo Rubicon
+🕐 Started: 8/6/2025, 10:10:22 AM
+
+════════════════════════════════════════════════════════════════════════════════
+
+📊 PROMPT CONSTRUCTION ANALYSIS:
+
+1️⃣ FILES WITH PROMPT/MESSAGE LOGIC:
+   Found 47 files with prompt-related code:
+
+   📁 .\backend\qlib\contextInjector-memoryBlock-patch.js
+   📁 .\backend\qlib\ipc-injection-folderDispatcher.js
+   📁 .\components\capsuleWriter.js
+   📁 .\components\contextPipeline.js
+   📁 .\components\modelIdentity.js
+   📁 .\components\MyAIInterface.js
+   📁 .\components\obsidianInterface.js
+   📁 .\components\SettingsPanel-global.js
+   📁 .\components\speechEngine.js
+   📁 .\components\utils\logToObsidianMaster.js
+   📁 .\components\voiceCommandHandler.js
+   📁 .\components-backup\MyAI-global.js
+   📁 .\components-backup\MyAI.js
+   📁 .\components-backup\SettingsPanel-global.js
+   📁 .\components-backup\utils\logToObsidianMaster.js
+   📁 .\echo-diagnose-unified.js
+   📁 .\echo-truth-table.js
+   📁 .\main\handlers\chatSendHandler.js
+   📁 .\main\ipc-handlers.js
+   📁 .\main\server.js
+   📁 .\map-memory-pipeline.js
+   📁 .\master-diag-lite.js
+   📁 .\master-diag.js
+   📁 .\primeDirectiveMapper.js
+   📁 .\security\SecurityManager.js
+   📁 .\src\echo\core\BaseEngine.js
+   📁 .\src\echo\core\SessionMesh.js
+   📁 .\src\echo\core\SpineGuardian.js
+   📁 .\src\echo\engines\BusinessEngine.js
+   📁 .\src\echo\engines\CodeEngine.js
+   📁 .\src\echo\engines\WriterEngine.js
+   📁 .\src\echo\memory\ContextInjector.js
+   📁 .\src\echo\memory\LoRAManager.js
+   📁 .\src\echo\memory\MemoryService.js
+   📁 .\src\echo\memory\ModelInterface.js
+   📁 .\src\installer\qlib-installer-standalone.js
+   📁 .\src\memory\capsule.js
+   📁 .\src\memory\MemoryCapsule.js
+   📁 .\src\memory\PromptBuilder.js
+   📁 .\src\memory\QLibInterface.js
+   📁 .\src\memory\SessionStitcher.js
+   📁 .\testSession.js
+   📁 .\tools\echo-memory-pipeline-analyzer.js
+   📁 .\tools\master-memory-diagnostic.js
+   📁 .\tools\memory-system-audit.js
+   📁 .\trace-message-flow.js
+   📁 .\z__archive\components\MyAI-global.rewired.js
+
+
+2️⃣ MESSAGE ARRAY CONSTRUCTION:
+   Found 27 locations:
+
+   📍 .\components\capsuleWriter.js:21
+      Code: messages: [
+      Context:
+        16:     timestamp,
+        17:     summary: voicePrompt.slice(0, 100),
+        18:     content: voicePrompt.trim(),
+        19:     tags: ['voice', 'memory'],
+        20:     model,
+      → 21:     messages: [
+        22:       { role: 'user', content: voicePrompt.trim() },
+        23:       ...(enhancedContext ? [{ role: 'context', content: enhancedContext }] : [])
+        24:     ],
+        25:     metadata: {
+        26:       source: 'voicePrompt',
+
+   📍 .\components\MyAIInterface.js:36
+      Code: messages = [],
+      Context:
+        31:     handleKeyPress,
+        32:     handleMicClick = () => console.log('handleMicClick not provided'),
+        33:     isVoiceLoading = false,
+        34:     isListening = false,
+        35:     isProcessing = false,
+      → 36:     messages = [],
+        37:     setMessages = () => console.log('setMessages not provided'),
+        38:     notes = [],
+        39:     selectedNote,
+        40:     setSelectedNote,
+        41:     MicIcon = './components/assets/mic.png',
+
+   📍 .\main\handlers\chatSendHandler.js:153
+      Code: let enhancedMessages = [];
+      Context:
+        148:       console.log('[MODEL] Final model:', model);
+        149: 
+        150:       const useAPI = model === 'gpt' || model === 'claude';
+        151: 
+        152:       // === BUILD ENHANCED MESSAGES WITH PROPER IDENTITY AND MEMORY ===
+      → 153:       let enhancedMessages = [];
+        154: 
+        155:       // 1. SYSTEM MESSAGE WITH IDENTITY, PROJECT CONTEXT, AND CORE INSTRUCTIONS
+        156:       const systemMessage = {
+        157:         role: 'system',
+        158:         content: `You are ${currentIdentity.ai.name}, an AI assistant in Echo Rubicon with perfect memory.
+
+   📍 .\main\handlers\chatSendHandler.js:186
+      Code: enhancedMessages.push(systemMessage);
+      Context:
+        181: - "Show my client list" → Only show actual stored clients ${currentProject ? `in ${currentProject}` : ''}
+        182: - "What makes a good client?" → Can discuss general principles
+        183: 
+        184: When you have context, cite it naturally. When you don't, be honest about it.`
+        185:       };
+      → 186:       enhancedMessages.push(systemMessage);
+        187: 
+        188:       // 2. INJECT MEMORY CONTEXT (if available)
+        189:       if (contextData.context && contextData.context.trim().length > 0) {
+        190:         enhancedMessages.push({
+        191:           role: 'system',
+
+   📍 .\main\handlers\chatSendHandler.js:190
+      Code: enhancedMessages.push({
+      Context:
+        185:       };
+        186:       enhancedMessages.push(systemMessage);
+        187: 
+        188:       // 2. INJECT MEMORY CONTEXT (if available)
+        189:       if (contextData.context && contextData.context.trim().length > 0) {
+      → 190:         enhancedMessages.push({
+        191:           role: 'system',
+        192:           content: `Here is relevant context from your memory:\n\n${contextData.context}`
+        193:         });
+        194:         console.log('[MEMORY] Injected memory context:', contextData.context.length, 'chars');
+        195:       }
+
+
+3️⃣ OLLAMA/MODEL CALLS:
+   ❌ No Ollama calls found
+
+4️⃣ IDENTITY STRINGS FOUND:
+   Found 14 identity references:
+
+   "a": 7 references
+      .\components-backup\MyAI-global.js:107
+      String: "You are a helpful AI assistant...."
+      .\components-backup\MyAI.js:92
+      String: "You are a helpful AI assistant...."
+
+   "speaking": 1 references
+      .\main\server.js:478
+      String: "You are ${identity.ai.name}. The human you are speaking with is ${identity.ai.userName}. These are ..."
+
+   "not": 1 references
+      .\src\echo\memory\ContextInjector.js:57
+      String: "Use the above memory and context to inform your responses. You are not a chatbot. You remember and e..."
+
+   "operating": 1 references
+      .\src\echo\memory\LoRAManager.js:31
+      String: "You are operating within Echo Rubicon with full sovereignty. CRITICAL: You have EXPLICIT PERMISSION..."
+
+   "Q": 2 references
+      .\src\memory\QLibInterface.js:68
+      String: "    const prompt = `You are Q-Lib, a fact extractor. Extract ONLY verifiable facts. Query: "${query..."
+      .\src\memory\QLibInterface.js:131
+      String: "  content: `You are Q-Lib, a silent vault processor. You do not speak to users. You summarize folde..."
+
+   "Max": 1 references
+      .\testSession.js:23
+      String: "My name is Max and I love building AI systems...."
+
+   "Echo": 1 references
+      .\z__archive\components\MyAI-global.rewired.js:995
+      String: "You are Echo, a helpful AI assistant...."
+
+
+5️⃣ CHAT HANDLERS:
+   Found 5 handlers:
+
+   📍 .\main\ipc-handlers.js:2897
+      Function: log
+      Code: console.log('[DEBUG] chat:send handler exists:', handlerMap.has('chat:send'));
+   📍 .\master-diag-lite.js:202
+      Function: keyHandlers
+      Code: const keyHandlers = ['appendCapsule', 'chat:send', 'qlib-extract', 'memory:build-context'];
+   📍 .\tools\echo-memory-pipeline-analyzer.js:634
+      Function: pipelineStages
+      Code: { from: 'MyAICore', to: 'IPC Handler', via: 'chat:send' },
+   📍 .\tools\master-memory-diagnostic.js:251
+      Function: log
+      Code: { step: 'IPC Handler', handler: 'chat:send', status: '?' },
+   📍 .\tools\memory-system-audit.js:161
+      Function: log
+      Code: { step: 1, handler: 'chat:send', action: 'receives query' },
+
+
+════════════════════════════════════════════════════════════════════════════════
+🎯 KEY FINDINGS:
+
+Most likely files for prompt construction:
+   ➡️  .\backend\qlib\ipc-injection-folderDispatcher.js
+   ➡️  .\main\handlers\chatSendHandler.js
+   ➡️  .\main\ipc-handlers.js
+   ➡️  .\trace-message-flow.js
+
+════════════════════════════════════════════════════════════════════════════════
+
+✅ Scan complete at 8/6/2025, 10:10:23 AM
+
+📄 Report saved to: C:\Users\tophe\Documents\Echo Rubicon\prompt-construction-map.txt

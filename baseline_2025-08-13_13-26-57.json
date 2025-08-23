@@ -1,0 +1,98 @@
+{
+  "VaultStructure": {
+    "Open Chats": "EXISTS",
+    "Echo Directory": "EXISTS",
+    "Projects Directory": "EXISTS",
+    "Alternative Chats": "EXISTS",
+    "Vault Root": "EXISTS",
+    "Chats Directory": "EXISTS"
+  },
+  "Handlers": [
+    "list-folders",
+    "list-open-chats",
+    "list-project-chats",
+    "list-project-conversations",
+    "load-conversation-thread",
+    "get-conversation-context",
+    "search-project-conversations",
+    "create-project",
+    "load-chat",
+    "save-chat"
+  ],
+  "Files": {
+    "Components CSS": {
+      "Modified": "2025-08-13 10:22:14",
+      "Path": "C:\\Users\\tophe\\Documents\\Echo Rubicon\\components\\components.css",
+      "Status": "EXISTS",
+      "Size": "10,983"
+    },
+    "LLM Tokenizer": {
+      "Modified": "2025-08-12 20:38:46",
+      "Path": "C:\\Users\\tophe\\Documents\\Echo Rubicon\\tools\\llmTokenizer.js",
+      "Status": "EXISTS",
+      "Size": "2,882"
+    },
+    "Layout CSS": {
+      "Modified": "2025-08-13 10:22:08",
+      "Path": "C:\\Users\\tophe\\Documents\\Echo Rubicon\\components\\layout.css",
+      "Status": "EXISTS",
+      "Size": "6,277"
+    },
+    "MyAI Interface": {
+      "Modified": "2025-08-13 10:28:32",
+      "Path": "C:\\Users\\tophe\\Documents\\Echo Rubicon\\components\\MyAIInterface.js",
+      "Status": "EXISTS",
+      "Size": "31,446"
+    },
+    "Conversation Threader": {
+      "Modified": "2025-08-13 12:26:06",
+      "Path": "C:\\Users\\tophe\\Documents\\Echo Rubicon\\tools\\conversationThreader.js",
+      "Status": "EXISTS",
+      "Size": "15,379"
+    },
+    "Project Sidebar Handlers": {
+      "Modified": "2025-08-13 11:46:23",
+      "Path": "C:\\Users\\tophe\\Documents\\Echo Rubicon\\main\\handlers\\projectSidebarHandlers.js",
+      "Status": "EXISTS",
+      "Size": "26,120"
+    },
+    "Project Sidebar Component": {
+      "Modified": "2025-08-13 11:58:05",
+      "Path": "C:\\Users\\tophe\\Documents\\Echo Rubicon\\components\\ObsidianNotes-global.js",
+      "Status": "EXISTS",
+      "Size": "21,522"
+    },
+    "Preload Script": {
+      "Modified": "2025-08-13 11:58:01",
+      "Path": "C:\\Users\\tophe\\Documents\\Echo Rubicon\\preload.js",
+      "Status": "EXISTS",
+      "Size": "8,519"
+    },
+    "Main IPC Handlers": {
+      "Modified": "2025-08-13 09:44:04",
+      "Path": "C:\\Users\\tophe\\Documents\\Echo Rubicon\\main\\ipc-handlers.js",
+      "Status": "EXISTS",
+      "Size": "107,857"
+    },
+    "MyAI Core": {
+      "Modified": "2025-08-13 11:25:02",
+      "Path": "C:\\Users\\tophe\\Documents\\Echo Rubicon\\components\\MyAICore.js",
+      "Status": "EXISTS",
+      "Size": "10,946"
+    }
+  },
+  "Exposures": [
+    "listFolders",
+    "listOpenChats",
+    "listProjectChats",
+    "listProjectConversations",
+    "loadConversationThread",
+    "getConversationContext",
+    "searchProjectConversations",
+    "createProject",
+    "loadChat",
+    "saveChat"
+  ],
+  "Timestamp": "2025-08-13_13-26-57",
+  "Issues": []
+}

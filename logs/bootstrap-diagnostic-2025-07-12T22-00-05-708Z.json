@@ -1,0 +1,61 @@
+{
+  "timestamp": "2025-07-12T22:00:05.700Z",
+  "tests": {
+    "requireAvailable": true,
+    "environment": {
+      "browser": false,
+      "node": "22.15.0",
+      "electron": false,
+      "webWorker": false,
+      "module": {},
+      "commonjs": true,
+      "es6": true
+    },
+    "environmentType": "node",
+    "myAIRegistration": {
+      "myai": false,
+      "myaiGlobal": false,
+      "anyRegistered": false,
+      "aiGlobals": []
+    },
+    "safeRegistration": {
+      "success": false,
+      "error": "no window object"
+    },
+    "requirePaths": {
+      "./legacy/DevPanel.jsx": {
+        "success": false,
+        "error": "Cannot find module './legacy/DevPanel.jsx'\nRequire stack:\n- C:\\Users\\tophe\\Documents\\Echo Rubicon\\bootstrap-validator.js"
+      },
+      "../src/memory/QLibInterface.js": {
+        "success": false,
+        "error": "Cannot find module '../src/memory/QLibInterface.js'\nRequire stack:\n- C:\\Users\\tophe\\Documents\\Echo Rubicon\\bootstrap-validator.js"
+      },
+      "../src/echo/memory/MemoryOrchestrator.js": {
+        "success": false,
+        "error": "Cannot find module '../src/echo/memory/MemoryOrchestrator.js'\nRequire stack:\n- C:\\Users\\tophe\\Documents\\Echo Rubicon\\bootstrap-validator.js"
+      },
+      "./capsuleRetriever.js": {
+        "success": false,
+        "error": "Cannot find module './capsuleRetriever.js'\nRequire stack:\n- C:\\Users\\tophe\\Documents\\Echo Rubicon\\bootstrap-validator.js"
+      },
+      "./ModelInterface.js": {
+        "success": false,
+        "error": "Cannot find module './ModelInterface.js'\nRequire stack:\n- C:\\Users\\tophe\\Documents\\Echo Rubicon\\bootstrap-validator.js"
+      },
+      "./ContextInjector.js": {
+        "success": false,
+        "error": "Cannot find module './ContextInjector.js'\nRequire stack:\n- C:\\Users\\tophe\\Documents\\Echo Rubicon\\bootstrap-validator.js"
+      }
+    }
+  },
+  "summary": {
+    "requireAvailable": true,
+    "environmentType": "node",
+    "myAIRegistered": false,
+    "myAIGlobalRegistered": false,
+    "anyMyAIRegistered": false,
+    "safeRegistrationWorks": false
+  },
+  "verdict": "PARTIAL: require() works but no MyAI variants registered. Issue may be in specific require() paths or module loading."
+}

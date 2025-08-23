@@ -1,0 +1,25 @@
+{
+  "markers": {
+    "vaultMarker": {
+      "exists": true,
+      "path": "D:\\Obsidian Vault\\.echo\\config\\FIRST_RUN_COMPLETE",
+      "created": "2025-06-27T00:11:13.187Z",
+      "modified": "2025-07-23T20:40:09.438Z",
+      "size": 0
+    },
+    "C:\\Users\\tophe\\AppData\\Roaming\\echo-rubicon\\onboarding-complete.json": {
+      "exists": true,
+      "data": {
+        "completed": true,
+        "timestamp": "2025-07-23T20:40:09.439Z"
+      },
+      "path": "C:\\Users\\tophe\\AppData\\Roaming\\echo-rubicon\\onboarding-complete.json"
+    }
+  },
+  "configs": {},
+  "vaultPathIssues": [],
+  "codeIssues": [
+    "onboarding:complete doesn't create vault marker"
+  ],
+  "summary": []
+}

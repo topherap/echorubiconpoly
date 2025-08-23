@@ -1,0 +1,965 @@
+{
+  "timestamp": "2025-07-18T22:25:42.089Z",
+  "status": "HEALTHY",
+  "critical_errors": [],
+  "system_health": {
+    "memory_system": "HEALTHY",
+    "ipc_handlers": "HEALTHY",
+    "vault_access": "HEALTHY",
+    "services": "DEGRADED"
+  },
+  "file_analysis": {
+    "living_files": [
+      {
+        "file": "app-wrapper.js",
+        "size": 2305,
+        "type": "js"
+      },
+      {
+        "file": "auth-context.js",
+        "size": 2777,
+        "type": "js"
+      },
+      {
+        "file": "backend/qlib/summarizeVault.js",
+        "size": 2242,
+        "type": "js"
+      },
+      {
+        "file": "backend/qlib/threader/threaderEngine.js",
+        "size": 2016,
+        "type": "js"
+      },
+      {
+        "file": "bootstrap-validator.js",
+        "size": 12185,
+        "type": "js"
+      },
+      {
+        "file": "check-capsules.js",
+        "size": 1921,
+        "type": "js"
+      },
+      {
+        "file": "components/AuthChallenge.jsx",
+        "size": 18234,
+        "type": "jsx"
+      },
+      {
+        "file": "components/capsuleWriter.js",
+        "size": 743,
+        "type": "js"
+      },
+      {
+        "file": "components/ChatPanel.jsx",
+        "size": 1517,
+        "type": "jsx"
+      },
+      {
+        "file": "components/contextBuilder.js",
+        "size": 2880,
+        "type": "js"
+      },
+      {
+        "file": "components/contextPipeline.js",
+        "size": 4572,
+        "type": "js"
+      },
+      {
+        "file": "components/conversationParser.js",
+        "size": 683,
+        "type": "js"
+      },
+      {
+        "file": "components/conversationSaver.js",
+        "size": 6322,
+        "type": "js"
+      },
+      {
+        "file": "components/DevPanel-global.js",
+        "size": 3116,
+        "type": "js"
+      },
+      {
+        "file": "components/DevPanel.jsx",
+        "size": 811,
+        "type": "jsx"
+      },
+      {
+        "file": "components/legacy/DevPanel.jsx",
+        "size": 14929,
+        "type": "jsx"
+      },
+      {
+        "file": "components/legacy/model-benchmarks.jsx",
+        "size": 13191,
+        "type": "jsx"
+      },
+      {
+        "file": "components/legacy/ObsidianNotes.jsx",
+        "size": 1483,
+        "type": "jsx"
+      },
+      {
+        "file": "components/legacy/SettingsPanel.jsx",
+        "size": 10116,
+        "type": "jsx"
+      },
+      {
+        "file": "components/main.js",
+        "size": 683,
+        "type": "js"
+      },
+      {
+        "file": "components/modelIdentity.js",
+        "size": 827,
+        "type": "js"
+      },
+      {
+        "file": "components/MyAI-global.js",
+        "size": 1174,
+        "type": "js"
+      },
+      {
+        "file": "components/MyAI-global.rewired.js",
+        "size": 83086,
+        "type": "js"
+      },
+      {
+        "file": "components/MyAI.js",
+        "size": 4785,
+        "type": "js"
+      },
+      {
+        "file": "components/MyAICore.js",
+        "size": 6365,
+        "type": "js"
+      },
+      {
+        "file": "components/MyAIInterface.js",
+        "size": 12293,
+        "type": "js"
+      },
+      {
+        "file": "components/MyAIWrapper.js",
+        "size": 971,
+        "type": "js"
+      },
+      {
+        "file": "components/NotesPanel.jsx",
+        "size": 704,
+        "type": "jsx"
+      },
+      {
+        "file": "components/obsidianInterface.js",
+        "size": 4614,
+        "type": "js"
+      },
+      {
+        "file": "components/ObsidianNotes-global.js",
+        "size": 2540,
+        "type": "js"
+      },
+      {
+        "file": "components/SettingsPanel-global.js",
+        "size": 26196,
+        "type": "js"
+      },
+      {
+        "file": "components/SettingsPanel.jsx",
+        "size": 1067,
+        "type": "jsx"
+      },
+      {
+        "file": "components/speechEngine.js",
+        "size": 1691,
+        "type": "js"
+      },
+      {
+        "file": "components/tailwind.config.js",
+        "size": 475,
+        "type": "js"
+      },
+      {
+        "file": "components/utils/config.js",
+        "size": 595,
+        "type": "js"
+      },
+      {
+        "file": "components/utils/getRecentMessages.js",
+        "size": 708,
+        "type": "js"
+      },
+      {
+        "file": "components/utils/hotkey-logic.js",
+        "size": 3481,
+        "type": "js"
+      },
+      {
+        "file": "components/utils/identityManager.js",
+        "size": 2898,
+        "type": "js"
+      },
+      {
+        "file": "components/utils/logToObsidianMaster.js",
+        "size": 893,
+        "type": "js"
+      },
+      {
+        "file": "components/utils/vaultIndexer.js",
+        "size": 2614,
+        "type": "js"
+      },
+      {
+        "file": "components/vaultSearch.js",
+        "size": 4514,
+        "type": "js"
+      },
+      {
+        "file": "components/voiceCommandHandler.js",
+        "size": 5261,
+        "type": "js"
+      },
+      {
+        "file": "components-backup/DevPanel-global.js",
+        "size": 3059,
+        "type": "js"
+      },
+      {
+        "file": "components-backup/legacy/DevPanel.jsx",
+        "size": 14929,
+        "type": "jsx"
+      },
+      {
+        "file": "components-backup/legacy/model-benchmarks.jsx",
+        "size": 13191,
+        "type": "jsx"
+      },
+      {
+        "file": "components-backup/legacy/ObsidianNotes.jsx",
+        "size": 1483,
+        "type": "jsx"
+      },
+      {
+        "file": "components-backup/legacy/SettingsPanel.jsx",
+        "size": 10116,
+        "type": "jsx"
+      },
+      {
+        "file": "components-backup/main.js",
+        "size": 1339,
+        "type": "js"
+      },
+      {
+        "file": "components-backup/MyAI-global.js",
+        "size": 28644,
+        "type": "js"
+      },
+      {
+        "file": "components-backup/MyAI.js",
+        "size": 40939,
+        "type": "js"
+      },
+      {
+        "file": "components-backup/ObsidianNotes-global.js",
+        "size": 2540,
+        "type": "js"
+      },
+      {
+        "file": "components-backup/preload.js",
+        "size": 6384,
+        "type": "js"
+      },
+      {
+        "file": "components-backup/SettingsPanel-global.js",
+        "size": 26196,
+        "type": "js"
+      },
+      {
+        "file": "components-backup/tailwind.config.js",
+        "size": 475,
+        "type": "js"
+      },
+      {
+        "file": "components-backup/utils/config.js",
+        "size": 595,
+        "type": "js"
+      },
+      {
+        "file": "components-backup/utils/hotkey-logic.js",
+        "size": 3481,
+        "type": "js"
+      },
+      {
+        "file": "components-backup/utils/logToObsidianMaster.js",
+        "size": 893,
+        "type": "js"
+      },
+      {
+        "file": "components-backup/utils/vaultIndexer.js",
+        "size": 1557,
+        "type": "js"
+      },
+      {
+        "file": "config/ConfigManager.js",
+        "size": 6679,
+        "type": "js"
+      },
+      {
+        "file": "contextDebugger.js",
+        "size": 4106,
+        "type": "js"
+      },
+      {
+        "file": "diagnose-echo.js",
+        "size": 9397,
+        "type": "js"
+      },
+      {
+        "file": "diagnose-memory-pipeline.js",
+        "size": 5437,
+        "type": "js"
+      },
+      {
+        "file": "diagnostic-output-20250627-220749/checkAuthenticationStatus-FIRST.js",
+        "size": 3321,
+        "type": "js"
+      },
+      {
+        "file": "diagnostic-output-20250627-220749/checkAuthenticationStatus-SECOND.js",
+        "size": 3928,
+        "type": "js"
+      },
+      {
+        "file": "diagnostic-output-20250627-220749/mount-effect-calling-auth.js",
+        "size": 146,
+        "type": "js"
+      },
+      {
+        "file": "diagnostic-output-20250627-220749/runtime-test.js",
+        "size": 2077,
+        "type": "js"
+      },
+      {
+        "file": "echo-audit-usage.js",
+        "size": 3671,
+        "type": "js"
+      },
+      {
+        "file": "echo-boot-manager.js",
+        "size": 6528,
+        "type": "js"
+      },
+      {
+        "file": "echo-check-archive.js",
+        "size": 2124,
+        "type": "js"
+      },
+      {
+        "file": "echo-diagnose-unified.js",
+        "size": 4637,
+        "type": "js"
+      },
+      {
+        "file": "echo-diagnostic-v2.js",
+        "size": 5481,
+        "type": "js"
+      },
+      {
+        "file": "echo-fix-unified.js",
+        "size": 2566,
+        "type": "js"
+      },
+      {
+        "file": "echo-living-map.js",
+        "size": 1913,
+        "type": "js"
+      },
+      {
+        "file": "echo-prune-orphans.js",
+        "size": 1633,
+        "type": "js"
+      },
+      {
+        "file": "echo-restore-archive.js",
+        "size": 1593,
+        "type": "js"
+      },
+      {
+        "file": "echo-truth-table.js",
+        "size": 3264,
+        "type": "js"
+      },
+      {
+        "file": "echomemory710.js",
+        "size": 4858,
+        "type": "js"
+      },
+      {
+        "file": "interactiveTest.js",
+        "size": 968,
+        "type": "js"
+      },
+      {
+        "file": "ipc-test.js",
+        "size": 616,
+        "type": "js"
+      },
+      {
+        "file": "main/app.js",
+        "size": 2075,
+        "type": "js"
+      },
+      {
+        "file": "main/ipc-handlers.js",
+        "size": 97949,
+        "type": "js"
+      },
+      {
+        "file": "main/models.js",
+        "size": 5260,
+        "type": "js"
+      },
+      {
+        "file": "main/server.js",
+        "size": 23967,
+        "type": "js"
+      },
+      {
+        "file": "main/store.js",
+        "size": 1046,
+        "type": "js"
+      },
+      {
+        "file": "main/windows.js",
+        "size": 6697,
+        "type": "js"
+      },
+      {
+        "file": "main.js",
+        "size": 7534,
+        "type": "js"
+      },
+      {
+        "file": "map-memory-pipeline.js",
+        "size": 9921,
+        "type": "js"
+      },
+      {
+        "file": "master-diag-lite.js",
+        "size": 13801,
+        "type": "js"
+      },
+      {
+        "file": "master-diag.js",
+        "size": 22498,
+        "type": "js"
+      },
+      {
+        "file": "memory-crawler.js",
+        "size": 7746,
+        "type": "js"
+      },
+      {
+        "file": "precision-patcher.js",
+        "size": 8759,
+        "type": "js"
+      },
+      {
+        "file": "preload.js",
+        "size": 7117,
+        "type": "js"
+      },
+      {
+        "file": "qlib-diag.js",
+        "size": 615,
+        "type": "js"
+      },
+      {
+        "file": "reconnect-orphans-safe.js",
+        "size": 2289,
+        "type": "js"
+      },
+      {
+        "file": "reconnect-orphans.js",
+        "size": 1697,
+        "type": "js"
+      },
+      {
+        "file": "scripts/dev-auth.js",
+        "size": 473,
+        "type": "js"
+      },
+      {
+        "file": "security/SecurityManager.js",
+        "size": 8422,
+        "type": "js"
+      },
+      {
+        "file": "security-challenge.js",
+        "size": 1128,
+        "type": "js"
+      },
+      {
+        "file": "src/components/AuthPanel.js",
+        "size": 2668,
+        "type": "js"
+      },
+      {
+        "file": "src/components/Login.js",
+        "size": 4665,
+        "type": "js"
+      },
+      {
+        "file": "src/components/ModelSelector.js",
+        "size": 1444,
+        "type": "js"
+      },
+      {
+        "file": "src/components/ObsidianNotes-global.js",
+        "size": 2540,
+        "type": "js"
+      },
+      {
+        "file": "src/components/PassphraseModal.js",
+        "size": 622,
+        "type": "js"
+      },
+      {
+        "file": "src/components/preload.js",
+        "size": 12067,
+        "type": "js"
+      },
+      {
+        "file": "src/components/useAuth.js",
+        "size": 915,
+        "type": "js"
+      },
+      {
+        "file": "src/contexts/AuthContext.js",
+        "size": 3133,
+        "type": "js"
+      },
+      {
+        "file": "src/db.js",
+        "size": 2769,
+        "type": "js"
+      },
+      {
+        "file": "src/db.js.js",
+        "size": 44,
+        "type": "js"
+      },
+      {
+        "file": "src/echo/core/aiManager.js",
+        "size": 3372,
+        "type": "js"
+      },
+      {
+        "file": "src/echo/core/BaseEngine.js",
+        "size": 4041,
+        "type": "js"
+      },
+      {
+        "file": "src/echo/core/SessionMesh.js",
+        "size": 2480,
+        "type": "js"
+      },
+      {
+        "file": "src/echo/core/SpineGuardian.js",
+        "size": 1502,
+        "type": "js"
+      },
+      {
+        "file": "src/echo/echo-diagnostic.js",
+        "size": 9238,
+        "type": "js"
+      },
+      {
+        "file": "src/echo/engines/BusinessEngine.js",
+        "size": 502,
+        "type": "js"
+      },
+      {
+        "file": "src/echo/engines/CodeEngine.js",
+        "size": 510,
+        "type": "js"
+      },
+      {
+        "file": "src/echo/engines/GeneralEngine.js",
+        "size": 513,
+        "type": "js"
+      },
+      {
+        "file": "src/echo/engines/WriterEngine.js",
+        "size": 521,
+        "type": "js"
+      },
+      {
+        "file": "src/echo/memory/api-wrapper.js",
+        "size": 1049,
+        "type": "js"
+      },
+      {
+        "file": "src/echo/memory/capsuleRetriever.js",
+        "size": 1487,
+        "type": "js"
+      },
+      {
+        "file": "src/echo/memory/ContextInjector.js",
+        "size": 4132,
+        "type": "js"
+      },
+      {
+        "file": "src/echo/memory/memory-runner.js",
+        "size": 2162,
+        "type": "js"
+      },
+      {
+        "file": "src/echo/memory/MemoryOrchestrator.js",
+        "size": 907,
+        "type": "js"
+      },
+      {
+        "file": "src/echo/memory/MemoryService.js",
+        "size": 14207,
+        "type": "js"
+      },
+      {
+        "file": "src/echo/memory/MemoryWriter.js",
+        "size": 2895,
+        "type": "js"
+      },
+      {
+        "file": "src/echo/memory/ModelInterface.js",
+        "size": 2934,
+        "type": "js"
+      },
+      {
+        "file": "src/echo/memory/NoteTools.js",
+        "size": 2018,
+        "type": "js"
+      },
+      {
+        "file": "src/echo/memory/VaultInterface.js",
+        "size": 3582,
+        "type": "js"
+      },
+      {
+        "file": "src/installer/qlib-installer-standalone.js",
+        "size": 7971,
+        "type": "js"
+      },
+      {
+        "file": "src/installer/qlib-setup.js",
+        "size": 2889,
+        "type": "js"
+      },
+      {
+        "file": "src/memory/capsule.js",
+        "size": 3281,
+        "type": "js"
+      },
+      {
+        "file": "src/memory/ChaosAnalyzer.js",
+        "size": 12690,
+        "type": "js"
+      },
+      {
+        "file": "src/memory/ChatOrchestrator.js",
+        "size": 5926,
+        "type": "js"
+      },
+      {
+        "file": "src/memory/context.js",
+        "size": 4419,
+        "type": "js"
+      },
+      {
+        "file": "src/memory/index.js",
+        "size": 6916,
+        "type": "js"
+      },
+      {
+        "file": "src/memory/integration.js",
+        "size": 2603,
+        "type": "js"
+      },
+      {
+        "file": "src/memory/MemoryCapsule.js",
+        "size": 1376,
+        "type": "js"
+      },
+      {
+        "file": "src/memory/MemoryVaultManager.js",
+        "size": 9246,
+        "type": "js"
+      },
+      {
+        "file": "src/memory/PromptBuilder.js",
+        "size": 4287,
+        "type": "js"
+      },
+      {
+        "file": "src/memory/QLibInterface.js",
+        "size": 6413,
+        "type": "js"
+      },
+      {
+        "file": "src/memory/SessionStitcher.js",
+        "size": 3587,
+        "type": "js"
+      },
+      {
+        "file": "src/memory/TokenBudgetManager.js",
+        "size": 2135,
+        "type": "js"
+      },
+      {
+        "file": "src/memory/vault.js",
+        "size": 8247,
+        "type": "js"
+      },
+      {
+        "file": "src/QLib.js",
+        "size": 285,
+        "type": "js"
+      },
+      {
+        "file": "src/SystemCheck.js",
+        "size": 10588,
+        "type": "js"
+      },
+      {
+        "file": "testSession.js",
+        "size": 1353,
+        "type": "js"
+      },
+      {
+        "file": "theme-enhancer.js",
+        "size": 379,
+        "type": "js"
+      },
+      {
+        "file": "tools/breakpointFinder.js",
+        "size": 1203,
+        "type": "js"
+      },
+      {
+        "file": "tools/dependencyGraph.js",
+        "size": 2527,
+        "type": "js"
+      },
+      {
+        "file": "tools/scopeAnalyzer.js",
+        "size": 3711,
+        "type": "js"
+      },
+      {
+        "file": "tools/splitter.js",
+        "size": 2497,
+        "type": "js"
+      },
+      {
+        "file": "tools/tokenizer.js",
+        "size": 1478,
+        "type": "js"
+      },
+      {
+        "file": "tools/touch-refactor.js",
+        "size": 1340,
+        "type": "js"
+      },
+      {
+        "file": "trace-message-flow.js",
+        "size": 1630,
+        "type": "js"
+      },
+      {
+        "file": "vendor/react-dom.development.js",
+        "size": 1080227,
+        "type": "js"
+      },
+      {
+        "file": "vendor/react.development.js",
+        "size": 109931,
+        "type": "js"
+      },
+      {
+        "file": "venv/Lib/site-packages/torch/utils/model_dump/code.js",
+        "size": 19940,
+        "type": "js"
+      },
+      {
+        "file": "venv/Lib/site-packages/urllib3/contrib/emscripten/emscripten_fetch_worker.js",
+        "size": 3655,
+        "type": "js"
+      },
+      {
+        "file": "VoiceManager.js",
+        "size": 8874,
+        "type": "js"
+      }
+    ],
+    "dead_files": [
+      {
+        "file": "components/MyAIInterface - Copy.js",
+        "reason": "filename_indicates_dead",
+        "size": 3478
+      },
+      {
+        "file": "components/test-core-hook.js",
+        "reason": "filename_indicates_dead",
+        "size": 524
+      }
+    ],
+    "dead_paths": [],
+    "missing_critical": []
+  },
+  "status_tests": {
+    "passed": 21,
+    "failed": 0,
+    "warnings": 3,
+    "details": [
+      {
+        "test": "Critical File: main/app.js",
+        "status": "PASS",
+        "details": ""
+      },
+      {
+        "test": "Critical File: main/ipc-handlers.js",
+        "status": "PASS",
+        "details": ""
+      },
+      {
+        "test": "Critical File: src/memory/index.js",
+        "status": "PASS",
+        "details": ""
+      },
+      {
+        "test": "Critical File: src/echo/memory/MemoryService.js",
+        "status": "PASS",
+        "details": ""
+      },
+      {
+        "test": "Memory System Instantiation",
+        "status": "PASS",
+        "details": ""
+      },
+      {
+        "test": "Memory Method: buildContextForInput",
+        "status": "PASS",
+        "details": ""
+      },
+      {
+        "test": "Memory Method: processConversation",
+        "status": "PASS",
+        "details": ""
+      },
+      {
+        "test": "Memory Method: search",
+        "status": "PASS",
+        "details": ""
+      },
+      {
+        "test": "IPC Handlers File",
+        "status": "PASS",
+        "details": ""
+      },
+      {
+        "test": "IPC Handlers Loaded",
+        "status": "PASS",
+        "details": ""
+      },
+      {
+        "test": "IPC Handler: appendCapsule",
+        "status": "PASS",
+        "details": ""
+      },
+      {
+        "test": "IPC Handler: chat:send",
+        "status": "PASS",
+        "details": ""
+      },
+      {
+        "test": "IPC Handler: qlib-extract",
+        "status": "PASS",
+        "details": ""
+      },
+      {
+        "test": "IPC Handler: memory:build-context",
+        "status": "PASS",
+        "details": ""
+      },
+      {
+        "test": "Vault Path Access",
+        "status": "PASS",
+        "details": ""
+      },
+      {
+        "test": "Vault Dir: .echo",
+        "status": "PASS",
+        "details": ""
+      },
+      {
+        "test": "Vault Dir: .echo/capsules",
+        "status": "PASS",
+        "details": ""
+      },
+      {
+        "test": "Vault Dir: clients",
+        "status": "PASS",
+        "details": ""
+      },
+      {
+        "test": "Vault Dir: Foods",
+        "status": "PASS",
+        "details": ""
+      },
+      {
+        "test": "Service: Ollama",
+        "status": "PASS",
+        "details": "Port 11434"
+      },
+      {
+        "test": "Service: Express Backend",
+        "status": "WARN",
+        "details": "Port 49200"
+      },
+      {
+        "test": "Service: Rust Backend",
+        "status": "WARN",
+        "details": "Port 3000"
+      },
+      {
+        "test": "Service: MeiliSearch",
+        "status": "WARN",
+        "details": "Port 7700"
+      },
+      {
+        "test": "File System Scan",
+        "status": "PASS",
+        "details": "158 living, 2 dead"
+      }
+    ]
+  },
+  "service_ports": {
+    "Ollama": {
+      "port": 11434,
+      "status": "UP"
+    },
+    "Express Backend": {
+      "port": 49200,
+      "status": "DOWN"
+    },
+    "Rust Backend": {
+      "port": 3000,
+      "status": "DOWN"
+    },
+    "MeiliSearch": {
+      "port": 7700,
+      "status": "DOWN"
+    }
+  },
+  "recommendations": []
+}

@@ -1,0 +1,227 @@
+{
+  "memory_calls": [
+    {
+      "file": "src\\memory\\context.js",
+      "function": "buildContext",
+      "context": ";\n    this.priorities = {\n      recent: 0.4,      // 40% for recent conversations\n      relevant: 0.4,    // 40% for relevant memories\n      summary: 0.2      // 20% for summaries\n    };\n  }\n\n  async buildContext(userInput, memories, options = {}) {\n    // Sort memories by relevance and recency\n    const sorted = this.sortMemories(memories, userInput);\n    \n    // Allocate token budget\n    const budget = {",
+      "connected_to_ai": false
+    },
+    {
+      "file": "src\\memory\\index.js",
+      "function": "buildContext",
+      "context": "'./MemoryVaultManager');\nconst { ContextBuilder }     = require('./context');\nconst { MemoryCapsule }      = require('./MemoryCapsule');\nconst ChaosAnalyzer          = require('./ChaosAnalyzer');\nlet buildContextTimeline;\ntry {\n  buildContextTimeline = require('../../tools/memory/threaderEngine').buildContextTimeline;\n} catch (e) {\n  console.warn('threaderEngine not loaded:', e?.message || e);\n}\n\n\nclass Memor",
+      "connected_to_ai": false
+    },
+    {
+      "file": "src\\memory\\index.js",
+      "function": "buildContext",
+      "context": "{ ContextBuilder }     = require('./context');\nconst { MemoryCapsule }      = require('./MemoryCapsule');\nconst ChaosAnalyzer          = require('./ChaosAnalyzer');\nlet buildContextTimeline;\ntry {\n  buildContextTimeline = require('../../tools/memory/threaderEngine').buildContextTimeline;\n} catch (e) {\n  console.warn('threaderEngine not loaded:', e?.message || e);\n}\n\n\nclass MemorySystem {\n  constructor(vaultI",
+      "connected_to_ai": false
+    },
+    {
+      "file": "src\\memory\\index.js",
+      "function": "buildContext",
+      "context": "e }      = require('./MemoryCapsule');\nconst ChaosAnalyzer          = require('./ChaosAnalyzer');\nlet buildContextTimeline;\ntry {\n  buildContextTimeline = require('../../tools/memory/threaderEngine').buildContextTimeline;\n} catch (e) {\n  console.warn('threaderEngine not loaded:', e?.message || e);\n}\n\n\nclass MemorySystem {\n  constructor(vaultInput, options = {}) {\n    // \u2500\u2500 vault manager\n    if (typeof vaultIn",
+      "connected_to_ai": false
+    },
+    {
+      "file": "src\\memory\\index.js",
+      "function": "buildContextForInput",
+      "context": "tags: fact.tags || capsule.tags || [],\n        context: capsule.summary || capsule.content || '',\n        refNote: capsule.topic || null,\n        capsuleId: capsule.id\n      }\n    );\n  }\n}\n\n  async buildContextForInput(userInput, options = {}) {\n    const memories = await this.vaultManager.searchMemories(userInput);\n\n    if (memories.length < 3) {\n      const recent = await this.vaultManager.loadCapsules({",
+      "connected_to_ai": false
+    },
+    {
+      "file": "src\\memory\\index.js",
+      "function": "buildContext",
+      "context": "const seenIds = new Set(memories.map(m => m.id));\n      for (const r of recent) {\n        if (!seenIds.has(r.id)) memories.push(r);\n      }\n    }\n\n    const context = await this.contextBuilder.buildContext(userInput, memories, options);\n    const threadTags = options.threadTags || ['client', 'project', 'note'];\n\n    let threadContext = '';\n    // Add safety check for buildContextTimeline\n    if (typeof",
+      "connected_to_ai": false
+    },
+    {
+      "file": "src\\memory\\index.js",
+      "function": "buildContext",
+      "context": "it this.contextBuilder.buildContext(userInput, memories, options);\n    const threadTags = options.threadTags || ['client', 'project', 'note'];\n\n    let threadContext = '';\n    // Add safety check for buildContextTimeline\n    if (typeof buildContextTimeline === 'function') {\n      try {\n        for (const tag of threadTags) {\n          const thread = await buildContextTimeline(tag, this.vaultManager.vaultPath)",
+      "connected_to_ai": false
+    },
+    {
+      "file": "src\\memory\\index.js",
+      "function": "buildContext",
+      "context": "userInput, memories, options);\n    const threadTags = options.threadTags || ['client', 'project', 'note'];\n\n    let threadContext = '';\n    // Add safety check for buildContextTimeline\n    if (typeof buildContextTimeline === 'function') {\n      try {\n        for (const tag of threadTags) {\n          const thread = await buildContextTimeline(tag, this.vaultManager.vaultPath);\n          threadContext += `\\n${th",
+      "connected_to_ai": false
+    },
+    {
+      "file": "src\\memory\\index.js",
+      "function": "buildContext",
+      "context": "Context = '';\n    // Add safety check for buildContextTimeline\n    if (typeof buildContextTimeline === 'function') {\n      try {\n        for (const tag of threadTags) {\n          const thread = await buildContextTimeline(tag, this.vaultManager.vaultPath);\n          threadContext += `\\n${thread}\\n`;\n        }\n      } catch (err) {\n        console.warn('[MEMORY] Thread context building failed:', err.message);",
+      "connected_to_ai": false
+    },
+    {
+      "file": "src\\memory\\integration.js",
+      "function": "buildContextForInput",
+      "context": "const capsule = await this.memorySystem.processConversation(\n      userInput,\n      aiResponse,\n      metadata\n    );\n\n    // Build context for next turn\n    const context = await this.memorySystem.buildContextForInput(userInput);\n\n    return {\n      capsule,\n      context,\n      sessionId: this.memorySystem.sessionId\n    };\n  }\n\n  // Get memory system instance\n  getMemorySystem() {\n    if (!this.initialized) {",
+      "connected_to_ai": false
+    },
+    {
+      "file": "main\\ipc-handlers.js",
+      "function": "buildContextForInput",
+      "context": "MemorySystem(vaultPath);\n    console.log('[DEBUG] MemorySystem created successfully');\n    \n    // Test required methods exist\n    console.log('[DEBUG] Testing methods...');\n    console.log('[DEBUG] buildContextForInput:', typeof global.memorySystem.buildContextForInput);\n    console.log('[DEBUG] processConversation:', typeof global.memorySystem.processConversation);\n    \n    console.log('[BOOT] Global memory system",
+      "connected_to_ai": false
+    },
+    {
+      "file": "main\\ipc-handlers.js",
+      "function": "buildContextForInput",
+      "context": "MemorySystem created successfully');\n    \n    // Test required methods exist\n    console.log('[DEBUG] Testing methods...');\n    console.log('[DEBUG] buildContextForInput:', typeof global.memorySystem.buildContextForInput);\n    console.log('[DEBUG] processConversation:', typeof global.memorySystem.processConversation);\n    \n    console.log('[BOOT] Global memory system initialized');\n  } catch (error) {\n    console.err",
+      "connected_to_ai": false
+    },
+    {
+      "file": "main\\ipc-handlers.js",
+      "function": "buildContextForInput",
+      "context": "r('[BOOT] Stack:', error.stack);\n    global.memorySystem = null;\n    \n    // Don't throw - use fallback\n    console.log('[BOOT] Creating fallback memory system...');\n    global.memorySystem = {\n      buildContextForInput: async () => ({ context: '', memory: [] }),\n      processConversation: async () => ({ id: 'fallback' }),\n      search: async () => [],\n      getStats: async () => ({ capsules: 0 })\n    };\n  }\n}\n\n// =",
+      "connected_to_ai": false
+    },
+    {
+      "file": "main\\ipc-handlers.js",
+      "function": "buildContextForInput",
+      "context": "content: personalityPrompt\n        });\n      }\n      \n      console.log('[DEBUG] Personality injected for:', currentIdentity.ai.name);\n    }\n    \n    const contextData = await global.memorySystem.buildContextForInput(voicePrompt);\n\nconsole.log('[DEBUG] Memory context built:', contextData.memory?.length || 0, 'memories');\n\nlet response;\n\n    // === PATCHED: vault search results injection hardening ===\n    // Q use",
+      "connected_to_ai": false
+    },
+    {
+      "file": "main\\ipc-handlers.js",
+      "function": "buildContextForInput",
+      "context": "// Ensure memorySystem is initialized\n    if (!global.memorySystem) {\n      console.error('[chat:send] \u274c memorySystem is null or undefined');\n      throw new Error('\u274c memorySystem not initialized \u2014 buildContextForInput cannot run');\n    }\n\n    // === FIXED: Single memory context pull ===\n    let contextData;\n    try {\n      console.log('[DEBUG-7] Calling buildContextForInput NOW');\n      contextData = await global.",
+      "connected_to_ai": false
+    },
+    {
+      "file": "main\\ipc-handlers.js",
+      "function": "buildContextForInput",
+      "context": "Error('\u274c memorySystem not initialized \u2014 buildContextForInput cannot run');\n    }\n\n    // === FIXED: Single memory context pull ===\n    let contextData;\n    try {\n      console.log('[DEBUG-7] Calling buildContextForInput NOW');\n      contextData = await global.memorySystem.buildContextForInput(message);\n      console.log('[DEBUG-8] Call succeeded');\n    } catch (innerError) {\n      console.error('[DEBUG-9] buildConte",
+      "connected_to_ai": false
+    },
+    {
+      "file": "main\\ipc-handlers.js",
+      "function": "buildContextForInput",
+      "context": ";\n    }\n\n    // === FIXED: Single memory context pull ===\n    let contextData;\n    try {\n      console.log('[DEBUG-7] Calling buildContextForInput NOW');\n      contextData = await global.memorySystem.buildContextForInput(message);\n      console.log('[DEBUG-8] Call succeeded');\n    } catch (innerError) {\n      console.error('[DEBUG-9] buildContextForInput threw:', innerError.message);\n      console.error('[DEBUG-10] S",
+      "connected_to_ai": false
+    },
+    {
+      "file": "main\\ipc-handlers.js",
+      "function": "buildContextForInput",
+      "context": "xtForInput NOW');\n      contextData = await global.memorySystem.buildContextForInput(message);\n      console.log('[DEBUG-8] Call succeeded');\n    } catch (innerError) {\n      console.error('[DEBUG-9] buildContextForInput threw:', innerError.message);\n      console.error('[DEBUG-10] Stack trace:', innerError.stack);\n      throw innerError;\n    }\n\n    console.log('[DEBUG-5] buildContextForInput returned:', contextData)",
+      "connected_to_ai": false
+    },
+    {
+      "file": "main\\ipc-handlers.js",
+      "function": "buildContextForInput",
+      "context": "console.error('[DEBUG-9] buildContextForInput threw:', innerError.message);\n      console.error('[DEBUG-10] Stack trace:', innerError.stack);\n      throw innerError;\n    }\n\n    console.log('[DEBUG-5] buildContextForInput returned:', contextData);\n    console.log('[DEBUG-6] Keys in contextData:', contextData ? Object.keys(contextData) : 'null');\n\n    // === DEBUG: Log full context object\n    console.log('[DEBUG] Raw c",
+      "connected_to_ai": false
+    },
+    {
+      "file": "main\\ipc-handlers.js",
+      "function": "buildContextForInput",
+      "context": "{\n      console.error('[FATAL] contextData.memory is null (explicitly)');\n      console.trace('[TRACE] contextData.memory=null triggered here');\n      throw new Error('\u274c contextData.memory is null \u2014 buildContextForInput is broken');\n    }\n\n    if (!Array.isArray(contextData.memory)) {\n      console.error('[IPC chat:send] \u274c contextData.memory is not an array:', contextData.memory);\n      console.trace('[TRACE] .memor",
+      "connected_to_ai": false
+    },
+    {
+      "file": "main\\ipc-handlers.js",
+      "function": "buildContextForInput",
+      "context": "ry:build-context', async (event, voicePrompt, options) => {\n console.log('[DEBUG] memory:build-context called');\n if (!memorySystem) await initializeMemorySystems();\n return await global.memorySystem.buildContextForInput(voicePrompt, options);\n});\n\nsafeHandle('memory:get-stats', async () => {\n console.log('[DEBUG] memory:get-stats called');\n if (!memorySystem) await initializeMemorySystems();\n return await memorySyst",
+      "connected_to_ai": false
+    },
+    {
+      "file": "main\\ipc-handlers.js",
+      "function": "buildContextForInput",
+      "context": "tem after init:', typeof global.memorySystem);\n  \n  if (global.memorySystem) {\n    console.log('[DEBUG] Available methods:', Object.getOwnPropertyNames(global.memorySystem));\n    console.log('[DEBUG] buildContextForInput:', typeof global.memorySystem.buildContextForInput);\n  }\n}).catch(err => {\n  console.error('[DEBUG] \u274c Manual initialization FAILED:', err.message);\n  console.error('[DEBUG] Error stack:', err.stack);",
+      "connected_to_ai": false
+    },
+    {
+      "file": "main\\ipc-handlers.js",
+      "function": "buildContextForInput",
+      "context": "if (global.memorySystem) {\n    console.log('[DEBUG] Available methods:', Object.getOwnPropertyNames(global.memorySystem));\n    console.log('[DEBUG] buildContextForInput:', typeof global.memorySystem.buildContextForInput);\n  }\n}).catch(err => {\n  console.error('[DEBUG] \u274c Manual initialization FAILED:', err.message);\n  console.error('[DEBUG] Error stack:', err.stack);\n});\n\n// 5. Test handler registration\nconsole.log('",
+      "connected_to_ai": false
+    }
+  ],
+  "ai_calls": [
+    {
+      "file": "components\\MyAICore.js",
+      "call": ".sendMessage(",
+      "has_memory_param": false,
+      "context_snippet": "rMessage];\n   });\n   \n   // Clear input immediately\n   setVoicePrompt('');\n   \n   // Try to send message\n   let response = null;\n   \n   if (window.electronAPI && window.electronAPI.sendMessage) {\n    "
+    },
+    {
+      "file": "src\\memory\\ChatOrchestrator.js",
+      "call": ".generate(",
+      "has_memory_param": true,
+      "context_snippet": "pt({\n        identity: context.identity,\n        profile: this.profile,\n        memories: context.memories,\n        vaultContext: context.vault,\n        recentMessages: context.recent,\n        qLibFac"
+    }
+  ],
+  "ipc_handlers": [],
+  "context_builders": [
+    {
+      "file": "src\\SystemCheck.js",
+      "has_memory": true
+    },
+    {
+      "file": "src\\echo\\memory\\ContextInjector.js",
+      "has_memory": true
+    },
+    {
+      "file": "src\\echo\\memory\\MemoryService.js",
+      "has_memory": true
+    },
+    {
+      "file": "src\\echo\\memory\\ModelInterface.js",
+      "has_memory": true
+    },
+    {
+      "file": "src\\memory\\ChatOrchestrator.js",
+      "has_memory": true
+    },
+    {
+      "file": "src\\memory\\index.js",
+      "has_memory": true
+    },
+    {
+      "file": "src\\memory\\PromptBuilder.js",
+      "has_memory": true
+    },
+    {
+      "file": "src\\memory\\SessionStitcher.js",
+      "has_memory": true
+    },
+    {
+      "file": "src\\memory\\TokenBudgetManager.js",
+      "has_memory": true
+    },
+    {
+      "file": "main\\ipc-handlers.js",
+      "has_memory": true
+    },
+    {
+      "file": "main\\server.js",
+      "has_memory": true
+    },
+    {
+      "file": "components\\capsuleWriter.js",
+      "has_memory": true
+    },
+    {
+      "file": "components\\modelIdentity.js",
+      "has_memory": false
+    },
+    {
+      "file": "components\\vaultSearch.js",
+      "has_memory": true
+    },
+    {
+      "file": "components\\utils\\identityManager.js",
+      "has_memory": true
+    },
+    {
+      "file": "backend\\qlib\\contextInjector-memoryBlock-patch.js",
+      "has_memory": true
+    }
+  ],
+  "flow_breaks": [
+    "AI call in components\\MyAICore.js missing memory context"
+  ],
+  "connection_points": []
+}

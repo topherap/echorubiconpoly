@@ -1,0 +1,82 @@
+[package]
+name = "echo-rubicon"
+version = "0.3.0"
+edition = "2021"
+
+[dependencies]
+# Core async runtime
+tokio = { version = "1", features = ["full"] }
+tokio-stream = "0.1"
+bcrypt = "0.15"
+tower-sessions = "0.10"
+meilisearch-sdk = "0.25"
+
+# Vault indexing dependencies
+##tantivy = "0.20"  # Temporarily disabled
+walkdir = "2"
+regex = "1"
+serde_yaml = "0.9"
+dirs = "5"
+
+# Web framework
+axum = { version = "0.7", features = ["macros", "multipart", "ws"] }
+tower = "0.4"
+tower-http = { version = "0.5", features = ["cors", "fs", "trace"] }
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# HTTP client
+reqwest = { version = "0.11", features = ["json", "multipart", "stream"] }
+hyper = "1.0"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Error handling
+anyhow = "1.0"
+thiserror = "1.0"
+
+# Async utilities
+futures = "0.3"
+async-stream = "0.3"
+
+# File watching
+notify = "6.0"
+
+# Database
+sqlx = { version = "0.7", features = ["runtime-tokio-rustls", "sqlite", "migrate"] }
+
+# Authentication
+jsonwebtoken = "9.0"
+
+# Environment variables
+dotenvy = "0.15"
+
+# UUID generation
+uuid = { version = "1.0", features = ["v4", "serde"] }
+
+# Time handling - IMPORTANT: Enable serde feature for DateTime serialization
+chrono = { version = "0.4.41", features = ["serde"] }
+
+# Base64 encoding
+base64 = "0.22"
+
+# Configuration
+config = "0.14"
+
+# For voice features
+bytes = "1.0"
+
+# Random number generation
+rand = "0.8"
+argon2 = "0.5.3"
+rand_core = "0.9.3"
+
+[features]
+default = []
+
+[dev-dependencies]
+mockall = "0.11"

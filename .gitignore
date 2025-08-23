@@ -1,0 +1,42 @@
+# === CRITICAL: BACKUP AND LARGE FILES ===
+BACKUP_COMPARE.zip
+BACKUP_COMPARE/
+*BACKUP*/
+*backup*/
+*compare*/
+
+# === PYTHON VIRTUAL ENVIRONMENT ===
+venv/
+env/
+*.pyc
+__pycache__/
+
+# === NODE MODULES ===
+node_modules/
+
+# === RUST BUILD ===
+target/
+Cargo.lock
+
+# === BUILD OUTPUTS ===
+dist/
+out/
+build/
+*.exe
+*.dll
+meilisearch
+meilisearch.exe
+
+# === INSTALLERS ===
+*Setup*.exe
+*.msi
+
+# === LARGE FILES ===
+*.zip
+*.rar
+*.7z
+
+# === TEMPORARY ===
+*.tmp
+*.temp
+*.log

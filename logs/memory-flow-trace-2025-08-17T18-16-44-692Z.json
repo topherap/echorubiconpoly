@@ -1,0 +1,31 @@
+{
+  "timestamp": "2025-08-17T18:16:44.612Z",
+  "test_query": "What are my clients?",
+  "flow_points": [
+    {
+      "stage": "Direct Memory Test",
+      "status": "SUCCESS",
+      "details": "Found 5 capsules for 'clients'"
+    },
+    {
+      "stage": "Sample Capsule",
+      "status": "DATA",
+      "details": {
+        "id": "capsule-1755192471798-e1scvk395",
+        "hasContent": true,
+        "contentLength": 793
+      }
+    }
+  ],
+  "code_snippets": {
+    "chat_completion_handler": "safeHandle('chat-completion', async (event, { messages, model }..."
+  },
+  "actual_breaks": [
+    "Vault results found but not injected into system message",
+    "Q-lib context extracted but never added to messages"
+  ],
+  "memory_found_but_lost": [],
+  "recommendations": [
+    "Fix breaks in order listed in actual_breaks"
+  ]
+}

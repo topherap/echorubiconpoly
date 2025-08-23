@@ -1,0 +1,110 @@
+{
+  "timestamp": "2025-08-17T18:05:49.425Z",
+  "pipeline_stages": {
+    "gui_send": {
+      "status": "HEALTHY",
+      "details": [
+        "Found send mechanism: sendVoiceCommand = (typeof props?.sendVoiceCommand..."
+      ]
+    },
+    "ipc_receive": {
+      "status": "HEALTHY",
+      "details": [
+        "✓ chat:send handler found",
+        "✓ chat-completion handler found",
+        "✓ qlib-extract handler found"
+      ]
+    },
+    "qlib_extract": {
+      "status": "HEALTHY",
+      "details": [
+        "Executive function: ✓",
+        "Folder detection: ✓",
+        "Search function: ✓",
+        "Fact processing: ✓"
+      ]
+    },
+    "memory_search": {
+      "status": "HEALTHY",
+      "details": [
+        "Total capsules: 204",
+        "Clients project capsules: 17"
+      ]
+    },
+    "context_build": {
+      "status": "HEALTHY",
+      "details": [
+        "Uses global.memorySystem: ✓",
+        "Has fallback: ✓",
+        "Returns context: ✓"
+      ]
+    },
+    "prompt_injection": {
+      "status": "HEALTHY",
+      "details": [
+        "Checks vault keywords: ✓",
+        "Calls Q-lib search: ✓",
+        "Injects vault context: ✓",
+        "Injects Q-lib context: ✓",
+        "⚠️ GUARDRAIL active - may block responses without memory"
+      ]
+    },
+    "model_call": {
+      "status": "DEGRADED",
+      "details": [
+        "Nuclear test modification: ⚠️ ACTIVE",
+        "Sends to Ollama: ✓"
+      ]
+    },
+    "response_display": {
+      "status": "HEALTHY",
+      "details": [
+        "Message mapping: ✓",
+        "Message display: ✓",
+        "Content processing: ✓"
+      ]
+    }
+  },
+  "nuclear_test": {
+    "active": false,
+    "location": null,
+    "content": null
+  },
+  "handler_paths": {
+    "chat_send": [
+      "Handler registered: chat:send"
+    ],
+    "chat_completion": [
+      "Handler registered: chat-completion"
+    ],
+    "qlib_extract": [
+      "Handler registered: qlib-extract"
+    ]
+  },
+  "memory_capsules": {
+    "total": 204,
+    "clients_project": 17,
+    "foods": 0,
+    "search_test": {
+      "query": "clients",
+      "results_count": 5,
+      "top_result": {
+        "id": "capsule-1755192471798-e1scvk395",
+        "relevance": 0.36300000000000004,
+        "chaos": 0.9
+      }
+    }
+  },
+  "gui_state": {
+    "model_selection": "Dynamic selection present",
+    "project_context": null,
+    "component_fallbacks": []
+  },
+  "data_flow_breaks": [
+    "Nuclear test modifying messages before Ollama call"
+  ],
+  "recommendations": [
+    "Address all data flow breaks identified",
+    "Consider relaxing GUARDRAIL that blocks responses without memory"
+  ]
+}

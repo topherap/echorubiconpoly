@@ -1,0 +1,302 @@
+{
+  "timestamp": "2025-07-26T00:03:59.822Z",
+  "system": {
+    "projectRoot": "C:\\Users\\tophe\\Documents\\Echo Rubicon",
+    "vaultPath": "D:\\Obsidian Vault",
+    "nodeVersion": "v22.15.0",
+    "platform": "win32"
+  },
+  "vault": {
+    ".echo": {
+      "mdCount": 0,
+      "jsonCount": 3,
+      "chaosCount": 0,
+      "sampleFiles": [],
+      "isEmpty": false
+    },
+    ".echo-index": {
+      "mdCount": 0,
+      "jsonCount": 0,
+      "chaosCount": 0,
+      "sampleFiles": [],
+      "isEmpty": true
+    },
+    ".echo-security": {
+      "mdCount": 0,
+      "jsonCount": 0,
+      "chaosCount": 0,
+      "sampleFiles": [],
+      "isEmpty": true
+    },
+    ".obsidian": {
+      "mdCount": 0,
+      "jsonCount": 5,
+      "chaosCount": 0,
+      "sampleFiles": [],
+      "isEmpty": false
+    },
+    "cats cradle": {
+      "mdCount": 3,
+      "jsonCount": 0,
+      "chaosCount": 0,
+      "sampleFiles": [
+        "bank.md",
+        "cats cradle reboot.md",
+        "updated credit lines purchase.md"
+      ],
+      "isEmpty": false
+    },
+    "Chats": {
+      "mdCount": 5,
+      "jsonCount": 0,
+      "chaosCount": 0,
+      "sampleFiles": [
+        "2025-07-25_17-15-37_capsule_.md",
+        "2025-07-25_18-33-35_capsule_.md",
+        "2025-07-25_18-58-33_capsule_.md"
+      ],
+      "isEmpty": false
+    },
+    "claude": {
+      "mdCount": 1,
+      "jsonCount": 0,
+      "chaosCount": 0,
+      "sampleFiles": [
+        "The Solo Business AI Staff.md"
+      ],
+      "isEmpty": false
+    },
+    "clients": {
+      "mdCount": 17,
+      "jsonCount": 0,
+      "chaosCount": 0,
+      "sampleFiles": [
+        "Angela Smith.md",
+        "bonnie malone.md",
+        "caudle 6-23-25.md"
+      ],
+      "isEmpty": false
+    },
+    "contacts": {
+      "mdCount": 0,
+      "jsonCount": 0,
+      "chaosCount": 0,
+      "sampleFiles": [],
+      "isEmpty": true
+    },
+    "Echo": {
+      "mdCount": 29,
+      "jsonCount": 0,
+      "chaosCount": 0,
+      "sampleFiles": [
+        "ai engine.md",
+        "ai-ai engine.md",
+        "AI-functional state 6-25.md"
+      ],
+      "isEmpty": false
+    },
+    "Foods": {
+      "mdCount": 5,
+      "jsonCount": 0,
+      "chaosCount": 0,
+      "sampleFiles": [
+        "Bacon-Wrapped Halloumi & Chorizo Skewers with Paprika Oil.md",
+        "carnivore ice cream.md",
+        "Crispy Duck Skin & Seared Liver Mousse with Wasabi Cream.md"
+      ],
+      "isEmpty": false,
+      "recipes": [
+        "Bacon-Wrapped Halloumi & Chorizo Skewers with Paprika Oil",
+        "carnivore ice cream",
+        "Crispy Duck Skin & Seared Liver Mousse with Wasabi Cream",
+        "Keto Sweet Custard & Macadamia Butter Bomb",
+        "Lebanese Lamb Fat Bombs with Garlic Yogurt Drizzle"
+      ]
+    },
+    "images": {
+      "mdCount": 0,
+      "jsonCount": 0,
+      "chaosCount": 0,
+      "sampleFiles": [],
+      "isEmpty": true
+    },
+    "legal": {
+      "mdCount": 2,
+      "jsonCount": 0,
+      "chaosCount": 0,
+      "sampleFiles": [
+        "automedic.md",
+        "cb.md"
+      ],
+      "isEmpty": false
+    },
+    "lifts": {
+      "mdCount": 4,
+      "jsonCount": 0,
+      "chaosCount": 0,
+      "sampleFiles": [
+        "Chest.md",
+        "Temple squats.md",
+        "Temple_Ritual_Rack_Pulls.md"
+      ],
+      "isEmpty": false
+    },
+    "logs": {
+      "mdCount": 0,
+      "jsonCount": 0,
+      "chaosCount": 0,
+      "sampleFiles": [],
+      "isEmpty": true
+    },
+    "Max-gpt": {
+      "mdCount": 6,
+      "jsonCount": 0,
+      "chaosCount": 0,
+      "sampleFiles": [
+        "condensed 5-27.md",
+        "current outline for echo.md",
+        "Echo Rubicon Project Structure.md"
+      ],
+      "isEmpty": false
+    },
+    "medical": {
+      "mdCount": 0,
+      "jsonCount": 0,
+      "chaosCount": 0,
+      "sampleFiles": [],
+      "isEmpty": true
+    },
+    "path": {
+      "mdCount": 7,
+      "jsonCount": 0,
+      "chaosCount": 0,
+      "sampleFiles": [
+        "archetypal matches.md",
+        "Chesed.md",
+        "Cinematic Tarot – Minor Arcana (1980+ Films)Untitled.md"
+      ],
+      "isEmpty": false
+    },
+    "Private": {
+      "mdCount": 0,
+      "jsonCount": 0,
+      "chaosCount": 0,
+      "sampleFiles": [],
+      "isEmpty": true
+    },
+    "prompts": {
+      "mdCount": 0,
+      "jsonCount": 0,
+      "chaosCount": 0,
+      "sampleFiles": [],
+      "isEmpty": true
+    },
+    "Public": {
+      "mdCount": 0,
+      "jsonCount": 0,
+      "chaosCount": 0,
+      "sampleFiles": [],
+      "isEmpty": true
+    },
+    "scripts": {
+      "mdCount": 1,
+      "jsonCount": 0,
+      "chaosCount": 0,
+      "sampleFiles": [
+        "crush script.md"
+      ],
+      "isEmpty": false
+    },
+    "VAULT PDF": {
+      "mdCount": 0,
+      "jsonCount": 0,
+      "chaosCount": 0,
+      "sampleFiles": [],
+      "isEmpty": true
+    }
+  },
+  "capsules": {
+    "indexExists": true,
+    "indexEntries": 115,
+    "fileCount": 10,
+    "types": {
+      "unknown": 5
+    },
+    "recipes": 0,
+    "clients": 0
+  },
+  "memory": {
+    "search_recipe": {
+      "found": 5,
+      "hasContent": true
+    },
+    "search_client": {
+      "found": 0,
+      "hasContent": false
+    },
+    "search_carnivore": {
+      "found": 1,
+      "hasContent": true
+    }
+  },
+  "search": {
+    "sampleRecipe": {
+      "file": "carnivore ice cream.md",
+      "size": 2495,
+      "hasIngredients": true,
+      "firstLine": "#recipes ",
+      "contentPreview": "#recipes  - 2 cups heavy cream (cold)# 🍨 Carnivore Ice Cream – Master Recipe (Whole Food + Sleep Optimized)  ## Overview A cold-process, whole-food carnivore ice cream designed for high satiety, nerv"
+    }
+  },
+  "pipeline": {
+    "flow": [
+      {
+        "step": "User Query",
+        "example": "what are my recipes?"
+      },
+      {
+        "step": "IPC Handler",
+        "handler": "chat:send",
+        "status": "?"
+      },
+      {
+        "step": "Folder Detection",
+        "function": "detectTargetFolder",
+        "result": "Foods"
+      },
+      {
+        "step": "Vault Search",
+        "function": "searchSpecificFolder",
+        "status": "?"
+      },
+      {
+        "step": "Memory Context",
+        "function": "buildContextForInput",
+        "status": "?"
+      },
+      {
+        "step": "AI Response",
+        "status": "?"
+      }
+    ],
+    "bottlenecks": []
+  },
+  "architecture": {
+    "Frontend Memory": true,
+    "Backend Q-lib": true,
+    "Vault Manager": true,
+    "IPC Handlers": true,
+    "Chat System": false,
+    "ChaosAnalyzer": false
+  },
+  "issues": [
+    "Index mismatch: 115 indexed vs 10 files",
+    "Memory system error: vaultManager.getRecipes is not a function",
+    "Recipes exist but not searchable",
+    "Index out of sync with capsule files"
+  ],
+  "recommendations": [
+    "Recipe files need to be imported as capsules",
+    "Rebuild capsule index: await vaultManager.rebuildIndexFromDisk()"
+  ]
+}

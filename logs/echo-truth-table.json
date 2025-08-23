@@ -1,0 +1,29 @@
+{
+  "components/MyAI-global.js": {
+    "mounted": true,
+    "devPanelVisible": true,
+    "usesVault": true
+  },
+  "backend/qlib/QLibInterface.js": {
+    "exists": false,
+    "returnsFacts": false
+  },
+  "MemoryOrchestrator.js": {
+    "injectsCapsules": false,
+    "promptConnected": false
+  },
+  "components/SettingsPanel-global.js": {
+    "mounted": true,
+    "memoryAware": false
+  },
+  "components/legacy/DevPanel.jsx": {
+    "present": true,
+    "hookedToMemory": false,
+    "renders": true
+  },
+  "components/legacy/ObsidianNotes.jsx": {
+    "present": true,
+    "activelyUsed": true,
+    "mounted": false
+  }
+}

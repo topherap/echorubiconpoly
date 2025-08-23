@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS auth (
+    id INTEGER PRIMARY KEY,
+    hash TEXT NOT NULL
+);

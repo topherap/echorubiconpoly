@@ -1,0 +1,115 @@
+/* === RESET & ROOT VARIABLES === */
+html, body, #myai-root {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-primary); /* fill any fallback gaps */
+  overflow: hidden; /* ADD THIS LINE to prevent document scrolling */
+}
+
+#myai-root {
+  height: 100%;
+  width: 100%;
+  --font-ui: 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+  --font-ui: 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+--font-mono: 'Courier New', Courier, monospace;
+
+
+  box-sizing: border-box;
+  display: flex; /* ensure layout integrity */
+  background-color: var(--bg-secondary); /* Ensures sidebar and outer edge match */
+  flex-direction: column;
+}
+body, #myai-root, .myai-container {
+  font-family: var(--font-ui);
+}
+
+
+/* === DEFAULT THEME VARIABLES === */
+:root {
+  --bg-primary: #0c0c0c;
+  --bg-secondary: #0a0a0a;
+  --text-primary: #33ff33;
+  --input-bg: #0f0f0f;
+  --border-color: #33ff33;
+  --accent-color: #00c8ff;
+  --header-bg: #0a0a0a;
+  --button-bg: #111111;
+  --button-hover: #1e1e1e;
+  --status-connected: #33ff33;
+  --status-disconnected: #ff3333;
+  --scrollbar-thumb: #33ff33;
+  --scrollbar-track: #0a0a0a;
+  --font-mono: 'Courier New', Courier, monospace;
+  --icon-filter: none;
+}
+/* === THEME: White Rabbit === */
+.white-rabbit {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #0f0f0f;
+  --text-primary: #009900;    /* Classic DOS green - easier on eyes */
+  --input-bg: #0f0f0f;
+  --border-color: #009900;    /* Same DOS green for borders */
+  --accent-color: #009900;    /* Consistent DOS green */
+  --button-bg: #111111;
+  --button-hover: #1e1e1e;
+  --status-connected: #009900;  /* Keep consistent */
+  --status-disconnected: #ff3333;
+  --scrollbar-thumb: #009900;   /* DOS green scrollbar */
+  --scrollbar-track: #0a0a0a;
+  --icon-filter: grayscale(1) brightness(2.2);
+}
+
+/* === THEME: Haiku === */
+.haiku {
+  --bg-primary: #fcf8ec;
+  --bg-secondary: #f5efdc;
+  --text-primary: #1b1b1b;
+  --input-bg: #fdf6e3;
+  --border-color: #b0a88a;
+  --accent-color: #bb6600;
+  --scrollbar-thumb: #b0a88a;
+  --scrollbar-track: var(--input-bg);
+  --icon-filter: grayscale(1) brightness(0.5);
+}
+
+/* === THEME: Minimalist Winter === */
+.minimalist-winter {
+  --bg-primary: #e8f4f8;      /* Creamy sky blue base */
+  --bg-secondary: #ddeef5;    /* Slightly deeper sky blue */
+  --text-primary: #2c3e50;    /* Soft dark blue-grey for text */
+  --input-bg: #ffffff;        /* Clean white inputs */
+  --border-color: #c5dce7;    /* Soft blue-grey borders */
+  --accent-color: #5dade2;    /* Gentle blue accent */
+  --scrollbar-thumb: #a8c5d6; /* Light blue-grey scrollbar */
+  --scrollbar-track: #f0f7fa; /* Very light blue-grey track */
+  --icon-filter: grayscale(1) brightness(0.4);
+}
+
+/* === THEME: Hemingway === */
+.hemingway {
+  --bg-primary: #2c2c2c;
+  --bg-secondary: #222222;
+  --text-primary: #c8c8c8;
+  --input-bg: #333333;
+  --border-color: #8d8d8d;
+  --accent-color: #8d8d8d;
+  --button-bg: #4a4a4a;
+  --button-hover: #5a5a5a;
+  --status-connected: #a9a9a9;
+  --status-disconnected: #ff3333;
+  --scrollbar-thumb: #6e6e6e;
+  --scrollbar-track: #2c2c2c;
+  --icon-filter: grayscale(1) brightness(0.8);
+}
+
+/* === SCROLLBAR BASE === */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb);
+}
+::-webkit-scrollbar-track {
+  background-color: var(--scrollbar-track);
+}

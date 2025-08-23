@@ -1,0 +1,67 @@
+✅ Checkpoint Summary: Modular Refactor Audit (`sendVoiceCommand` pipeline)
+
+---
+
+### 🧠 Core Goal
+
+Collapse legacy voice/memory/vault logic into modular, testable pipelines and remove monolithic sprawl from `MyAI-global.js`.
+
+---
+
+### ✅ Actions Taken
+
+#### 🔧 Sections Deleted from `MyAI-global.js`
+
+| Section Removed                              | Replacement                                           |
+| -------------------------------------------- | ----------------------------------------------------- |
+| `sendVoiceCommand` (1,000+ lines)            | Moved to `voiceCommandHandler.js`                     |
+| `startAICollaboration` + `processCollabTurn` | Deleted (no longer used)                              |
+| `saveCollaboration`                          | Deleted                                               |
+| `DevPanel` inline JSX + toggles              | Moved to `DevPanel-global.js`                         |
+| `raw prompt construction`                    | Replaced by `PromptBuilder.js`                        |
+| `manual capsule file write`                  | Replaced by `capsuleWriter.js`                        |
+| `inline memory merge logic`                  | Replaced by `contextBuilder.js` + `injectQLibFacts()` |
+
+---
+
+### 🆕 Files Created
+
+| File                           | Purpose                                                       |
+| ------------------------------ | ------------------------------------------------------------- |
+| `voiceCommandHandler.js`       | Full voice pipeline: search → context → prompt → memory write |
+| `contextPipeline.js` (planned) | Focused: vault + keyword + QLib only (not yet built)          |
+| `conversationSaver.js`         | `saveConversationSimple()` extracted for `.md` output         |
+| `vaultSearch.js`               | `searchVaultForContext()` moved here from global              |
+| `keywordMap.js` (placeholder)  | Centralized all keywords for category matching                |
+
+---
+
+### 🔁 New Function Locations
+
+| Function                           | Current File                                             |
+| ---------------------------------- | -------------------------------------------------------- |
+| `sendVoiceCommand(config)`         | `voiceCommandHandler.js`                                 |
+| `searchVaultForContext(query, cb)` | `vaultSearch.js`                                         |
+| `saveConversationSimple()`         | `conversationSaver.js`                                   |
+| `extractKeywords(query)`           | `voiceCommandHandler.js` *(may move to `keywordMap.js`)* |
+| `buildSystemPrompt()`              | via `PromptBuilder.js`                                   |
+| `injectQLibFacts(...)`             | `contextBuilder.js`                                      |
+| `buildThreadedMemory()`            | `threaderEngine.js` (backend)                            |
+
+---
+
+### 🔄 Remaining Wireups (Queued)
+
+* [ ] Refactor `keywordMap` into its own file (cleaner `require()` in multiple modules)
+* [ ] Finalize `contextPipeline.js` if `buildEnhancedContext()` is still needed separately
+* [ ] Inject `threadedMemory` and `qLibFacts` into `PromptBuilder` output
+
+---
+
+Let me know if you want:
+
+* A) keywordMap stub file now
+* B) contextPipeline built clean
+* C) ObsidianNotes or SettingsPanel cleanup next
+
+

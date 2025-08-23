@@ -1,0 +1,77 @@
+{
+  "name": "echo-rubicon",
+  "version": "1.0.0",
+  "description": "Echo Rubicon: Local AI Assistant with Obsidian Integration",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "auth:dev": "node scripts/dev-auth.js",
+    "build": "electron-builder",
+    "dist": "electron-builder --publish=never",
+    "postinstall": "electron-rebuild"
+  },
+  "keywords": [
+    "electron",
+    "ai",
+    "assistant",
+    "obsidian"
+  ],
+  "author": {
+    "name": "T",
+    "email": ""
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "devDependencies": {
+    "@babel/parser": "^7.28.0",
+    "@babel/traverse": "^7.28.0",
+    "@electron/rebuild": "^4.0.1",
+    "electron": "^29.4.6",
+    "electron-builder": "^24.0.0",
+    "electron-squirrel-startup": "^1.0.1",
+    "express": "^5.1.0"
+  },
+  "dependencies": {
+    "@babel/generator": "^7.28.0",
+    "axios": "^1.6.7",
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^11.10.0",
+    "chokidar": "^4.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "electron-is-dev": "^3.0.1",
+    "fs-extra": "^11.3.0",
+    "install": "^0.13.0",
+    "jsonwebtoken": "^9.0.2",
+    "marked": "^16.1.2",
+    "node-cache": "^5.1.2",
+    "node-fetch": "^3.3.2",
+    "npm": "^11.4.2",
+    "react": "^19.1.0",
+    "tiktoken": "^1.0.22"
+  },
+  "build": {
+    "appId": "com.echo.rubicon",
+    "productName": "Echo Rubicon",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "src/**/*",
+      "node_modules/**/*"
+    ],
+    "mac": {
+      "category": "public.app-category.productivity"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  }
+}

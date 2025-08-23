@@ -1,0 +1,184 @@
+/* ===================================
+   RESPONSIVE FIX - Screen Auto-Adjust
+   Fixes GUI scaling for all screen sizes
+   =================================== */
+
+/* Force proper viewport behavior */
+html, body {
+  overflow: hidden !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Main container responsive behavior */
+.myai-container {
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: 100vw !important;
+  max-height: 100vh !important;
+  overflow: hidden !important;
+  display: grid !important;
+  grid-template-columns: auto 1fr !important;
+  box-sizing: border-box !important;
+}
+
+/* Chat container - fix height issue */
+.chat-container {
+  height: 100% !important;
+  max-height: none !important;
+  flex: 1 1 auto !important;
+  overflow-y: auto !important;
+  min-height: 200px !important;
+}
+
+/* Main content area - proper height */
+.main-content {
+  height: 100vh !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Voice section - stay at bottom */
+.voice-section {
+  flex-shrink: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-top: auto !important;
+}
+
+/* === MOBILE RESPONSIVE (< 768px) === */
+.myai-container.mobile {
+  grid-template-columns: 60px 1fr !important;
+  gap: 0.5rem !important;
+  padding: 0.5rem !important;
+}
+
+.myai-container.mobile .sidebar {
+  width: 60px !important;
+  min-width: 60px !important;
+  max-width: 60px !important;
+  overflow: hidden !important;
+}
+
+.myai-container.mobile .sidebar-content {
+  display: none !important;
+}
+
+.myai-container.mobile .chat-container {
+  font-size: 14px !important;
+  padding: 8px !important;
+  gap: 8px !important;
+}
+
+.myai-container.mobile .voice-section {
+  padding: 8px !important;
+}
+
+.myai-container.mobile .model-selector select {
+  width: 100% !important;
+  font-size: 14px !important;
+}
+
+/* === TABLET RESPONSIVE (768px - 1024px) === */
+.myai-container.tablet {
+  grid-template-columns: 200px 1fr !important;
+  gap: 1rem !important;
+  padding: 1rem !important;
+}
+
+.myai-container.tablet .sidebar {
+  width: 200px !important;
+  min-width: 200px !important;
+  max-width: 200px !important;
+}
+
+.myai-container.tablet .chat-container {
+  font-size: 15px !important;
+  padding: 1rem !important;
+}
+
+/* === DESKTOP RESPONSIVE (> 1024px) === */
+.myai-container.desktop {
+  grid-template-columns: 250px 1fr !important;
+  gap: 1rem !important;
+  padding: 1rem !important;
+}
+
+.myai-container.desktop .sidebar {
+  width: 250px !important;
+  min-width: 200px !important;
+  max-width: 300px !important;
+}
+
+/* === LARGE SCREEN OPTIMIZATIONS (> 1600px) === */
+@media screen and (min-width: 1600px) {
+  .myai-container {
+    max-width: 1800px !important;
+    margin: 0 auto !important;
+    grid-template-columns: 300px 1fr !important;
+    gap: 2rem !important;
+    padding: 2rem !important;
+  }
+  
+  .sidebar {
+    width: 300px !important;
+    padding: 1.5rem !important;
+  }
+  
+  .chat-container {
+    font-size: 1.1rem !important;
+    padding: 2rem !important;
+    gap: 1.5rem !important;
+  }
+  
+  .main-content {
+    max-width: 1400px !important;
+  }
+}
+
+/* === ULTRA-WIDE SCREENS (> 2560px) === */
+@media screen and (min-width: 2560px) {
+  .myai-container {
+    max-width: 2400px !important;
+    grid-template-columns: 350px 1fr !important;
+  }
+  
+  .main-content {
+    max-width: 1800px !important;
+  }
+  
+  .chat-container {
+    font-size: 1.2rem !important;
+    padding: 2.5rem !important;
+  }
+}
+
+/* === FORCE PROPER FLEXBOX BEHAVIOR === */
+.voice-input-container {
+  display: flex !important;
+  align-items: flex-end !important;
+  gap: 0.5rem !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* === SCROLLBAR FIXES === */
+.chat-container::-webkit-scrollbar {
+  width: 8px !important;
+}
+
+.chat-container::-webkit-scrollbar-track {
+  background: var(--scrollbar-track) !important;
+}
+
+.chat-container::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb) !important;
+  border-radius: 4px !important;
+}
+
+/* === DEBUG INFO REMOVED === */
+/* Debug text removed - responsive fix is working */

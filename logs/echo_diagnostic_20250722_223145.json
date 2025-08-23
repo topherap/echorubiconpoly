@@ -1,0 +1,159 @@
+{
+  "timestamp": "2025-07-22T22:31:45.594581",
+  "project_root": "C:\\Users\\tophe\\Documents\\Echo Rubicon",
+  "vault_path": "D:\\Obsidian Vault",
+  "critical": [
+    "\u274c Missing critical file: src/ipc-handlers.js",
+    "\u274c Missing vault subdirectory: entities",
+    "\u274c Missing vault subdirectory: contexts"
+  ],
+  "warnings": [
+    "\u26a0\ufe0f Missing directory: .echo",
+    "\u26a0\ufe0f main/app.js may have problematic exports",
+    "\u26a0\ufe0f Project .echo directory missing",
+    "\u26a0\ufe0f capsules is empty"
+  ],
+  "info": [
+    "\u2705 Directory exists: src/memory",
+    "\u2705 Directory exists: components/utils",
+    "\u2705 Directory exists: main",
+    "\u2705 Directory exists: src/echo/memory",
+    "\u2705 Directory exists: logs",
+    "\u2705 Directory exists: tools",
+    "\u2705 VaultPathManager exports getVaultPath",
+    "\u2705 VaultPathManager exports setVaultPath",
+    "\u2705 VaultPathManager exports vaultExists",
+    "\u2705 VaultPathManager uses lastVaultPath.json",
+    "\u2705 QLibInterface has correct import path",
+    "\u2705 MemoryVaultManager uses getVaultPath fallback",
+    "\u2705 MemoryVaultManager appears to have write capability",
+    "\u2705 main/app.js has correct QLibInterface path",
+    "\u2705 ~/.echo directory exists",
+    "\u2705 Vault .echo directory exists",
+    "\u2705 Vault index.json exists",
+    "\u2705 Config found: C:\\Users\\tophe\\Documents\\Echo Rubicon\\config.json"
+  ],
+  "file_states": {
+    "components/utils/VaultPathManager.js": {
+      "exists": true,
+      "modified": "2025-07-22T18:31:59.928912",
+      "size": 1430,
+      "hash": "16eb0267"
+    },
+    "src/memory/QLibInterface.js": {
+      "exists": true,
+      "modified": "2025-07-22T18:58:37.160894",
+      "size": 7092,
+      "hash": "c15fdf1d"
+    },
+    "src/memory/MemoryVaultManager.js": {
+      "exists": true,
+      "modified": "2025-07-22T21:48:53.611176",
+      "size": 9664,
+      "hash": "4248fe8e"
+    },
+    "main/app.js": {
+      "exists": true,
+      "modified": "2025-07-22T19:34:20.934364",
+      "size": 2612,
+      "hash": "ce2cf485"
+    },
+    "src/ipc-handlers.js": {
+      "exists": false
+    },
+    "components/MyAI-global.js": {
+      "exists": true,
+      "modified": "2025-07-14T19:41:21.579168",
+      "size": 1174,
+      "hash": "bbc31713"
+    }
+  },
+  "memory_system": {
+    "capsules_count": 0
+  },
+  "config_analysis": {
+    "config_location": "C:\\Users\\tophe\\Documents\\Echo Rubicon\\config.json"
+  },
+  "recent_changes": [
+    {
+      "path": "tools\\summarizeVault.js",
+      "modified": "2025-07-22T22:24:30.789485",
+      "hours_ago": 0.1
+    },
+    {
+      "path": "logs\\orphan-backtrace.json",
+      "modified": "2025-07-22T22:18:08.455955",
+      "hours_ago": 0.2
+    },
+    {
+      "path": "src\\memory\\MemoryVaultManager.js",
+      "modified": "2025-07-22T21:48:53.611176",
+      "hours_ago": 0.7
+    },
+    {
+      "path": "main\\ipc-handlers.js",
+      "modified": "2025-07-22T20:38:09.746491",
+      "hours_ago": 1.9
+    },
+    {
+      "path": "logs\\memory_flow_trace_20250722_203035.json",
+      "modified": "2025-07-22T20:30:35.322833",
+      "hours_ago": 2.0
+    },
+    {
+      "path": "logs\\echo_diagnostic_20250722_202154.json",
+      "modified": "2025-07-22T20:21:54.072245",
+      "hours_ago": 2.2
+    },
+    {
+      "path": "main\\app.js",
+      "modified": "2025-07-22T19:34:20.934364",
+      "hours_ago": 3.0
+    },
+    {
+      "path": "src\\memory\\QLibInterface.js",
+      "modified": "2025-07-22T18:58:37.160894",
+      "hours_ago": 3.6
+    },
+    {
+      "path": "components\\utils\\VaultPathManager.js",
+      "modified": "2025-07-22T18:31:59.928912",
+      "hours_ago": 4.0
+    },
+    {
+      "path": "backend\\qlib\\chaosanalyzer.js",
+      "modified": "2025-07-22T17:51:55.720518",
+      "hours_ago": 4.7
+    },
+    {
+      "path": "config\\categoryMap.json",
+      "modified": "2025-07-22T17:39:59.033252",
+      "hours_ago": 4.9
+    },
+    {
+      "path": "backend\\qlib\\ipc-injection-folderDispatcher.js",
+      "modified": "2025-07-22T13:39:48.932339",
+      "hours_ago": 8.9
+    },
+    {
+      "path": "backend\\qlib\\contextInjector-memoryBlock-patch.js",
+      "modified": "2025-07-22T11:57:25.503935",
+      "hours_ago": 10.6
+    },
+    {
+      "path": "logs\\dual_memory_scan_20250722_114052.json",
+      "modified": "2025-07-22T11:40:52.142329",
+      "hours_ago": 10.8
+    },
+    {
+      "path": "logs\\memory_scan_20250722_113054.json",
+      "modified": "2025-07-22T11:30:54.268013",
+      "hours_ago": 11.0
+    },
+    {
+      "path": "backend\\qlib\\folderLister.js",
+      "modified": "2025-07-22T10:15:50.832098",
+      "hours_ago": 12.3
+    }
+  ]
+}

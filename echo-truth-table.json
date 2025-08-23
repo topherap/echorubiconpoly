@@ -1,0 +1,29 @@
+{
+  "MyAI-global.js": {
+    "mounted": true,
+    "devPanelVisible": true,
+    "usesVault": false
+  },
+  "QLibInterface.js": {
+    "exists": true,
+    "returnsFacts": false
+  },
+  "MemoryOrchestrator.js": {
+    "injectsCapsules": true,
+    "promptConnected": true
+  },
+  "SettingsPanel-global.js": {
+    "mounted": true,
+    "memoryAware": false
+  },
+  "DevPanel.jsx": {
+    "present": true,
+    "hookedToMemory": false,
+    "renders": true
+  },
+  "ObsidianNotes.jsx": {
+    "present": true,
+    "activelyUsed": false,
+    "mounted": false
+  }
+}

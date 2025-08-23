@@ -1,0 +1,3253 @@
+// ===== CORE SYSTEM IMPORTS =====
+// NEVER modify Object.prototype!
+const { ipcMain, dialog, shell, app } = require('electron');
+
+const IdentityManager = require('../components/utils/identityManager');
+const { getVaultPath: getVaultPathFromManager } = require('../components/utils/VaultPathManager');
+
+
+
+// ===== APPLICATION IMPORTS =====
+//const { userVaultPath, globalVaultIndex } = require('./app');
+const { globalModelRegistry, fetchModelRegistry } = require('./models');
+const { store } = require('./store');
+const { fs, path } = require('./lib/deps');
+const { createChatSendHandler } = require('./handlers/chatSendHandler');
+
+// ===== DATABASE LAYER =====
+const db = require('../src/db.js');
+const { listProjects, getProjectStats } = require('./handlers/projectHandlers');
+// ===== HANDLER TRACKING ===== (MOVED UP - must be before registerHandler)
+const registeredHandlers = new Set();
+const handlerMap = new Map();
+
+// ===== PROJECT SIDEBAR HANDLERS =====
+const projectSidebarHandlers = require('./handlers/projectSidebarHandlers');
+
+// ===== MEMORY ARCHITECTURE =====
+const { MemoryVaultManager } = require('../src/memory/MemoryVaultManager');
+const MemoryService = require('../src/echo/memory/MemoryService');
+const { searchCapsules, getCapsulesByDate } = require('../src/echo/memory/capsuleRetriever');
+const { ContextInjector } = require('../src/echo/memory/ContextInjector');
+const { QLibInterface } = require('../src/memory/QLibInterface');
+// ===== Q-LIB TWO-MIND SYSTEM ===== 
+
+const { handleFolderBasedQuery } = require('../backend/qlib/ipc-injection-folderDispatcher');
+
+
+// ===== MEMORY SYSTEM IMPORTS =====
+const { MemorySystem } = require('../src/memory/index.js');
+const VaultManagerMem = MemorySystem;
+
+// ===== CHAOS ANALYZER =====
+const ChaosAnalyzer = require('../backend/qlib/chaosanalyzer');
+
+// ===== LAZY-INITIALIZED INSTANCES =====
+let memoryVault = null;
+let memoryService = null;
+let qlibInterface = null;
+let getMainWindow;
+let memorySystem = null;
+let vaultManagerMem = null;
+
+// ===== GLOBAL PROJECT STATE =====
+global.currentProject = null;
+
+// ===== HELPER FUNCTIONS ===== (MOVED UP - must be before safeHandle usage)
+function registerHandler(channel, handler) {
+  if (registeredHandlers.has(channel)) {
+    console.log(`[IPC] Handler already registered: ${channel}`);
+    return;
+  }
+  ipcMain.handle(channel, handler);
+  registeredHandlers.add(channel);
+  handlerMap.set(channel, handler);
+  console.log(`[IPC] Registered handler: ${channel}`);
+}
+
+// Create safeHandle alias AFTER registerHandler is defined
+const safeHandle = registerHandler;
+
+// ===== PROJECT HANDLERS ===== (Now safe to use safeHandle)
+// Handler to set current project
+safeHandle('project:set-current', async (event, projectPath) => {
+  console.log('[PROJECT] Setting current project to:', projectPath || 'global');
+  global.currentProject = projectPath;
+  
+  // Notify memory system if available
+  if (global.memorySystem?.setCurrentProject) {
+    await global.memorySystem.setCurrentProject(projectPath);
+  }
+  
+  return { success: true, project: projectPath || 'global' };
+});
+
+// Handler to get current project
+safeHandle('project:get-current', async () => {
+  return { project: global.currentProject || null };
+});
+
+// ===== CHAOS HANDLER =====
+registerHandler('chaos:run', async (event, options) => {
+  const vaultPath = getVaultPath();
+  const analyzer = new ChaosAnalyzer({ 
+    vaultRoot: vaultPath,
+    project: global.currentProject || null,
+    indexOnly: true  // ADD THIS - default to index-only for vault files
+  });
+
+  const folders = options.folders || [];
+  const results = [];
+
+  for (const folder of folders) {
+    try {
+      const result = await analyzer.formatVault(path.join(vaultPath, folder), {
+        force: options.force || false
+      });
+      results.push({ folder, result });
+    } catch (err) {
+      results.push({ folder, error: err.message });
+    }
+  }
+
+  return results;
+});
+
+// Define getVaultPath BEFORE using it
+function getVaultPath() {
+  console.log('[DEBUG] Getting vault path...');
+  let vaultPath = store.get('vaultPath');
+  if (!vaultPath) {
+    vaultPath = 'D:\\Obsidian Vault';
+    store.set('vaultPath', vaultPath);
+    console.log('[DEBUG] Set default vault path:', vaultPath);
+  }
+  console.log('[DEBUG] Vault path:', vaultPath);
+  return vaultPath;
+}
+
+// Content hydration helper - ensures full file content before QLib extraction
+async function hydrateResultContent(result) {
+  if (result?.content && result.content.length >= 500) return result;
+  
+  try {
+    const vaultPath = getVaultPath();
+    const fullPath = path.isAbsolute(result.path) 
+      ? result.path 
+      : path.join(vaultPath, result.path);
+    
+    result.content = await fs.readFile(fullPath, 'utf8');
+    console.log(`[Q-LIB] Hydrated content for ${result.name}: ${result.content.length} chars`);
+    return result;
+  } catch (err) {
+    console.warn('[Q-LIB] hydrateResultContent failed:', result?.path, err?.message);
+    return result;
+  }
+}
+
+// NOW create identity manager instance (after getVaultPath is defined)
+const vaultPath = getVaultPath();
+const identityManager = new IdentityManager(vaultPath);
+
+
+// ===== ENSURE Q-LIB FUNCTION =====
+// Enforce single instance via singleton factory
+async function ensureQLib() {
+  if (!qlibInterface) {
+    const vaultPath = getVaultPath();
+    console.log('[DEBUG] Q-lib vault path:', vaultPath);
+    qlibInterface = new QLibInterface(vaultPath);
+await qlibInterface.forceVaultScan(); // optional preload
+console.log('[Q-lib] Interface (re)initialised via new QLibInterface');
+  }
+  return qlibInterface;
+}
+
+// ========================================
+// MODEL FORMATTING FUNCTIONS - OPENCHAT FIX
+// ========================================
+const MODEL_FORMATS = {
+  // OpenChat models only process the first system message
+  'openchat': {
+    requiresSingleSystemMessage: true,
+    combineSystemMessages: (messages) => {
+      const systemMessages = messages.filter(m => m.role === 'system');
+      const otherMessages = messages.filter(m => m.role !== 'system');
+      
+      if (systemMessages.length <= 1) {
+        return messages; // No change needed
+      }
+      
+      // Debug logging
+      console.log('[OPENCHAT FORMAT] Combining', systemMessages.length, 'system messages');
+      systemMessages.forEach((msg, i) => {
+        console.log(`[OPENCHAT FORMAT] System message ${i+1} length:`, msg.content.length);
+        if (msg.content.includes('relevant context from your memory')) {
+          console.log(`[OPENCHAT FORMAT] Message ${i+1} contains memory context`);
+        }
+      });
+      
+      // Combine all system messages, preserving ALL content and structure
+      const combinedContent = systemMessages
+        .map((m, index) => {
+          // First message is usually identity/spine
+          if (index === 0) return m.content;
+          
+          // Memory context messages need special handling
+          if (m.content.includes('Here is relevant context from your memory:') || 
+              m.content.includes('relevant context from your memory')) {
+            return '\n\n=== MEMORY CONTEXT ===\n' + m.content + '\n=== END MEMORY CONTEXT ===';
+          }
+          
+          if (m.content.includes('Recent relevant memories:')) {
+            return '\n\n=== RECENT MEMORIES ===\n' + m.content + '\n=== END RECENT MEMORIES ===';
+          }
+          
+          if (m.content.includes('Vault search results:')) {
+            return '\n\n=== VAULT SEARCH RESULTS ===\n' + m.content + '\n=== END VAULT SEARCH ===';
+          }
+          
+          // Default separator for other system messages
+          return '\n\n---\n\n' + m.content;
+        })
+        .join('\n');
+      
+      const combined = [
+        { role: 'system', content: combinedContent },
+        ...otherMessages
+      ];
+      
+      console.log('[OPENCHAT FORMAT] Combined system message total length:', combinedContent.length);
+      console.log('[OPENCHAT FORMAT] Final message count:', combined.length);
+      
+      // Verify memory preservation
+      const hasMemory = combinedContent.includes('MEMORY CONTEXT') || 
+                       combinedContent.includes('Angela Smith') ||
+                       combinedContent.includes('client');
+      console.log('[OPENCHAT FORMAT] Memory preserved:', hasMemory ? 'YES' : 'NO');
+      
+      return combined;
+    }
+  }
+  // Add other model formats here as needed
+};
+
+/**
+ * Get the format configuration for a model
+ */
+function getModelFormat(modelName) {
+  // Check if model name contains any known format keys
+  for (const [key, format] of Object.entries(MODEL_FORMATS)) {
+    if (modelName.toLowerCase().includes(key)) {
+      return format;
+    }
+  }
+  return null; 
+}
+
+/**
+ * Format messages for a specific model's requirements
+ */
+function formatMessagesForModel(messages, modelName) {
+  console.log('[MODEL FORMAT] Formatting messages for model:', modelName);
+  console.log('[MODEL FORMAT] Input message count:', messages.length);
+  
+  const modelFormat = getModelFormat(modelName);
+  
+  if (!modelFormat) {
+    console.log('[MODEL FORMAT] No special formatting needed for:', modelName);
+    return messages; // No special formatting needed
+  }
+  
+  if (modelFormat.requiresSingleSystemMessage && modelFormat.combineSystemMessages) {
+    const formatted = modelFormat.combineSystemMessages(messages);
+    console.log('[MODEL FORMAT] Messages before formatting:', messages.length);
+    console.log('[MODEL FORMAT] Messages after formatting:', formatted.length);
+    
+    // Debug: Show what's in the combined system message
+    if (formatted.length > 0 && formatted[0].role === 'system') {
+      console.log('[MODEL FORMAT] Combined system message length:', formatted[0].content.length);
+      
+      // Log memory preservation check
+      const originalMemoryContent = messages
+        .filter(m => m.role === 'system' && m.content.includes('relevant context'))
+        .map(m => m.content)
+        .join('');
+      
+      const formattedSystemContent = formatted
+        .filter(m => m.role === 'system')
+        .map(m => m.content)
+        .join('');
+      
+      console.log('[MODEL FORMAT] Original memory content length:', originalMemoryContent.length);
+      console.log('[MODEL FORMAT] Memory content preserved:', formattedSystemContent.includes('Angela Smith') || formattedSystemContent.includes('client') ? 'YES' : 'NO');
+      
+      // Show a sample of the memory content if present
+      if (formattedSystemContent.includes('MEMORY CONTEXT')) {
+        const memStart = formattedSystemContent.indexOf('=== MEMORY CONTEXT ===');
+        const memEnd = formattedSystemContent.indexOf('=== END MEMORY CONTEXT ===');
+        if (memStart !== -1 && memEnd !== -1) {
+          const memContent = formattedSystemContent.substring(memStart, Math.min(memStart + 200, memEnd));
+          console.log('[MODEL FORMAT] Memory sample:', memContent + '...');
+        }
+      }
+    }
+    
+    return formatted;
+  }
+  
+  return messages;
+}
+
+// ===== MEMORY SYSTEM BOOTSTRAP =====
+
+async function initializeMemorySystems() {
+  console.log('[DEBUG] Initializing memory systems...');
+ const vaultPath = getVaultPath();
+  
+  try {
+    // Test each dependency step by step
+    console.log('[DEBUG] Testing MemorySystem import...');
+    const { MemorySystem } = require('../src/memory/index.js');
+    console.log('[DEBUG] MemorySystem imported successfully');
+    
+    console.log('[DEBUG] Testing MemoryVaultManager import...');
+    const { MemoryVaultManager } = require('../src/memory/MemoryVaultManager');
+    console.log('[DEBUG] MemoryVaultManager imported successfully');
+    
+    console.log('[DEBUG] Creating MemoryVaultManager instance...');
+    const vaultManager = new MemoryVaultManager(vaultPath);
+    console.log('[DEBUG] MemoryVaultManager created successfully');
+    
+    console.log('[DEBUG] Creating MemorySystem with path:', vaultPath);
+    global.memorySystem = new MemorySystem(vaultPath);
+    console.log('[DEBUG] MemorySystem created successfully');
+
+  
+console.log('[DEBUG] Initializing MemorySystem...');
+//await global.memorySystem.initialize();
+console.log('[DEBUG] MemorySystem initialized');
+
+    
+    // Test required methods exist
+    console.log('[DEBUG] Testing methods...');
+    console.log('[DEBUG] buildContextForInput:', typeof global.memorySystem.buildContextForInput);
+    console.log('[DEBUG] processConversation:', typeof global.memorySystem.processConversation);
+    
+    console.log('[BOOT] Global memory system initialized');
+  } catch (error) {
+    console.error('[BOOT] MemorySystem initialization failed:', error.message);
+    console.error('[BOOT] Stack:', error.stack);
+    global.memorySystem = null;
+    
+    // Don't throw - use fallback
+    console.log('[BOOT] Creating fallback memory system...');
+    global.memorySystem = {
+      buildContextForInput: async () => ({ context: '', memory: [] }),
+      processConversation: async () => ({ id: 'fallback' }),
+      search: async () => [],
+      getStats: async () => ({ capsules: 0 })
+    };
+  }
+}
+async function buildContextForInput(input, projectPath = null) {
+  console.log('[DEBUG] buildContextForInput called with:', input, 'project:', projectPath || 'global');
+  
+  try {
+    // Call the ACTUAL MemorySystem method that exists
+    if (global.memorySystem && typeof global.memorySystem.buildContextForInput === 'function') {
+      console.log('[DEBUG] Using global.memorySystem.buildContextForInput');
+      
+      // Pass project context to memory system
+      const result = await global.memorySystem.buildContextForInput(input, {
+        project: projectPath,
+        filter: projectPath ? { project: projectPath } : {}
+      });
+      
+      console.log('[DEBUG] MemorySystem returned:', {
+        memoryCount: result.memory?.length || 0,
+        project: projectPath || 'global'
+      });
+      return result;
+    }
+    
+    // Fallback: Create direct vault manager with project filtering
+    console.log('[DEBUG] Fallback: Creating direct MemoryVaultManager');
+    const vaultPath = getVaultPath();
+    const { MemoryVaultManager } = require('../src/memory/MemoryVaultManager');
+    const vaultManager = new MemoryVaultManager(vaultPath);
+    
+    await vaultManager.ensureIndex();
+    console.log('[DEBUG] Direct vault manager index size:', vaultManager.getCapsuleCount());
+    
+    // Search with project filter
+    const searchOptions = {
+      limit: 10,
+      filter: projectPath ? { project: projectPath } : {}
+    };
+    
+    const memories = await vaultManager.searchMemories(input, searchOptions);
+    console.log('[DEBUG] Direct search found:', memories.length, 'memories for project:', projectPath || 'global');
+    
+    const context = memories.map((capsule, idx) => {
+      const content = capsule.content || capsule.summary || 'No content';
+      const type = capsule.metadata?.contentType || capsule.type || 'memory';
+      return `[${type}]\n${content}`;
+    }).join('\n\n');
+    
+    return {
+      hasContext: memories.length > 0,
+      memoryCount: memories.length,
+      contextLength: context.length,
+      context: context,
+      memory: memories,
+      project: projectPath || 'global'
+    };
+  } catch (err) {
+    console.error('[DEBUG] buildContextForInput error:', err);
+    return { 
+      hasContext: false, 
+      memoryCount: 0, 
+      contextLength: 0, 
+      context: '', 
+      memory: [],
+      project: projectPath || 'global'
+    };
+  }
+}
+
+// ===== CRASH LOGGING =====
+
+process.on('uncaughtException', (err) => {
+  console.error('[UNCAUGHT]', err);
+});
+
+
+// ===== SHARED SEARCH FUNCTIONS =====
+// These MUST be at module level for all handlers to access
+
+function detectProjectFromCapsule(capsule) {
+  // Check if capsule has project metadata
+  if (capsule.project) {
+    return capsule.project;
+  }
+  
+  // Check for client-related content
+  const content = JSON.stringify(capsule).toLowerCase();
+  if (content.includes('client') || content.includes('timeshare') || content.includes('maintenance fee')) {
+    return 'clients';
+  }
+  
+  // Check for food/recipe content
+  if (content.includes('recipe') || content.includes('ingredient') || content.includes('cooking') || content.includes('food')) {
+    return 'food';
+  }
+  
+  // Default to openchat for general conversations
+  return 'openchat';
+}
+
+function detectTargetFolder(query) {
+  const folderMap = {
+    'recipe': 'Foods',
+    'recipes': 'Foods',
+    'food': 'Foods',
+    'foods': 'Foods',
+    'client': 'clients',
+    'clients': 'clients',
+    'medical': 'medical',
+    'legal': 'legal',
+    'contact': 'contacts',
+    'contacts': 'contacts'
+  };
+  
+  const queryLower = query.toLowerCase();
+  
+  for (const [key, folder] of Object.entries(folderMap)) {
+    if (queryLower.includes(key)) {
+      return folder;
+    }
+  }
+  
+  return null;
+}
+
+async function searchSpecificFolder(folderName, query, projectPath = null) {
+  console.log(`[Search] Searching in folder: ${folderName} for: ${query} in project: ${projectPath || 'global'}`);
+  const vaultPath = getVaultPath();
+  
+  // CRITICAL FIX: Don't double-nest the folder path
+  // When folderName is 'clients' and projectPath is 'clients', we only want one level
+  let folderPath;
+  
+  // Check if the folderName IS the actual vault folder we want (clients, Foods, etc.)
+  const vaultContentFolders = ['clients', 'Foods', 'medical', 'legal', 'contacts'];
+  
+  if (vaultContentFolders.includes(folderName)) {
+    // For vault content folders, use direct path (not nested under project)
+    folderPath = path.join(vaultPath, folderName);
+    console.log(`[Search] Using direct vault folder: ${folderPath}`);
+  } else if (projectPath) {
+    // For other searches within a project context
+    folderPath = path.join(vaultPath, projectPath, folderName);
+    console.log(`[Search] Using project subfolder: ${folderPath}`);
+  } else {
+    // Default case
+    folderPath = path.join(vaultPath, folderName);
+    console.log(`[Search] Using default path: ${folderPath}`);
+  }
+  
+  try {
+    // Check if folder exists
+    const folderExists = await fs.access(folderPath).then(() => true).catch(() => false);
+    if (!folderExists) {
+      console.log(`[Search] Folder ${folderPath} does not exist`);
+      return [];
+    }
+    
+    const results = [];
+    const files = await fs.readdir(folderPath);
+    console.log(`[Search] Found ${files.length} files in ${folderPath}`);
+    
+    // Detect if this is a "list all" query - ENHANCED with "who are my"
+    const listAllQueries = ['what are my', 'show me my', 'list my', 'all my', 'who are my'];
+    const isListQuery = listAllQueries.some(phrase => query.toLowerCase().includes(phrase));
+    
+    for (const file of files.filter(f => f.endsWith('.md'))) {
+      const filePath = path.join(folderPath, file);
+      const content = await fs.readFile(filePath, 'utf-8');
+      
+      // If it's a "list all" query, include ALL files from this folder
+      if (isListQuery) {
+        // Extract clean name from filename (handles "John and Jane.md" format)
+        const cleanName = file.replace('.md', '');
+        
+        results.push({
+          path: path.join(folderName, file), // Simplified path
+          content: content,
+          snippet: `${cleanName}\n${content.substring(0, 100)}...`,
+          score: 100, // High score for folder contents
+          name: cleanName, // This will show "Angela Smith" not "capsule_12345"
+          project: projectPath || 'global'
+        });
+      } else {
+        // Otherwise, search for specific content
+        const contentLower = content.toLowerCase();
+        const queryLower = query.toLowerCase();
+        
+        if (contentLower.includes(queryLower) || file.toLowerCase().includes(queryLower)) {
+          const snippet = processFile(content, query, path.join(folderName, file), 'specific');
+          results.push({
+            path: path.join(folderName, file), // Simplified path
+            content: content,
+            snippet: snippet,
+            score: snippet.split(query).length - 1,
+            name: file.replace('.md', ''),
+            project: projectPath || 'global'
+          });
+        }
+      }
+    }
+    
+    console.log(`[Search] Returning ${results.length} results`);
+    return results.sort((a, b) => b.score - a.score);
+  } catch (error) {
+    console.error(`[Search] Error searching folder ${folderName}:`, error);
+    return [];
+  }
+}
+
+async function searchFullVault(query, projectPath = null) {
+  console.log(`[Search] Full vault search for: ${query} in project: ${projectPath || 'global'}`);
+  const vaultPath = getVaultPath();
+  const results = [];
+  
+  // If project context exists, limit search to project folder
+  const searchRoot = projectPath ? path.join(vaultPath, projectPath) : vaultPath;
+  
+  async function searchDir(dir, baseDir = '') {
+    try {
+      const items = await fs.readdir(dir, { withFileTypes: true });
+      
+      for (const item of items) {
+        const fullPath = path.join(dir, item.name);
+        const relativePath = baseDir ? path.join(baseDir, item.name) : item.name;
+        
+        // Skip system folders
+        if (item.isDirectory() && !item.name.startsWith('.') && !['node_modules', '.git'].includes(item.name)) {
+          await searchDir(fullPath, relativePath);
+        } else if (item.isFile() && item.name.endsWith('.md')) {
+          const content = await fs.readFile(fullPath, 'utf-8');
+          const contentLower = content.toLowerCase();
+          const queryLower = query.toLowerCase();
+          
+          if (contentLower.includes(queryLower) || item.name.toLowerCase().includes(queryLower)) {
+            const snippet = processFile(content, query, relativePath, 'general');
+            results.push({
+              path: relativePath,
+              content: content,
+              snippet: snippet,
+              score: snippet.split(query).length - 1,
+              project: projectPath || 'global'
+            });
+          }
+        }
+      }
+    } catch (error) {
+      console.error(`[Search] Error in searchDir for ${dir}:`, error);
+    }
+  }
+  
+  await searchDir(searchRoot);
+  return results.sort((a, b) => b.score - a.score);
+}
+
+ 
+// ===== EXECUTIVE FUNCTION ROUTER =====
+const executiveFunction = {
+  classify(query) {
+    const lower = query.toLowerCase();
+    
+    const wantsContent = /what('s| is) in|show me|how (do i|to) make|full recipe|full text|contents of|details of/.test(lower);
+    
+    if (/recipe|client|folder|file|document/.test(lower)) {
+      return { 
+        route: 'qlib', 
+        confidence: 0.9,
+        mode: wantsContent ? 'content' : 'list'
+      };
+    }
+    
+    if (/yesterday|last time|remember|discussed/.test(lower)) {
+      return { route: 'memory', confidence: 0.8 };
+    }
+    
+    if (/explain|what is|how to|define/.test(lower)) {
+      return { route: 'direct', confidence: 0.7 };
+    }
+    
+    return { route: 'direct', confidence: 0.5 };
+  }
+};
+
+async function callOllamaModel(modelName, messages) {
+  try {
+     // ADD THIS DEBUG
+    console.log('[OLLAMA] Sending to model - System message preview:', 
+      messages[0]?.role === 'system' ? messages[0].content.substring(0, 500) : 'No system message');
+    console.log('[OLLAMA] Message count:', messages.length);
+    // DEBUG: Log what's actually being sent
+console.log('[CRITICAL DEBUG] Enhanced message content length:', enhancedMessages[0].content.length);
+console.log('[CRITICAL DEBUG] Context present?', enhancedMessages[0].content.includes('Memory context'));
+console.log('[CRITICAL DEBUG] Vault data present?', enhancedMessages[0].content.includes('VAULT DATA'));
+console.log('[CRITICAL DEBUG] First 500 chars:', enhancedMessages[0].content.substring(0, 500));
+   
+
+    const response = await fetch('http://localhost:11434/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: modelName,
+        messages: modifiedMessages, // Use modified messages with memory
+        stream: false
+      })
+    });
+
+    if (!response.ok) {
+      const errText = await response.text().catch(() => response.statusText);
+      throw new Error(`Ollama error ${response.status}: ${errText}`);
+    }
+
+    const data = await response.json();
+    return data?.message?.content || data?.response || 'No response from model';
+  } catch (error) {
+    console.error('[DEBUG] Ollama model call failed:', error);
+    throw error;
+  }
+}
+
+async function implementLayeredSearch(query, projectPath = null) {
+  console.log(`[Search] Implementing layered search for: ${query} in project: ${projectPath || 'global'}`);
+  const maxResults = 10;
+  const results = [];
+
+  // TODO: add layered search logic here
+  // LAYER 1: Target folder detection and search
+  const targetFolder = detectTargetFolder(query);
+  if (targetFolder) {
+    console.log(`[DEBUG] Target folder detected: ${targetFolder}`);
+    const folderResults = await searchSpecificFolder(targetFolder, query, projectPath);
+    results = [...results, ...folderResults];
+    console.log(`[DEBUG] Found ${folderResults.length} results in ${targetFolder}`);
+  }
+  
+  // LAYER 2: Full vault content (excluding conversations) - only if we need more results
+  if (results.length < 3) {
+    console.log('[DEBUG] Searching full vault content (excluding conversations)');
+    const vaultResults = await searchFullVault(query, projectPath);
+    results = [...results, ...vaultResults];
+    console.log(`[DEBUG] Found ${vaultResults.length} results in full vault`);
+  }
+  
+  // LAYER 3: Limited conversation context (max 2 for relevance)
+  if (results.length < 5) {
+    console.log('[DEBUG] Adding limited conversation context');
+    const conversations = await searchConversations(query, 2, projectPath);
+    results = [...results, ...conversations];
+    console.log(`[DEBUG] Added ${conversations.length} conversation results`);
+  }
+  
+  // LAYER 4: Audit mode - extended conversation search
+  if (query.toLowerCase().includes('audit') || query.toLowerCase().includes('all conversations')) {
+    console.log('[DEBUG] Audit query detected, adding extended conversation log');
+    const allConversations = await searchConversations(query, 200, projectPath);
+    results = [...results, ...allConversations];
+  }
+  
+  return results.slice(0, maxResults);
+}
+
+// Note: detectTargetFolder already exists in your file
+
+async function searchSpecificFolder(folderName, query) {
+  const vaultPath = getVaultPath();
+  const folderPath = path.join(vaultPath, folderName);
+  
+  try {
+    const files = await fs.readdir(folderPath);
+    const results = [];
+    
+    for (const file of files.filter(f => f.endsWith('.md'))) {
+      const filePath = path.join(folderPath, file);
+      const content = await fs.readFile(filePath, 'utf8');
+      
+      const searchResult = processFile(content, query, path.join(folderName, file), 'specific');
+      if (searchResult) {
+        searchResult.score += 50; // Boost for targeted folder
+        results.push(searchResult);
+      }
+    }
+    
+    return results.sort((a, b) => b.score - a.score);
+  } catch (error) {
+    console.error(`[Search] Error searching folder ${folderName}:`, error);
+    return [];
+  }
+}
+
+async function searchFullVault(query) {
+  const vaultPath = getVaultPath();
+  const excludeFolders = ['conversations', 'Chats', 'Echo', '.echo'];
+  const results = [];
+  
+  async function searchDir(dir, baseDir = '') {
+    try {
+      const items = await fs.readdir(dir, { withFileTypes: true });
+      
+      for (const item of items) {
+        const fullPath = path.join(dir, item.name);
+        const relativePath = baseDir ? path.join(baseDir, item.name) : item.name;
+        
+        if (item.isDirectory() && !item.name.startsWith('.') && !excludeFolders.includes(item.name)) {
+          await searchDir(fullPath, relativePath);
+        } else if (item.isFile() && item.name.endsWith('.md')) {
+          const content = await fs.readFile(fullPath, 'utf8');
+          const searchResult = processFile(content, query, relativePath, 'general');
+          if (searchResult) {
+            results.push(searchResult);
+          }
+        }
+      }
+    } catch (error) {
+      console.error(`[Search] Error in searchDir for ${dir}:`, error);
+    }
+  }
+  
+  await searchDir(vaultPath);
+  return results.sort((a, b) => b.score - a.score);
+}
+
+async function searchConversations(query, limit = 2, projectPath = null) {
+  console.log(`[Search] Searching conversations for: ${query} in project: ${projectPath || 'global'}`);
+  const vaultPath = getVaultPath();
+  const conversationsPath = projectPath 
+    ? path.join(vaultPath, projectPath, 'conversations')
+    : path.join(vaultPath, 'conversations');
+  
+  try {
+    const files = await fs.readdir(conversationsPath);
+    const sortedFiles = files
+      .filter(f => f.endsWith('.md'))
+      .sort((a, b) => b.localeCompare(a))
+      .slice(0, Math.min(20, limit));
+    
+    const results = [];
+    for (const file of sortedFiles) {
+      const filePath = path.join(conversationsPath, file);
+      const content = await fs.readFile(filePath, 'utf8');
+      
+      const searchResult = processFile(content, query, path.join('conversations', file), 'conversation');
+      if (searchResult) {
+        searchResult.score = Math.max(1, searchResult.score - 10); // Lower priority
+        results.push(searchResult);
+        if (results.length >= limit) break;
+      }
+    }
+    
+    return results;
+  } catch (error) {
+    console.error('[Search] Error searching conversations:', error);
+    return [];
+  }
+}
+
+function processFile(content, query, relativePath, type) {
+  const contentLower = content.toLowerCase();
+  const queryLower = query.toLowerCase();
+  
+  const filenameWithoutExt = path.basename(relativePath, '.md').toLowerCase();
+  const filenameMatches = filenameWithoutExt.includes(queryLower);
+  const contentMatches = contentLower.includes(queryLower);
+  
+  if (!filenameMatches && !contentMatches) {
+    return null;
+  }
+  
+  // Create snippet
+  let snippet = '';
+  if (contentMatches) {
+    const matchIndex = contentLower.indexOf(queryLower);
+    const startIndex = Math.max(0, matchIndex - 100);
+    const endIndex = Math.min(content.length, matchIndex + query.length + 100);
+    snippet = content.substring(startIndex, endIndex);
+    if (startIndex > 0) snippet = '...' + snippet;
+    if (endIndex < content.length) snippet = snippet + '...';
+  } else {
+    snippet = content.substring(0, 200) + '...';
+  }
+  
+  const matchCount = (contentLower.match(new RegExp(queryLower, 'g')) || []).length;
+  const score = (filenameMatches ? 20 : 0) + matchCount;
+  
+  return {
+    path: relativePath,
+    content: content,
+    snippet: snippet,
+    score: score,
+    matchType: type
+  };
+}
+// ===== HANDLER FUNCTION DEFINITIONS =====
+const models_get_options_handler = async () => {
+  console.log('[DEBUG] models_get_options_handler called');
+  
+  const result = {
+    localModels: [],
+    apiProviders: []
+  };
+
+  try {
+    console.log('[DEBUG] Fetching from Ollama...');
+    const response = await fetch('http://localhost:11434/api/tags');
+    if (response.ok) {
+      const data = await response.json();
+      const ollamaModels = data.models || [];
+      
+      result.localModels = ollamaModels.map(model => ({
+        id: model.name,
+        name: model.name,
+        provider: 'Ollama',
+        installed: true,
+        size: model.size ? `${(model.size / 1e9).toFixed(1)}GB` : 'Unknown size',
+        description: `Installed ${model.name} model`,
+        capabilities: ['chat', 'reasoning'],
+        status: 'ready',
+        type: 'local',
+        model: model.name,
+        modified_at: model.modified_at || new Date().toISOString()
+      }));
+    }
+  } catch (ollamaError) {
+    console.log('[DEBUG] Ollama error:', ollamaError.message);
+  }
+
+  const installedNames = new Set(result.localModels.map(m => m.id));
+  
+  const recommendedModels = [
+    {
+      id: 'granite3.3:2b',
+      name: 'Llama 3.2 3B',
+      size: '2GB',
+      description: 'Latest Llama model, great balance',
+      capabilities: ['chat', 'reasoning']
+    },
+    {
+      id: 'mistral:7b',
+      name: 'Mistral 7B',
+      size: '4.1GB',
+      description: 'Strong general purpose model',
+      capabilities: ['chat', 'reasoning', 'coding']
+    },
+    {
+      id: 'openhermes:latest',
+      name: 'OpenHermes 2.5',
+      size: '4.1GB',
+      description: 'Fine-tuned for conversations',
+      capabilities: ['chat', 'reasoning']
+    },
+    {
+      id: 'phi3:mini',
+      name: 'Phi-3 Mini',
+      size: '2.3GB',
+      description: 'Microsoft\'s efficient model',
+      capabilities: ['chat', 'reasoning']
+    }
+  ];
+
+  recommendedModels.forEach(model => {
+    if (!installedNames.has(model.id)) {
+      result.localModels.push({
+        ...model,
+        provider: 'Ollama',
+        installed: false
+      });
+    }
+  });
+
+  result.apiProviders = [
+    {
+      id: 'openai',
+      name: 'OpenAI',
+      models: ['gpt-4o', 'gpt-4o-mini'],
+      configured: false,
+      capabilities: ['general', 'chat', 'reasoning', 'coding', 'analysis']
+    },
+    {
+      id: 'anthropic',
+      name: 'Anthropic',
+      models: ['claude-3-5-sonnet-20241022'],
+      configured: false,
+      capabilities: ['general', 'chat', 'reasoning', 'coding', 'analysis', 'writing']
+    }
+  ];
+
+  const installedModels = result.localModels.filter(m => m.installed);
+  const availableModels = result.localModels.filter(m => !m.installed);
+  
+  return {
+    grouped: {
+      installed: installedModels,
+      available: availableModels,
+      api: result.apiProviders
+    }
+  };
+};
+
+const save_onboarding_data_handler = async (event, data) => {
+  try {
+    const configPath = path.join(app.getPath('userData'), 'onboarding-config.json');
+    await fs.writeFile(configPath, JSON.stringify(data, null, 2));
+    
+    if (db && db.setConfig) {
+      db.setConfig('onboardingData', data);
+    }
+    
+    return { success: true };
+  } catch (error) {
+    console.error('[DEBUG] Failed to save onboarding data:', error);
+    return { success: false, error: error.message };
+  }
+};
+
+const search_notes_handler = async (event, query, projectPath = null) => {
+  console.log(`[Search Notes] Query: "${query}" in project: ${projectPath || 'global'}`);
+  const results = await implementLayeredSearch(query, projectPath);
+  
+  if (results.length === 0) {
+    return "No results found";
+  }
+  
+  const formatted = results.map((result, i) => {
+    const folder = path.dirname(result.path);
+    const fileName = path.basename(result.path, '.md');
+    return `${i + 1}. **${fileName}** (${folder})\n   ${result.snippet}`;
+  }).join('\n\n');
+  
+  return formatted;
+};
+
+async function searchNotes(query) {
+  console.log(`[Search Function] Query: "${query}"`);
+  const results = await implementLayeredSearch(query);
+  
+  if (results.length === 0) {
+    return "No results found";
+  }
+  
+  const formatted = results.map((result, i) => {
+    const folder = path.dirname(result.path);
+    const fileName = path.basename(result.path, '.md');
+    return `${i + 1}. **${fileName}** (${folder})\n   ${result.snippet}`;
+  }).join('\n\n');
+  
+  return formatted;
+}
+
+const get_security_config_handler = async () => {
+  try {
+    const configPath = path.join(app.getPath('userData'), 'security-config.json');
+    const data = await fs.readFile(configPath, 'utf8');
+    return JSON.parse(data);
+  } catch {
+    return null;
+  }
+};
+
+// ===== IPC HANDLERS SECTION =====
+// RULE: Each handler gets ONE implementation only
+// RULE: List handlers alphabetically by primary name
+
+// ===== AUTHENTICATION HANDLERS =====
+safeHandle('check-authentication', async () => {
+  console.log('[DEBUG] check-authentication called');
+  try {
+    const onboardingPath = path.join(app.getPath('userData'), 'onboarding-complete.json');
+    await fs.access(onboardingPath);
+    return { isAuthenticated: true };
+  } catch (error) {
+    return { isAuthenticated: false };
+  }
+});
+
+async function handleAuthCheck(event, credentials) {
+  console.log('[DEBUG] Auth handler called with:', credentials);
+
+  try {
+    const { username, challenge } = credentials;
+
+    if (!username || !challenge) {
+      console.log('[DEBUG] Missing credentials');
+      return { isAuthenticated: false, error: 'Missing credentials' };
+    }
+
+    const user = db.getUser(username);
+    if (!user) {
+      console.log('[DEBUG] User not found');
+      return { isAuthenticated: false, error: 'User not found' };
+    }
+
+    const isValid = true; // TODO: Add real validation logic
+    console.log('[DEBUG] Auth check result:', isValid);
+    return { isAuthenticated: isValid };
+  } catch (error) {
+    console.error('[DEBUG] Auth check failed:', error);
+    return { isAuthenticated: false, error: error.message };
+  }
+}
+
+safeHandle('security:checkAuth', handleAuthCheck);
+safeHandle('security:verify-completion', handleAuthCheck);
+
+// ===== CHAT HANDLERS =====
+
+safeHandle('chat-completion', async (event, { messages, model }) => {
+  await ensureQLib();
+  console.log('[DEBUG] chat-completion called with model:', model);
+  try {
+    if (!memorySystem) await initializeMemorySystems();
+    
+    let voicePrompt = messages[messages.length - 1].content;
+    console.log('[DEBUG] User input:', voicePrompt);
+    
+    // Handle menu selections (1, 2, 3) before other processing
+    console.log('[DEBUG] Checking numbered response:', {
+      input: voicePrompt.trim(),
+      isNumber: /^[1-3]$/.test(voicePrompt.trim()),
+      hasLastConversation: !!global.lastConversation,
+      hasFacts: !!global.lastConversation?.facts,
+      factsLength: global.lastConversation?.facts?.length || 0
+    });
+
+    if (/^[1-3]$/.test(voicePrompt.trim()) && global.lastConversation?.facts) {
+      const option = parseInt(voicePrompt);
+      const fact = global.lastConversation.facts[0];
+      
+      console.log('[MENU] Processing option', option, 'for fact:', fact?.name);
+      
+      if (option === 1) {
+        voicePrompt = `Tell me more details about ${fact.name}. Use the file content from ${fact.path || fact.name}.`;
+      } else if (option === 2) {
+        voicePrompt = `Provide a complete summary of the client file for ${fact.name}. Include all key details about their timeshare situation, financial details, and any important notes from the file content.`;
+      } else if (option === 3) {
+        voicePrompt = `Provide an Obsidian link to open the file for ${fact.name} at ${fact.path || fact.name}`;
+      }
+      
+      console.log('[MENU] Converted option', option, 'to explicit request:', voicePrompt);
+      messages[messages.length - 1].content = voicePrompt;
+    }
+    
+    // Q-LIB OBSERVES ALL CONVERSATIONS
+    const qlibHandler = handlerMap.get('qlib-extract');
+    let qlibContext = null;
+
+    if (qlibHandler) {
+      console.log('[DEBUG] Q-lib observing conversation...');
+      qlibContext = await qlibHandler(event, {
+        query: voicePrompt,
+        conversation: messages.map(m => `${m.role}: ${m.content}`).join('\n'),
+        project: global.currentProject
+      });
+      console.log('[DEBUG] Q-lib observation complete:', {
+        facts: qlibContext?.facts?.length || 0,
+        primaryCount: qlibContext?.primaryCount || 0
+      });
+    }
+
+    // DETECT VAULT QUERIES AND SEARCH
+    console.log('[DEBUG] Checking vault keywords in:', voicePrompt.toLowerCase());
+    const vaultKeywords = ['vault', 'recipe', 'recipes', 'client', 'clients', 'notes', 'files', 'saved', 'stored'];
+    const shouldSearchVault = vaultKeywords.some(keyword => 
+      voicePrompt.toLowerCase().includes(keyword)
+    );
+
+    let vaultSearchResults = null;
+    if (shouldSearchVault) {
+      console.log('[Q] User asking about vault, searching...');
+      const searchHandler = handlerMap.get('qlib-search');
+      if (searchHandler) {
+        vaultSearchResults = await searchHandler(event, {
+          query: voicePrompt,
+          project: global.currentProject,
+          options: { includeConversation: true, conversation: messages }
+        });
+        console.log('[Q] Vault search complete:', {
+          vault: vaultSearchResults?.vault?.length || 0,
+          memory: vaultSearchResults?.memory?.length || 0
+        });
+      }
+    }
+
+    // LOAD IDENTITY
+    const configPath = path.join(app.getPath('userData'), 'onboarding-config.json');
+    let currentIdentity = null;
+    try {
+      const configData = await fs.readFile(configPath, 'utf8');
+      currentIdentity = JSON.parse(configData);
+      console.log('[DEBUG] Loaded identity:', currentIdentity?.ai?.name);
+    } catch (e) {
+      console.error('[DEBUG] Failed to load identity:', e);
+    }
+
+    // BUILD MEMORY CONTEXT
+const contextData = await global.memorySystem.buildContextForInput(voicePrompt, {
+  project: global.currentProject
+});
+console.log('[DEBUG] Memory context built:', contextData?.memory?.length || 0, 'memories');
+
+// ADD CONVERSATION CONTINUITY (Move this HERE - BEFORE Phase 2)
+if (!global.lastConversation) {
+  global.lastConversation = { facts: null, topic: null, query: null };
+}
+
+// Check if this is a follow-up FIRST
+const isFollowUp = /^(those|that|it|them|this|tell me about|provide|show|explain|correct|why|do i have)/i.test(voicePrompt.trim());
+
+if (isFollowUp && global.lastConversation.facts) {
+  console.log('[CONTEXT] Follow-up detected, injecting previous results');
+  
+  // Merge with current context if needed
+  if (!qlibContext || qlibContext.facts.length === 0) {
+    qlibContext = {
+      facts: global.lastConversation.facts,
+      primaryCount: global.lastConversation.facts.length,
+      broker: 'context-recovery'
+    };
+  }
+}
+
+// Store current results for NEXT query
+if (qlibContext?.facts?.length > 0) {
+  global.lastConversation = {
+    facts: qlibContext.facts,
+    topic: qlibContext.facts[0]?.folder || 'items',
+    query: voicePrompt
+  };
+}
+
+// ========== PHASE 2: UNIFIED CONTEXT INJECTION ==========
+// Now this can use the enhanced qlibContext
+let fullContext = '';
+let contextSources = [];
+// ... rest of Phase 2 as you have it
+
+    // 1. Q-lib extracted facts
+    if (qlibContext?.facts?.length > 0) {
+      fullContext += `\n\n=== Extracted Facts from Vault ===\n`;
+      qlibContext.facts.slice(0, 10).forEach((fact, i) => {
+        const content = (fact.extracted || fact.content || '').substring(0, 150);
+        fullContext += `${i+1}. ${fact.name || 'Unknown'} (${fact.folder || 'Unknown'}): ${content}...\n`;
+      });
+      contextSources.push(`Q-lib: ${qlibContext.facts.length} facts`);
+    }
+
+    // 2. Vault search results  
+    if (vaultSearchResults?.vault?.length > 0) {
+      fullContext += `\n\n=== Vault Search Results ===\n`;
+      vaultSearchResults.vault.slice(0, 10).forEach(result => {
+        const snippet = (result.snippet || result.content || '').substring(0, 200);
+        fullContext += `File: ${result.path || 'Unknown'}\n${snippet}...\n---\n`;
+      });
+      contextSources.push(`Vault: ${vaultSearchResults.vault.length} results`);
+    }
+
+    // 3. Memory context
+    if (contextData?.context) {
+      fullContext += `\n\n=== Memory Context ===\n${contextData.context}\n`;
+      contextSources.push(`Memory: ${contextData.memory?.length || 0} capsules`);
+    }
+
+    
+
+    // 4. File/folder context from Phase 1
+    if (global.fileContext && global.currentFile) {
+      fullContext += `\n\n=== Active File ===\n${path.basename(global.currentFile)}\n`;
+      fullContext += global.fileContext.substring(0, 1000) + '...\n';
+      contextSources.push(`File: ${path.basename(global.currentFile)}`);
+    }
+
+    if (global.folderContext && global.currentFolder) {
+      fullContext += `\n\n=== Active Folder ===\n${path.basename(global.currentFolder)}\n`;
+      if (Array.isArray(global.folderContext)) {
+        global.folderContext.forEach(item => {
+          fullContext += `- ${item.file}: ${item.content.substring(0, 100)}...\n`;
+        });
+      }
+      contextSources.push(`Folder: ${path.basename(global.currentFolder)}`);
+    }
+    
+    
+
+    // SINGLE INJECTION POINT - everything in one system message
+    let systemContent = '';
+    
+    // Build identity portion
+    if (currentIdentity?.ai) {
+      systemContent = `You are ${currentIdentity.ai.name}, ${currentIdentity.ai.role || 'an AI assistant'}.\n`;
+      systemContent += `Your personality: ${currentIdentity.ai.personality || 'helpful and friendly'}.\n`;
+      systemContent += `${currentIdentity.profilePrompt || ''}\n\n`;
+      systemContent += `**Echo Spine Directive v3.3** Truth grounds responses. Access authorized vault content when users say "my/our/clients/logs/data/reports/lists/contacts".\n`;
+    }
+    
+    // Add all context
+    if (fullContext) {
+      systemContent += `\nYou have access to the user's vault and memory:${fullContext}`;
+      console.log('[INJECTION] Injecting context from:', contextSources.join(', '));
+    }
+    
+    // Set the system message (replace any existing)
+    const systemIdx = messages.findIndex(m => m.role === 'system');
+    if (systemIdx !== -1) {
+      messages[systemIdx].content = systemContent;
+    } else if (systemContent) {
+      messages.unshift({ role: 'system', content: systemContent });
+    }
+    
+    console.log('[INJECTION] Total context injected:', fullContext.length, 'chars');
+    // ========== END UNIFIED INJECTION ==========
+
+    // HALT IF NO CONTEXT FOUND
+if ((!qlibContext?.facts?.length) && (!vaultSearchResults?.vault?.length) && (!contextData?.memory?.length)) {
+  console.warn('[GUARDRAIL] No memory found. Halting hallucination path.');
+  return {
+    content: 'I need to search the vault to answer that. Would you like me to re-index?',
+    model: 'echo-default',
+    needsReindex: true
+  };
+}
+
+// HANDLE NUMBERED RESPONSES (Add this HERE - BEFORE discovery mode)
+if (voicePrompt.trim() === '1' || voicePrompt.trim() === '2' || voicePrompt.trim() === '3') {
+  if (global.lastConversation?.facts?.length > 0) {
+    const selectedOption = parseInt(voicePrompt.trim());
+    const fact = global.lastConversation.facts[0]; // Most recent item
+    
+    console.log('[MENU] User selected option', selectedOption);
+    console.log('[MENU] Working with fact:', fact.name);
+    
+    if (selectedOption === 2) { // User wants summary
+      console.log('[MENU] Preparing summary of:', fact.name);
+      
+      // Make sure we have the full content
+      if (!fact.content || fact.content.length < 200) {
+        console.log('[MENU] Content too short, need to load full file');
+        // You might need to reload the file here
+      }
+      
+      // Override qlibContext to ensure content is available
+      qlibContext = {
+        facts: [fact],
+        primaryCount: 1,
+        mode: 'content',
+        content: fact.content || 'Content not available'
+      };
+      
+      // Skip discovery mode by setting this
+      voicePrompt = `Summarize the content of ${fact.name}`;
+    }
+  }
+}
+
+let response;
+
+// HANDLE DISCOVERY MODE (for list queries)
+if (qlibContext?.facts?.length > 0) {
+  const queryLower = voicePrompt.toLowerCase();
+  const isDiscoveryQuery = queryLower.match(/^(what are|show me|list|find|who are|where is|what.*my|show.*my)/);
+  const isDirectContentRequest = queryLower.includes('tell me about') || 
+                                queryLower.includes('what\'s in it') ||
+                                queryLower.includes('full content') ||
+                                queryLower.includes('explain') ||
+                                queryLower.includes('summarize'); 
+  
+  if (isDiscoveryQuery && !isDirectContentRequest) {
+    console.log('[Q-LIB] Discovery mode - returning formatted list');
+  
+        const items = qlibContext.facts.slice(0, 10).map((fact, i) => {
+          const vaultName = 'Obsidian Vault';
+          const filePath = fact.path || fact.name || fact.metadata?.fileName;
+          const obsidianLink = `obsidian://open?vault=${encodeURIComponent(vaultName)}&file=${encodeURIComponent(filePath)}`;
+          
+          const preview = (fact.extracted || fact.content || '').substring(0, 100);
+          return `${i + 1}. **${fact.name || '[unnamed]'}** in ${fact.folder || 'vault'}\n   ${preview}${preview.length >= 100 ? '...' : ''}\n   [📝 Open](${obsidianLink})`;
+        }).join('\n\n');
+        
+        let discoveryResponse = `I found ${qlibContext.facts.length} item${qlibContext.facts.length === 1 ? '' : 's'} in `;
+        discoveryResponse += global.currentProject ? `the ${global.currentProject} project:\n\n` : `your vault:\n\n`;
+        discoveryResponse += items;
+        
+        if (qlibContext.facts.length > 10) {
+          discoveryResponse += `\n\n...and ${qlibContext.facts.length - 10} more items.`;
+        }
+        
+        return {
+          content: discoveryResponse,
+          model: 'echo-qlib',
+          metadata: {
+            type: 'discovery',
+            facts: qlibContext.facts,
+            project: global.currentProject
+          }
+        };
+      }
+    }
+
+    // CALL MODEL WITH INJECTED CONTEXT
+    try {
+      const modelResponse = await callOllamaModel(model || 'mistral:latest', messages);
+      response = {
+        content: modelResponse,
+        model: model || 'mistral:latest'
+      };
+    } catch (modelError) {
+      console.error('[DEBUG] Model call failed:', modelError);
+      response = {
+        content: `I found ${contextSources.join(', ')} but had trouble processing. Try again?`,
+        model: 'echo-error'
+      };
+    }
+
+    // SAVE TO MEMORY
+    console.log('[DEBUG] Saving conversation to memory...');
+    await global.memorySystem.processConversation(voicePrompt, response.content, {
+      model: response.model,
+      importance: qlibContext?.facts?.length > 0 ? 0.7 : 0.5,
+      topic: qlibContext?.classification?.mode || 'general',
+      project: global.currentProject
+    });
+
+    console.log('[DEBUG] Chat completion successful');
+    return response;
+
+  } catch (error) {
+    console.error('[DEBUG] Chat completion error:', error);
+    return {
+      content: `I encountered an error: ${error.message}`,
+      model: 'echo-error'
+    };
+  }
+});
+
+safeHandle('ask', async (event, prompt) => {
+  try {
+    await ensureQLib();
+
+    const extract = await handlerMap.get('qlib-extract')(event, { query: prompt });
+
+    if (!extract.primaryCount && !extract.contextCount) {
+      return {
+        content: 'Memory not found. Would you like me to reindex the vault?',
+        model: 'echo-default',
+        needsReindex: true
+      };
+    }
+
+    return {
+      content: extract.summary.primary + (extract.summary.context ? `\n${extract.summary.context}` : ''),
+      model: 'echo-default'
+    };
+
+  } catch (err) {
+    console.error('[IPC‑ASK] fatal:', err);
+    return {
+      content: 'Memory system encountered an error. Please check the logs.',
+      model: 'echo-error',
+      error: err.message
+    };
+  }
+});
+
+safeHandle('get-object', async (event, { type, name }) => {
+  try {
+    await ensureQLib();
+
+    // Pull from Q-lib using fuzzy match
+    const extract = await handlerMap.get('qlib-extract')(event, {
+      query: name || type,  // fallback to just type if no name given
+      type: type
+    });
+
+    if (!extract?.summary?.primary && !extract?.matches?.length) {
+      return {
+        content: `No ${type} entries found.`,
+        matches: [],
+        type,
+        notFound: true
+      };
+    }
+
+    // If user asked for a name, return best match
+    if (name) {
+      const bestMatch = extract.matches?.find((m) =>
+        m.title?.toLowerCase().includes(name.toLowerCase())
+      );
+
+      if (bestMatch) {
+        return {
+          content: bestMatch.content || bestMatch.body || bestMatch.text,
+          metadata: bestMatch,
+          type
+        };
+      } else {
+        return {
+          content: `No matching ${type} found for "${name}".`,
+          matches: extract.matches,
+          type
+        };
+      }
+    }
+
+    // Else, return the whole list of matches
+    return {
+      content: `Found ${extract.matches.length} ${type} entries.`,
+      matches: extract.matches,
+      type
+    };
+
+  } catch (err) {
+    console.error('[get-object] fatal:', err);
+    return {
+      content: `Error retrieving ${type}: ${err.message}`,
+      error: true
+    };
+  }
+});
+// QLIB OBSERVE END
+safeHandle('ask', async (event, prompt) => {
+  try {
+    await ensureQLib();
+
+    const extract = await handlerMap.get('qlib-extract')(event, { query: prompt });
+
+    if (!extract.primaryCount && !extract.contextCount) {
+      return {
+        content: 'Memory not found. Would you like me to reindex the vault?',
+        model: 'echo-default',
+        needsReindex: true
+      };
+    }
+
+    return {
+      content: extract.summary.primary + (extract.summary.context ? `\n${extract.summary.context}` : ''),
+      model: 'echo-default'
+    };
+
+  } catch (err) {
+    console.error('[IPC‑ASK] fatal:', err);
+    return {
+      content: 'Memory system encountered an error. Please check the logs.',
+      model: 'echo-error',
+      error: err.message
+    };
+  }
+});
+
+safeHandle('get-object', async (event, { type, name }) => {
+  try {
+    await ensureQLib();
+
+    // Pull from Q-lib using fuzzy match
+    const extract = await handlerMap.get('qlib-extract')(event, {
+      query: name || type,  // fallback to just type if no name given
+      type: type
+    });
+
+    if (!extract?.summary?.primary && !extract?.matches?.length) {
+      return {
+        content: `No ${type} entries found.`,
+        matches: [],
+        type,
+        notFound: true
+      };
+    }
+
+    // If user asked for a name, return best match
+    if (name) {
+      const bestMatch = extract.matches?.find((m) =>
+        m.title?.toLowerCase().includes(name.toLowerCase())
+      );
+
+      if (bestMatch) {
+        return {
+          content: bestMatch.content || bestMatch.body || bestMatch.text,
+          metadata: bestMatch,
+          type
+        };
+      } else {
+        return {
+          content: `No matching ${type} found for "${name}".`,
+          matches: extract.matches,
+          type
+        };
+      }
+    }
+
+    // Else, return the whole list of matches
+    return {
+      content: `Found ${extract.matches.length} ${type} entries.`,
+      matches: extract.matches,
+      type
+    };
+
+  } catch (err) {
+    console.error('[get-object] fatal:', err);
+    return {
+      content: `Error retrieving ${type}: ${err.message}`,
+      error: true
+    };
+  }
+});
+// ===== CHAT HANDLERS =====
+
+
+// Create the handler with dependencies
+const handleChatSend = createChatSendHandler(handlerMap, formatMessagesForModel);
+
+// Register it
+safeHandle('chat:send', handleChatSend);
+// ===== MEMORY HANDLERS =====
+safeHandle('init-memory-service', async (event, vaultPath) => {
+  try {
+    await ensureQLib();
+
+    const finalVaultPath = vaultPath || getVaultPath();
+    memoryService = new MemoryService(finalVaultPath);
+    console.log('[IPC] Memory service initialized with vault:', finalVaultPath);
+    return { success: true };
+  } catch (error) {
+    console.error('[IPC] Memory service init failed:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+
+safeHandle('appendCapsule', async (event, capsule) => {
+  try {
+    console.log('[CAPSULE] Received capsule:', {
+      role: capsule.role,
+      contentLength: capsule.content?.length,
+      model: capsule.model
+    });
+
+    if (!memorySystem) {
+      console.log('[CAPSULE] Initializing memory system...');
+      await initializeMemorySystems();
+    }
+
+    // Process capsule through memory system
+    const result = await global.memorySystem.processConversation(
+      capsule.content,
+      '', // no AI response yet
+      {
+        role: capsule.role,
+        model: capsule.model,
+        context: capsule.context,
+        timestamp: capsule.timestamp,
+        source: 'appendCapsule'
+      }
+    );
+
+    // === WRITE TO DISK (FIX) - Now using project-based organization
+    const vaultPath = global.memorySystem.vaultManager.vaultPath;
+    const capsulesPath = path.join(vaultPath, '.echo', 'capsules');
+    
+    // Detect project from capsule content
+    const project = detectProjectFromCapsule(capsule);
+    const dir = path.join(capsulesPath, project);
+    await fs.mkdir(dir, { recursive: true });
+
+    const filePath = path.join(dir, `${capsule.id}.json`);
+    await fs.writeFile(filePath, JSON.stringify(capsule, null, 2), 'utf8');
+
+    console.log('[CAPSULE] Written to disk:', filePath);
+    return { success: true, capsuleId: capsule.id };
+
+  } catch (error) {
+    console.error('[CAPSULE] Save failed:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+
+safeHandle('memory:build-context', async (event, voicePrompt, options) => {
+  console.log('[DEBUG] memory:build-context called');
+  if (!memorySystem) await initializeMemorySystems();
+  return await global.memorySystem.buildContextForInput(voicePrompt, options);
+});
+
+safeHandle('memory:get-stats', async () => {
+  console.log('[DEBUG] memory:get-stats called');
+  if (!memorySystem) await initializeMemorySystems();
+  return await memorySystem.getStats();
+});
+
+safeHandle('memory:process-conversation', async (event, voicePrompt, aiResponse, metadata) => {
+  console.log('[DEBUG] memory:process-conversation called');
+  if (!memorySystem) await initializeMemorySystems();
+  return await global.memorySystem.processConversation(voicePrompt, aiResponse, metadata);
+});
+
+safeHandle('memory:search', async (event, query) => {
+  console.log('[DEBUG] memory:search called with query:', query);
+  if (!memorySystem) await initializeMemorySystems();
+  return await memorySystem.search(query);
+});
+
+safeHandle('search-memories', async (event, query) => {
+  try {
+    console.log('[Memory Search] Query:', query);
+    
+    // Use VaultPathManager instead of hardcoded path
+    const vaultPath = getVaultPath();
+    const capsulesPath = path.join(vaultPath, '.echo', 'capsules');
+    
+    console.log('[Memory Search] Looking in:', capsulesPath);
+    
+    const capsules = [];
+    const projectFolders = await fs.readdir(capsulesPath);
+    
+    for (const folder of projectFolders) {
+      const folderPath = path.join(capsulesPath, folder);
+      const folderStats = await fs.stat(folderPath);
+      
+      if (folderStats.isDirectory()) {
+        const files = await fs.readdir(folderPath);
+        
+        for (const file of files.filter(f => f.endsWith('.json'))) {
+          try {
+            const filePath = path.join(folderPath, file);
+            const content = await fs.readFile(filePath, 'utf8');
+            const capsule = JSON.parse(content);
+            
+            if (!query || JSON.stringify(capsule).toLowerCase().includes(query.toLowerCase())) {
+              capsules.push(capsule);
+            }
+          } catch (e) {
+            console.error('[Memory Search] Error reading capsule:', e);
+          }
+        }
+      }
+    }
+    
+    console.log(`[Memory Search] Found ${capsules.length} capsules`);
+    
+    return {
+      success: true,
+      capsules: capsules.slice(0, 10),
+      count: capsules.length
+    };
+  } catch (error) {
+    console.error('[Memory Search] Error:', error);
+    return {
+      success: false,
+      capsules: [],
+      error: error.message
+    };
+  }
+});
+
+// NEW: Vault indexing handlers
+safeHandle('memory:index-vault', async () => {
+  try {
+    const ChaosAnalyzer = require('../backend/qlib/chaosanalyzer');
+    const vaultPath = getVaultPath();
+    
+    console.log('[IPC] Starting vault indexing at:', vaultPath);
+    
+    // Create analyzer with proper config
+    const analyzer = new ChaosAnalyzer({
+      vaultRoot: vaultPath,
+      concurrency: 4,
+      indexOnly: true  // ADD THIS - vault indexing should not create capsules
+    });
+    
+    // Run analysis
+    const result = await analyzer.analyzeVault();
+    
+   // Store last index time globally
+global.lastIndexTime = Date.now();
+
+// Return summary for frontend feedback
+return {
+  success: true,
+  indexed: result.filesAnalyzed || 0,
+  capsules: result.capsulesCreated || 0,  // This will now be 0
+  timestamp: global.lastIndexTime,
+  errors: result.errors || []
+};
+
+} catch (error) {
+  console.error('[IPC] memory:index-vault failed:', error);
+  return { 
+    success: false,
+    error: error.message,
+    stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+  };
+}
+});
+
+// ADD: Force reindex specific folder handler
+safeHandle('memory:force-reindex', async (event, folderName) => {
+  try {
+    const vaultPath = getVaultPath();
+    const folderPath = path.join(vaultPath, folderName || 'Foods');
+    
+    console.log('[IPC] Starting forced reindex of folder:', folderPath);
+    
+    // Check if folder exists
+    try {
+      await fs.access(folderPath);
+    } catch {
+      return { 
+        success: false, 
+        error: `Folder ${folderName} not found at ${folderPath}` 
+      };
+    }
+    
+    // Import the function from app.js
+    //const { forceReindexFolder } = require('./app');
+    
+    // Check if function exists
+    if (typeof forceReindexFolder !== 'function') {
+      console.error('[IPC] forceReindexFolder not found in app.js');
+      return {
+        success: false,
+        error: 'forceReindexFolder function not available'
+      };
+    }
+    
+    // Run the reindexing
+    await forceReindexFolder(folderPath);
+    
+    // Force a memory system refresh
+    if (global.memorySystem?.vaultManager) {
+      console.log('[IPC] Rebuilding memory index after folder reindex...');
+      await global.memorySystem.vaultManager.rebuildIndexFromDisk();
+      const indexSize = global.memorySystem.vaultManager.index?.size || 0;
+      
+      // Count recipe capsules specifically
+      let recipeCapsuleCount = 0;
+      if (folderName === 'Foods' || !folderName) {
+        const capsulesPath = path.join(vaultPath, '.echo', 'capsules');
+        try {
+          // Now search in food project folder
+          const foodPath = path.join(capsulesPath, 'food');
+          const files = await fs.readdir(foodPath);
+          recipeCapsuleCount = files.filter(f => f.endsWith('.json')).length;
+        } catch (e) {
+          console.error('[IPC] Error counting recipe capsules:', e);
+        }
+      }
+      
+      return { 
+        success: true, 
+        message: `Reindexed ${folderName || 'Foods'} folder`,
+        capsulesIndexed: indexSize,
+        recipeCapsules: recipeCapsuleCount,
+        folder: folderName || 'Foods'
+      };
+    }
+    
+    return { 
+      success: true, 
+      message: `Reindexed ${folderName || 'Foods'} folder (memory system not ready)` 
+    };
+    
+  } catch (error) {
+    console.error('[IPC] Force reindex failed:', error);
+    return { 
+      success: false, 
+      error: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    };
+  }
+});
+
+safeHandle('memory:check-index-needed', async () => {
+  const lastIndex = global.lastIndexTime || 0;
+  const hoursSinceIndex = (Date.now() - lastIndex) / (1000 * 60 * 60);
+  
+  return {
+    needed: hoursSinceIndex > 24,
+    lastIndexTime: lastIndex,
+    hoursSince: hoursSinceIndex
+  };
+});
+
+// Capsule handlers - properly placed at the same level as other handlers
+safeHandle('capsule:markInaccurate', async (event, capsuleId) => {
+  try {
+    if (global.memorySystem?.markCapsuleAsInaccurate) {
+      await global.memorySystem.markCapsuleAsInaccurate(capsuleId);
+      return { success: true, message: 'Capsule marked as inaccurate' };
+    }
+    return { success: false, error: 'Memory system not available' };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+});
+
+safeHandle('capsule:getLastId', async () => {
+  return global.lastResponseCapsuleId || null;
+});
+
+// ===== MODEL HANDLERS =====
+safeHandle('check-ollama', async () => {
+  console.log('[DEBUG] check-ollama called');
+  try {
+    const response = await fetch('http://localhost:11434/api/tags');
+    if (response.ok) {
+      const data = await response.json();
+      return {
+        available: true,
+        models: data.models || []
+      };
+    }
+    return { available: false, error: 'Ollama not responding' };
+  } catch (error) {
+    return { available: false, error: error.message };
+  }
+});
+
+safeHandle('check-ollama-models', async () => {
+  console.log('[DEBUG] check-ollama-models called');
+  try {
+    const response = await fetch('http://localhost:11434/api/tags');
+    if (response.ok) {
+      const data = await response.json();
+      console.log('[DEBUG] Ollama models found:', data.models?.length || 0);
+      return {
+        available: true,
+        models: data.models || []
+      };
+    }
+    return { available: false, models: [] };
+  } catch (error) {
+    console.error('[DEBUG] Failed to check Ollama:', error);
+    return { available: false, models: [], error: error.message };
+  }
+});
+
+safeHandle('checkOllamaModels', async () => {
+  console.log('[DEBUG] checkOllamaModels called, forwarding...');
+  try {
+    const response = await fetch('http://localhost:11434/api/tags');
+    if (response.ok) {
+      const data = await response.json();
+      return {
+        available: true,
+        models: data.models || []
+      };
+    }
+    return { available: false, models: [] };
+  } catch (error) {
+    console.error('[DEBUG] Failed to check Ollama:', error);
+    return { available: false, models: [], error: error.message };
+  }
+});
+
+safeHandle('get-model-options', async () => {
+  console.log('[DEBUG] get-model-options called, forwarding to models:get-options');
+  try {
+    const result = await models_get_options_handler();
+    console.log('[DEBUG] get-model-options returning:', JSON.stringify(result, null, 2));
+    return result;
+  } catch (error) {
+    console.error('[DEBUG] Error in get-model-options:', error);
+    return {
+      grouped: {
+        installed: [],
+        available: [],
+        api: []
+      }
+    };
+  }
+});
+
+safeHandle('get-ollama-models', async () => {
+  console.log('[DEBUG] get-ollama-models called');
+  try {
+    const response = await fetch('http://localhost:11434/api/tags');
+    if (response.ok) {
+      const data = await response.json();
+      return data.models || [];
+    }
+    return [];
+  } catch (error) {
+    console.error('[DEBUG] Failed to get Ollama models:', error);
+    return [];
+  }
+});
+
+safeHandle('models:check', async (event, modelName) => {
+  console.log(`[DEBUG] models:check called for: ${modelName}`);
+  try {
+    const response = await fetch('http://localhost:11434/api/tags');
+    if (response.ok) {
+      const data = await response.json();
+      const installed = data.models.some(m => m.name === modelName);
+      console.log(`[DEBUG] Model ${modelName} installed:`, installed);
+      return { installed };
+    }
+    return { installed: false };
+  } catch (error) {
+    console.error(`[DEBUG] [IPC] Failed to check model ${modelName}:`, error);
+    return { installed: false };
+  }
+});
+
+safeHandle('models:check-ollama', async () => {
+  console.log('[DEBUG] models:check-ollama called');
+  try {
+    const response = await fetch('http://localhost:11434/api/tags');
+    if (response.ok) {
+      const data = await response.json();
+      return {
+        available: true,
+        models: data.models || []
+      };
+    }
+    return { available: false, error: 'Ollama not responding' };
+  } catch (error) {
+    return { available: false, error: error.message };
+  }
+});
+
+safeHandle('models:delete', async (event, modelName) => {
+  console.log(`[DEBUG] [IPC] Deleting model: ${modelName}`);
+  
+  try {
+    const response = await fetch('http://localhost:11434/api/delete', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name: modelName })
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to delete model: ${response.statusText}`);
+    }
+
+    return { 
+      success: true, 
+      message: `Model ${modelName} deleted successfully` 
+    };
+  } catch (error) {
+    console.error(`[DEBUG] [IPC] Failed to delete model ${modelName}:`, error);
+    return { 
+      success: false, 
+      error: error.message 
+    };
+  }
+});
+
+safeHandle('models:get-options', async () => {
+  console.log('[DEBUG] [IPC] models:get-options called');
+  return await models_get_options_handler();
+});
+
+safeHandle('models:pull', async (event, modelName) => {
+  console.log(`[DEBUG] [IPC] Pulling model: ${modelName}`);
+  
+  try {
+    const response = await fetch('http://localhost:11434/api/pull', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ 
+        name: modelName,
+        stream: false
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to pull model: ${response.statusText}`);
+    }
+
+    const result = await response.json();
+    console.log(`[DEBUG] [IPC] Model pull result:`, result);
+    
+    return { 
+      success: true, 
+      message: `Model ${modelName} installed successfully` 
+    };
+  } catch (error) {
+    console.error(`[DEBUG] [IPC] Failed to pull model ${modelName}:`, error);
+    return { 
+      success: false, 
+      error: error.message 
+    };
+  }
+});
+
+safeHandle('refresh-models', async () => {
+  console.log('[DEBUG] refresh-models called');
+  return await models_get_options_handler();
+});
+
+// ===== ONBOARDING HANDLERS =====
+safeHandle('check-existing-identity', async () => {
+  try {
+    const vaultPath = store.get('vaultPath');
+    if (!vaultPath) {
+      return { exists: false };
+    }
+
+    //const identityManager = new IdentityManager(vaultPath);
+    //const identity = await identityManager.loadIdentity();
+    
+    if (identity) {
+      store.set('currentIdentity', identity);
+      console.log('[Startup] Existing identity loaded:', identity.ai.name);
+      return { 
+        exists: true, 
+        identity: identity 
+      };
+    }
+    
+    return { exists: false };
+  } catch (error) {
+    console.error('[Startup] Identity check failed:', error);
+    return { exists: false };
+  }
+});
+
+safeHandle('check-qlib-install-needed', async () => {
+  console.log('[IPC] Checking if Q-Lib install needed:', global.showingQLIBInstall);
+  return { needed: global.showingQLIBInstall || false };
+});
+
+safeHandle('complete-onboarding', async () => {
+  console.log('[DEBUG] complete-onboarding called');
+  try {
+    const configPath = path.join(app.getPath('userData'), 'onboarding-complete.json');
+    await fs.writeFile(configPath, JSON.stringify({ completed: true, timestamp: new Date().toISOString() }));
+
+    if (db && db.setConfig) {
+      db.setConfig('onboardingComplete', true);
+    }
+    
+    console.log('[DEBUG] Onboarding marked as complete');
+    return { success: true };
+  } catch (error) {
+    console.error('[DEBUG] Failed to complete onboarding:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+safeHandle('install-qlib', async (event) => {
+  console.log('[IPC] Starting Q-Lib installation...');
+  const { installQLib } = require('../src/installer/qlib-setup');
+  
+  try {
+    await installQLib((progress) => {
+      console.log('[IPC] Q-Lib install progress:', progress);
+      event.sender.send('qlib-install-progress', progress);
+    });
+    
+    global.showingQLIBInstall = false;
+    console.log('[IPC] Q-Lib installation completed successfully');
+    return { success: true };
+  } catch (error) {
+    console.error('[IPC] Q-Lib install failed:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+safeHandle('load-onboarding-config', async () => {
+  console.log('[DEBUG] load-onboarding-config called');
+  try {
+    const configPath = path.join(app.getPath('userData'), 'onboarding-config.json');
+    
+    const exists = await fs.access(configPath).then(() => true).catch(() => false);
+    if (!exists) {
+      console.log('[DEBUG] No onboarding config found');
+      return null;
+    }
+    
+    const configData = await fs.readFile(configPath, 'utf8');
+    const config = JSON.parse(configData);
+    
+    console.log('[DEBUG] Loaded onboarding config:', config.ai?.name || 'No AI name');
+    return config;
+  } catch (error) {
+    console.error('[DEBUG] Failed to load onboarding config:', error);
+    return null;
+  }
+});
+
+safeHandle('onboarding:check-first-run', async () => {
+  console.log('[DEBUG] onboarding:check-first-run called');
+  try {
+    // Check BOTH locations for compatibility
+    const vaultPath = await getVaultPath();
+    const vaultMarker = path.join(vaultPath, '.echo', 'config', 'FIRST_RUN_COMPLETE');
+    const userDataMarker = path.join(app.getPath('userData'), 'onboarding-complete.json');
+    
+    // If either marker exists, onboarding is complete
+    try {
+      await fs.access(vaultMarker);
+      console.log('[DEBUG] Found vault marker - onboarding complete');
+      return false; // false = onboarding IS complete
+    } catch {
+      // Check userData location
+      try {
+        await fs.access(userDataMarker);
+        console.log('[DEBUG] Found userData marker - onboarding complete');
+        return false;
+      } catch {
+        console.log('[DEBUG] No markers found - first run');
+        return true; // true = needs onboarding
+      }
+    }
+  } catch (error) {
+    console.error('[DEBUG] Error checking first run:', error);
+    return true; // Safe default: show onboarding
+  }
+});
+
+safeHandle('onboarding:complete', async () => {
+  console.log('[DEBUG] onboarding:complete called');
+  try {
+    // Create BOTH markers to ensure compatibility
+    const vaultPath = await getVaultPath();
+    const vaultMarkerPath = path.join(vaultPath, '.echo', 'config', 'FIRST_RUN_COMPLETE');
+    const userDataPath = path.join(app.getPath('userData'), 'onboarding-complete.json');
+    
+    // 1. Create vault marker (what windows.js checks)
+    await fs.mkdir(path.dirname(vaultMarkerPath), { recursive: true });
+    await fs.writeFile(vaultMarkerPath, '');
+    console.log('[DEBUG] Created vault marker at:', vaultMarkerPath);
+    
+    // 2. Create userData marker (backup)
+    await fs.writeFile(userDataPath, JSON.stringify({ 
+      completed: true, 
+      timestamp: new Date().toISOString() 
+    }));
+    console.log('[DEBUG] Created userData marker at:', userDataPath);
+    
+    // 3. Update database if available
+    if (db && db.setConfig) {
+      db.setConfig('onboardingComplete', true);
+    }
+    
+    // 4. Set global identity if available
+    if (global.currentIdentity) {
+      console.log('[DEBUG] Identity already set:', global.currentIdentity);
+    }
+    
+    return { success: true };
+  } catch (error) {
+    console.error('[DEBUG] Failed to complete onboarding:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+safeHandle('onboarding:get-identity', async () => {
+  console.log('[DEBUG] onboarding:get-identity called');
+  try {
+    // First check if identity is already in memory
+    if (global.currentIdentity) {
+      console.log('[DEBUG] Returning identity from memory');
+      return global.currentIdentity;
+    }
+    
+    // Then check saved config
+    const configPath = path.join(app.getPath('userData'), 'onboarding-config.json');
+    const data = await fs.readFile(configPath, 'utf8');
+    const parsed = JSON.parse(data);
+    
+    // Set global identity from saved data
+    if (parsed.ai) {
+      global.currentIdentity = {
+        ai: { 
+          name: parsed.ai.name || 'Q',
+          role: parsed.ai.role || 'Echo Rubicon AI Assistant'
+        },
+        user: { 
+          name: parsed.ai.userName || parsed.user?.name || 'User' 
+        }
+      };
+      console.log('[DEBUG] Loaded identity:', global.currentIdentity);
+    }
+    
+    return parsed;
+  } catch (error) {
+    console.error('[DEBUG] Error loading identity:', error.message);
+    return null;
+  }
+});
+
+safeHandle('onboarding:save-data', async (event, config) => {
+  console.log('[DEBUG] onboarding:save-data called with:', config);
+  
+  try {
+    // Save to userData
+    const configPath = path.join(app.getPath('userData'), 'onboarding-config.json');
+    await fs.writeFile(configPath, JSON.stringify(config, null, 2));
+    
+    // Update global identity
+    if (config.ai) {
+      global.currentIdentity = {
+        ai: {
+          name: config.ai.name || 'Q',
+          role: config.ai.role || 'Echo Rubicon AI Assistant'
+        },
+        user: {
+          name: config.ai.userName || config.user?.name || 'User'
+        }
+      };
+      console.log('[DEBUG] Updated global identity:', global.currentIdentity);
+    }
+    
+    return { success: true };
+  } catch (error) {
+    console.error('[DEBUG] Failed to save onboarding data:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// Remove duplicate handler - already defined above
+// safeHandle('save-onboarding-data', ...) - REMOVED
+
+// ===== Q-LIB HANDLERS =====
+safeHandle('qlib-categorize', async (event, interaction) => {
+  await ensureQLib();
+
+
+  if (!memoryService) {
+    console.warn('[IPC] Memory service not initialized, returning default categorization');
+    return { category: 'general', tags: [], importance: 3 };
+  }
+  
+  try {
+    const categorization = await memoryService.categorizeInteraction(interaction);
+    console.log('[IPC] Q-Lib categorized interaction:', categorization);
+    return categorization;
+  } catch (error) {
+    console.error('[IPC] Q-Lib categorize failed:', error);
+    return { category: 'general', tags: [], importance: 3 };
+  }
+});
+safeHandle('qlib-analyze', async (event, { query, mode, folder, objective }) => {
+  console.log(`[Q-LIB ANALYZE] Mode: ${mode} | Folder: ${folder} | Objective: ${objective}`);
+
+  const vaultPath = getVaultPath();
+  const targetFolder = path.join(vaultPath, folder);
+
+  if (!fs.existsSync(targetFolder)) {
+    return { error: `Folder "${folder}" not found.` };
+  }
+
+  const files = await fs.readdir(targetFolder);
+  const markdownFiles = files.filter(f => f.endsWith('.md'));
+
+  const fileContents = await Promise.all(markdownFiles.map(async (file) => {
+    const content = await fs.readFile(path.join(targetFolder, file), 'utf8');
+    return { file, content };
+  }));
+
+  await await ensureQLib();  // Add await here
+
+  const summary = await qlibInterface.summarize({
+    mode,
+    objective,
+    files: fileContents,
+    folder
+  });
+  
+  return summary;
+});
+
+//qlib extract handler    
+safeHandle('qlib-extract', async (event, params) => {
+  await await ensureQLib();  // Add await here
+
+  const query = typeof params === 'string' ? params : params.query;
+  const conversation = typeof params === 'object' ? params.conversation : '';
+  console.log('[Q-LIB BROKER] Query received:', query, 'Context lines:', conversation ? conversation.split('\n').length : 0);
+  const project = typeof params === 'object' ? params.project : null;
+  
+  let expandedQuery = query;
+  if (conversation) {
+    const assistantResponses = conversation.split('\n')
+      .filter(line => line.startsWith('assistant:'))
+      .join('\n');
+    // ... rest of the handler code
+    
+    const referencePatterns = [
+      /that recipe/i,
+      /the (\w+) (recipe|one)/i,
+      /show me that/i,
+      /tell me about it/i,
+      /how do i make it/i,
+      /number (\d+)/i,
+      /#(\d+)/i,
+      /what is (it|that)/i,
+      /show (it|that) to me/i
+    ];
+    
+    const isReference = referencePatterns.some(pattern => pattern.test(query));
+    
+    if (isReference && (assistantResponses.includes('Bacon-Wrapped') || assistantResponses.includes('carnivore ice cream'))) {
+      console.log('[Q-LIB] Detected reference query, parsing context...');
+      
+      const recipePattern = /\d+\.\s*([^\n]+)/g;
+      const recipes = [];
+      let match;
+      while ((match = recipePattern.exec(assistantResponses)) !== null) {
+        recipes.push(match[1].trim());
+      }
+      
+      console.log('[Q-LIB] Found recipes in context:', recipes);
+      
+      const queryLower = query.toLowerCase();
+      
+      const numberMatch = query.match(/(?:number|#)\s*(\d+)/i);
+      if (numberMatch) {
+        const index = parseInt(numberMatch[1]) - 1;
+       if (recipes[index]) {
+         expandedQuery = recipes[index];
+         console.log('[Q-LIB] Expanded numbered reference:', query, '->', expandedQuery);
+       }
+     }
+     
+     for (const recipe of recipes) {
+       const recipeLower = recipe.toLowerCase();
+       if (queryLower.includes('duck') && recipeLower.includes('duck')) {
+         expandedQuery = recipe;
+         console.log('[Q-LIB] Expanded duck reference:', query, '->', expandedQuery);
+         break;
+       }
+       if (queryLower.includes('ice cream') && recipeLower.includes('ice cream')) {
+         expandedQuery = recipe;
+         console.log('[Q-LIB] Expanded ice cream reference:', query, '->', expandedQuery);
+         break;
+       }
+       if (queryLower.includes('halloumi') && recipeLower.includes('halloumi')) {
+         expandedQuery = recipe;
+         console.log('[Q-LIB] Expanded halloumi reference:', query, '->', expandedQuery);
+         break;
+       }
+       if (queryLower.includes('lamb') && recipeLower.includes('lamb')) {
+         expandedQuery = recipe;
+         console.log('[Q-LIB] Expanded lamb reference:', query, '->', expandedQuery);
+         break;
+       }
+       if (queryLower.includes('custard') && recipeLower.includes('custard')) {
+         expandedQuery = recipe;
+         console.log('[Q-LIB] Expanded custard reference:', query, '->', expandedQuery);
+         break;
+       }
+     }
+     
+     if ((queryLower.includes('it') || queryLower.includes('that')) && recipes.length > 0) {
+       expandedQuery = recipes[recipes.length - 1];
+       console.log('[Q-LIB] Expanded it/that reference:', query, '->', expandedQuery);
+     }
+   }
+ }
+ 
+ if (!qlibInterface) {
+   qlibInterface = new QLibInterface();
+ }
+ 
+ try {
+   const classification = executiveFunction.classify(expandedQuery);
+   console.log('[EXECUTIVE] Route:', classification);
+   console.log('[EXECUTIVE] Using query:', expandedQuery);
+
+   const vaultPath = getVaultPath() || 'D:\\Obsidian Vault';
+
+   
+
+   const folderMap = {
+     'recipe': 'Foods',
+     'recipes': 'Foods', 
+     'food': 'Foods',
+     'client': 'clients',
+     'clients': 'clients',
+     'medical': 'medical',
+     'legal': 'legal',
+     'contact': 'contacts'
+   };
+
+   const contextFolderMap = {
+     'clients': ['projects', 'invoices', 'communications', 'status', 'notes'],
+     'Foods': ['diet', 'health', 'nutrition', 'meal-plans', 'shopping'],
+     'medical': ['treatments', 'medications', 'appointments', 'test-results'],
+     'legal': ['contracts', 'documents', 'correspondence', 'cases']
+   };
+
+   let targetFolder = null;
+   const queryLower = expandedQuery.toLowerCase();
+   for (const [keyword, folder] of Object.entries(folderMap)) {
+     if (queryLower.includes(keyword)) {
+       targetFolder = folder;
+       break;
+     }
+   }
+
+   let primaryResults = [];
+let contextResults = [];
+
+if (targetFolder) {
+ const folderPath = path.join(vaultPath, targetFolder);
+ if (require('fs').existsSync(folderPath)) {
+   console.log(`[QLIB] Primary search in: ${targetFolder}`);
+   // Use the shared search function
+   primaryResults = await searchSpecificFolder(targetFolder, expandedQuery);
+   console.log(`[QLIB] Found ${primaryResults.length} primary results in ${targetFolder}`);
+   
+   primaryResults.forEach(file => {
+     file.score = (file.score || 0) + 1000;
+     file.isPrimary = true;
+     file.resultType = 'primary';
+     file.name = path.basename(file.path, '.md');
+     file.folder = targetFolder;
+   });
+ }
+}
+
+// Context search for related folders
+if (targetFolder && contextFolderMap[targetFolder] && primaryResults.length > 0) {
+ console.log(`[QLIB] Searching related folders for context`);
+ 
+ for (const relatedFolder of contextFolderMap[targetFolder]) {
+   const relatedPath = path.join(vaultPath, relatedFolder);
+   if (require('fs').existsSync(relatedPath)) {
+     const relatedResults = await searchSpecificFolder(relatedFolder, expandedQuery);
+     relatedResults.forEach(r => {
+       r.contextType = relatedFolder;
+       r.isPrimary = false;
+       r.resultType = 'context';
+       r.score = (r.score || 0) + 100;
+       r.name = path.basename(r.path, '.md');
+       r.folder = relatedFolder;
+     });
+     contextResults = [...contextResults, ...relatedResults];
+   }
+ }
+ console.log(`[QLIB] Found ${contextResults.length} contextual results`);
+}
+
+// Full vault search if no target folder
+if (primaryResults.length === 0 && !targetFolder) {
+ console.log('[QLIB] No target folder, searching full vault');
+ const vaultResults = await searchFullVault(expandedQuery);
+ primaryResults = vaultResults.slice(0, 50);
+ primaryResults.forEach(file => {
+   file.isPrimary = true;
+   file.resultType = 'vault-wide';
+   file.name = path.basename(file.path, '.md');
+   file.folder = path.dirname(file.path) || 'root';
+ });
+}
+
+const topPrimary = primaryResults.slice(0, 50);
+const topContext = contextResults
+ .sort((a, b) => b.score - a.score)
+ .slice(0, 10);
+
+const allResults = [...topPrimary, ...topContext];
+
+   console.log(`[Q-LIB] Processing ${topPrimary.length} primary + ${topContext.length} context results`);
+   
+   const processedFacts = [];
+   
+   for (const result of topPrimary) {
+  console.log('[Q-LIB] Processing primary result:', result.name);
+  await hydrateResultContent(result);
+  await ensureQLib(); // ✅ Singleton guard
+  const extracted = await qlibInterface.extract(expandedQuery, result.content);
+
+  processedFacts.push({
+    type: 'primary',
+    path: result.path,
+    name: result.name,
+    folder: result.folder,
+    content: result.content,
+    extracted: extracted,
+    score: result.score,
+    isPrimary: true,
+    confidence: 1.0
+  });
+}
+
+   
+   for (const result of topContext) {
+  console.log('[Q-LIB] Processing context result:', result.name, 'from', result.contextType);
+await hydrateResultContent(result);
+await ensureQLib(); // ✅ Required or extract() will crash again
+const extracted = await qlibInterface.extract(expandedQuery, result.content);
+
+  processedFacts.push({
+    type: 'context',
+    path: result.path,
+    name: result.name,
+    folder: result.folder,
+    contextType: result.contextType,
+    content: result.content,
+    extracted: extracted,
+    score: result.score,
+    isPrimary: false,
+    confidence: 0.8
+  });
+}
+
+   
+   console.log('[Q-LIB] Processed', processedFacts.length, 'total facts');
+   
+   if (classification.mode === 'content' && topPrimary.length > 0) {
+     console.log('[Q-LIB] Content mode - returning full content');
+     
+     const bestMatch = topPrimary[0];
+     console.log('[Q-LIB TOKEN CHECK] Content length:', bestMatch.content.length, 'characters');
+     
+     return {
+       mode: 'content',
+       facts: processedFacts,
+       content: bestMatch.content,
+       name: bestMatch.name,
+       path: bestMatch.path,
+       primaryCount: topPrimary.length,
+       contextCount: topContext.length,
+       sources: processedFacts.map(f => f.path),
+       count: topPrimary.length,
+       classification: classification,
+       broker: 'qlib-content',
+       model: 'granite3.3:2b',
+       summary: {
+         primary: `Found ${topPrimary.length} ${targetFolder || 'items'}`,
+         context: contextResults.length > 0 ? `Plus ${topContext.length} related items from ${[...new Set(topContext.map(c => c.contextType))].join(', ')}` : null
+       },
+       timestamp: new Date().toISOString()
+     };
+   }
+   // Store conversation context for numbered responses
+global.lastConversation = {
+  facts: processedFacts,
+  query: expandedQuery,
+  timestamp: Date.now()
+};
+   return {
+     facts: processedFacts,
+     primaryCount: topPrimary.length,
+     contextCount: topContext.length,
+     sources: processedFacts.map(f => f.path),
+     count: topPrimary.length,
+     classification: classification,
+     broker: 'qlib-two-mind',
+     model: 'granite3.3:2b',
+     mode: targetFolder ? 'folder-focused' : 'vault-wide',
+     summary: {
+       primary: `Found ${topPrimary.length} ${targetFolder || 'items'}`,
+       context: contextResults.length > 0 ? `Plus ${topContext.length} related items from ${[...new Set(topContext.map(c => c.contextType))].join(', ')}` : null
+     },
+     timestamp: new Date().toISOString()
+   };
+   
+ } catch (error) {
+   console.error('[Q-LIB BROKER] Error:', error);
+   return { 
+     facts: [], 
+     sources: [], 
+     count: 0,
+     primaryCount: 0,
+     contextCount: 0,
+     broker: 'qlib',
+     error: error.message 
+   };
+ }
+});
+//QLIB summarize handler
+safeHandle('qlib-summarize', async (event, content, maxLength = 500) => {
+ await await ensureQLib();  // Added await
+
+ if (!memoryService) {
+   console.warn('[IPC] Memory service not initialized, returning truncated content');
+   return content.substring(0, maxLength);
+ }
+ 
+ try {
+   const summary = await memoryService.summarizeContent(content, maxLength);
+   console.log('[IPC] Q-Lib summarized', content.length, 'chars to', summary.length, 'chars');
+   return summary;
+ } catch (error) {
+   console.error('[IPC] Q-Lib summarize failed:', error);
+   return content.substring(0, maxLength);
+ }
+});
+// ===== Q-LIB SEARCH - RESTORES OMNISCIENT AWARENESS =====
+safeHandle('qlib-search', async (event, { query, project = null, options = {} }) => {
+  await ensureQLib();
+
+  console.log('[Q-lib Search] Awakening consciousness for:', query, 'in project:', project || 'global');
+  
+  try {
+    // Initialize Q-lib if needed
+    if (!qlibInterface) {
+      const vaultPath = getVaultPath();
+      console.log('[DEBUG] Q-lib vault path:', vaultPath);
+
+      qlibInterface = new QLibInterface(vaultPath);
+      console.log('[Q-lib] Interface initialized');
+
+      await qlibInterface.forceVaultScan(); // 🔒 Force index only on first init
+    }
+    // 🔥 NEW: Use chaos-weighted memory system instead of implementLayeredSearch
+if (global.memorySystem && typeof global.memorySystem.buildContextForInput === 'function') {
+  console.log('[Q-lib] Using chaos-weighted memory system with project filter');
+  const contextResult = await global.memorySystem.buildContextForInput(query, {
+  project: project,
+  limit: options?.limit || 20,      
+  minScore: options?.minScore || 0.1, 
+  threadTags: options?.tags || [],    
+  filter: project ? { project: project } : {}
+});
+  
+  console.log('[Q-lib] Chaos memory returned:', {
+    hasContext: !!contextResult.context,
+    memoryCount: contextResult.memory?.length || 0,
+    project: project || 'global',  // 🔧 ADDED: Log project
+    debugInfo: contextResult.debugInfo
+  });
+
+  // 🔍 ENHANCED DEBUG: Show exactly what we got
+  console.log('[Q-lib DEBUG] Memory details:', {
+    totalFound: contextResult.memory?.length || 0,
+    firstFive: contextResult.memory?.slice(0, 5).map(m => ({
+      path: m.path || m.title || 'unknown',
+      type: m.type || m.metadata?.type || 'unknown',
+      score: m.score || m.relevanceScore || 0
+    })),
+    lastItem: contextResult.memory?.length > 6 ? {
+      path: contextResult.memory[contextResult.memory.length - 1].path,
+      index: contextResult.memory.length - 1
+    } : null,
+    requestedLimit: options.limit || 20,
+    actualReceived: contextResult.memory?.length || 0
+  });
+
+  // Format for Q-lib's expected structure
+  const results = {
+    vault: contextResult.memory || [],  
+    memory: contextResult.memory || [], 
+    conversation: [],                   
+    sources: [],
+    context: contextResult.context,     // 🔥 CRITICAL: Pre-built context
+    project: project || 'global'        
+  };
+
+
+      // 3. Include conversation context if requested
+      if (options.includeConversation && options.conversation) {
+        // Extract insights from current conversation - check if handler exists
+        const qlibExtractHandler = handlerMap.get('qlib-extract');
+        if (qlibExtractHandler) {
+          const qlibExtract = await qlibExtractHandler(event, {
+            query: query,
+            conversation: options.conversation,
+            project: project  // 🔧 ADDED: Pass project to extract
+          });
+          if (qlibExtract && qlibExtract.facts) {
+            results.conversation = qlibExtract.facts;
+          }
+        }
+      }
+      
+      // 4. Combine all sources with clear labeling
+      results.sources = [
+        ...results.vault.map(r => ({ ...r, source: 'vault', project: project || 'global' })),     // 🔧 ADDED: project to each source
+        ...results.memory.map(r => ({ ...r, source: 'memory', project: project || 'global' })),   // 🔧 ADDED: project to each source
+        ...results.conversation.map(r => ({ ...r, source: 'conversation', project: project || 'global' }))  // 🔧 ADDED: project to each source
+      ];
+
+      console.log(`[Q-lib] Omniscient search complete:`, {
+        vault: results.vault.length,
+        memory: results.memory.length,
+        conversation: results.conversation.length,
+        project: project || 'global'  // 🔧 ADDED: Log project
+      });
+
+      return results;
+    }
+
+    // 🚨 FALLBACK: Only if chaos system unavailable
+    console.warn('[Q-lib] Chaos memory system not available, using legacy search with project:', project || 'global');
+    
+    const results = {
+      vault: [],
+      memory: [],
+      conversation: [],
+      sources: [],
+      project: project || 'global'  // 🔧 ADDED: Include project in results
+    };
+    
+    // 1. Search vault files (recipes, clients, etc) with project context
+    const vaultResults = await implementLayeredSearch(query, project);  // 🔧 ADDED: Pass project parameter
+    results.vault = vaultResults;
+    console.log(`[Q-lib] Found ${vaultResults.length} vault results in project:`, project || 'global');
+    
+    // 2. Search memory capsules with project filter
+    const { searchCapsules } = require('../src/echo/memory/capsuleRetriever');
+    const capsuleResults = await searchCapsules({
+      vaultPath: getVaultPath(),
+      agent: 'default',  // or get from context/identity
+      tags: [],  // could extract tags from query
+      after: null,
+      before: null,
+      filter: project ? { project: project } : {}  // 🔧 ADDED: Project filter for capsules
+    }) || [];
+
+    results.memory = capsuleResults;
+    console.log(`[Q-lib] Found ${capsuleResults.length} memory capsules in project:`, project || 'global');
+
+    // 3. Include conversation context if requested
+    if (options.includeConversation && options.conversation) {
+      // Extract insights from current conversation - check if handler exists
+      const qlibExtractHandler = handlerMap.get('qlib-extract');
+      if (qlibExtractHandler) {
+        const qlibExtract = await qlibExtractHandler(event, {
+          query: query,
+          conversation: options.conversation,
+          project: project  // 🔧 ADDED: Pass project to extract
+        });
+        if (qlibExtract && qlibExtract.facts) {
+          results.conversation = qlibExtract.facts;
+        }
+      }
+    }
+    
+    // 4. Combine all sources with clear labeling
+    results.sources = [
+      ...results.vault.map(r => ({ ...r, source: 'vault', project: project || 'global' })),     // 🔧 ADDED: project to each source
+      ...results.memory.map(r => ({ ...r, source: 'memory', project: project || 'global' })),   // 🔧 ADDED: project to each source
+      ...results.conversation.map(r => ({ ...r, source: 'conversation', project: project || 'global' }))  // 🔧 ADDED: project to each source
+    ];
+    
+    console.log('[Q-lib] Omniscient search complete:', {
+      vault: results.vault.length,
+      memory: results.memory.length,
+      conversation: results.conversation.length,
+      project: project || 'global'  // 🔧 ADDED: Log project
+    });
+    
+    return results;
+
+  } catch (err) {
+    console.error('[Q-lib Search] Error:', err);
+    return {
+      error: true,
+      message: err.message || 'Q-lib search failed',
+      project: project || 'global'  // 🔧 ADDED: Include project even in error
+    };
+  }
+});
+// ===== SEARCH HANDLERS =====
+safeHandle('search-notes', async (event, query) => {
+ console.log('[DEBUG] search-notes called with query:', query);
+ return await search_notes_handler(event, query);
+});
+
+// ===== SECURITY HANDLERS =====
+safeHandle('security:get-challenge', async () => {
+ console.log('[DEBUG] security:get-challenge called');
+ const config = await get_security_config_handler();
+ return config ? { 
+   prompt: config.genesisPair?.prompt || "Complete this phrase",
+   attemptsRemaining: 3 
+ } : null;
+});
+
+safeHandle('security:get-config', async () => {
+ console.log('[DEBUG] security:get-config called');
+ return await get_security_config_handler();
+});
+
+safeHandle('security:get-status', async () => {
+ console.log('[DEBUG] security:get-status called');
+ return { failureCount: 0 };
+});
+
+safeHandle('security:is-authenticated', async () => {
+ console.log('[DEBUG] security:is-authenticated called');
+ try {
+   const onboardingPath = path.join(app.getPath('userData'), 'onboarding-complete.json');
+   await fs.access(onboardingPath);
+   console.log('[DEBUG] User is authenticated');
+   return true;
+ } catch (error) {
+   console.log('[DEBUG] User is not authenticated');
+   return false;
+ }
+});
+
+safeHandle('security:needs-onboarding', async () => {
+ console.log('[DEBUG] security:needs-onboarding called');
+ try {
+   const onboardingPath = path.join(app.getPath('userData'), 'onboarding-complete.json');
+   await fs.access(onboardingPath);
+   console.log('[DEBUG] Onboarding complete file exists');
+   return false;
+ } catch (error) {
+   console.log('[DEBUG] Onboarding needed');
+   return true;
+ }
+});
+
+safeHandle('security:verify-phrase', async (event, response) => {
+ console.log('[DEBUG] security:verify-phrase called');
+ return { success: true };
+});
+
+// ===== SYSTEM HANDLERS =====
+safeHandle('get-note', async (event, filename) => {
+ console.log('[DEBUG] get-note called for:', filename);
+ try {
+   const vaultPath = getVaultPath();
+   const filePath = path.join(vaultPath, filename);
+   
+   const content = await fs.readFile(filePath, 'utf8');
+   return content;
+ } catch (error) {
+   console.error('[DEBUG] [IPC] Failed to get note:', error);
+   throw error;
+ }
+});
+
+safeHandle('get-settings', async () => {
+ console.log('[DEBUG] get-settings called');
+ try {
+   const settingsPath = path.join(app.getPath('userData'), 'settings.json');
+   const settings = await fs.readFile(settingsPath, 'utf8');
+   return JSON.parse(settings);
+ } catch (error) {
+   console.log('[DEBUG] Settings file not found, returning defaults');
+   return {
+     theme: 'dark',
+     vaultPath: null,
+     security: {
+       tier: 'standard',
+       destructOnFail: false
+     }
+   };
+ }
+});
+
+safeHandle('get-user-data-path', () => {
+ const userDataPath = app.getPath('userData');
+console.log('[DEBUG] User data path:', userDataPath);
+return userDataPath;
+
+});
+
+safeHandle('open-in-obsidian', async (event, filename) => {
+ console.log('[DEBUG] open-in-obsidian called for:', filename);
+ try {
+   
+   const vaultPath = getVaultPath();
+   
+   const vaultName = path.basename(vaultPath);
+   
+   let relativeFilename = filename;
+   if (filename.startsWith(vaultPath)) {
+     relativeFilename = path.relative(vaultPath, filename);
+   }
+   
+   relativeFilename = relativeFilename.replace(/\\/g, '/');
+   
+   const obsidianUri = `obsidian://open?vault=${encodeURIComponent(vaultName)}&file=${encodeURIComponent(relativeFilename)}`;
+   
+   console.log('[DEBUG] [IPC] Opening with Obsidian URI:', obsidianUri);
+   await shell.openExternal(obsidianUri);
+   
+   return { success: true };
+ } catch (error) {
+   console.error('[DEBUG] [IPC] Failed to open in Obsidian:', error);
+   throw error;
+ }
+});
+
+safeHandle('read-file', async (event, filePath) => {
+ console.log('[DEBUG] read-file called for:', filePath);
+ try {
+   const content = await fs.readFile(filePath, 'utf8');
+   console.log('[DEBUG] Successfully read file, length:', content.length);
+   return content;
+ } catch (error) {
+   console.error('[DEBUG] Failed to read file:', error);
+   throw error;
+ }
+});
+
+safeHandle('read-note', async (event, filename) => {
+ console.log('[DEBUG] read-note called for:', filename);
+ try {
+   const vaultPath = getVaultPath();
+   const filePath = path.join(vaultPath, filename);
+   
+   console.log('[DEBUG] [IPC] Reading note from:', filePath);
+   
+   const content = await fs.readFile(filePath, 'utf8');
+   console.log('[DEBUG] [IPC] Read note success:', filename, content.length, 'chars');
+   return content;
+ } catch (error) {
+   console.error('[DEBUG] [IPC] Failed to read note:', error);
+   throw error;
+ }
+});
+
+safeHandle('save-file', async (event, filePath, content) => {
+ console.log('[DEBUG] save-file called for:', filePath);
+ try {
+   const dir = path.dirname(filePath);
+   await fs.mkdir(dir, { recursive: true });
+   
+   await fs.writeFile(filePath, content, 'utf8');
+   console.log('[DEBUG] Successfully saved file');
+   return { success: true, path: filePath };
+ } catch (error) {
+   console.error('[DEBUG] Failed to save file:', error);
+   throw error;
+ }
+});
+
+safeHandle('save-settings', async (event, settings) => {
+ console.log('[DEBUG] save-settings called');
+ try {
+   const settingsPath = path.join(app.getPath('userData'), 'settings.json');
+   await fs.writeFile(settingsPath, JSON.stringify(settings, null, 2), 'utf8');
+   console.log('[DEBUG] Settings saved successfully');
+   return { success: true };
+ } catch (error) {
+   console.error('[DEBUG] Failed to save settings:', error);
+   throw error;
+ }
+});
+
+safeHandle('system:open-external', async (event, url) => {
+ console.log('[DEBUG] system:open-external called for:', url);
+ shell.openExternal(url);
+ return { success: true };
+});
+
+safeHandle('system:open-in-obsidian', async (event, filename) => {
+ console.log('[DEBUG] system:open-in-obsidian called for:', filename);
+ try {
+  
+   const vaultPath = getVaultPath();
+   let fullPath = filename;
+   if (!path.isAbsolute(filename)) {
+     fullPath = path.join(vaultPath, filename);
+   }
+   
+   await shell.openPath(fullPath);
+   return { success: true };
+ } catch (error) {
+   console.error('[DEBUG] Failed to open in Obsidian:', error);
+   throw error;
+ }
+});
+
+safeHandle('write-file', async (event, filePath, content) => {
+ console.log('[DEBUG] write-file called for:', filePath);
+ try {
+   await fs.writeFile(filePath, content, 'utf8');
+   console.log('[DEBUG] Successfully wrote file');
+   return { success: true };
+ } catch (error) {
+   console.error('[DEBUG] Failed to write file:', error);
+   throw error;
+ }
+});
+
+safeHandle('write-note', async (event, { filename, content }) => {
+ console.log('[DEBUG] write-note called for:', filename);
+ try {
+   const vaultPath = getVaultPath();
+   const filePath = path.join(vaultPath, filename);
+   
+   const dir = path.dirname(filePath);
+   await fs.mkdir(dir, { recursive: true });
+   
+   await fs.writeFile(filePath, content, 'utf8');
+   console.log('[DEBUG] [IPC] Wrote note:', filename);
+   
+   if (filename.includes('conversations/')) {
+     console.log('🔴 [MEMORY] Detected conversation save, creating capsule...');
+     
+     const userMatch = content.match(/## User\n([\s\S]*?)\n\n## /);
+     const aiMatch = content.match(/## .*? Response\n([\s\S]*?)(\n\n---|$)/);
+     
+     if (userMatch && aiMatch) {
+       const userMessage = userMatch[1].trim();
+       const aiResponse = aiMatch[1].trim();
+       
+       const modelMatch = content.match(/model: (.*?)\n/);
+       const topicMatch = content.match(/topic: (.*?)\n/);
+       const categoryMatch = content.match(/category: (.*?)\n/);
+       
+       if (!memorySystem) {
+         console.log('🔴 [MEMORY] Initializing memory system...');
+         await initializeMemorySystems();
+       }
+       
+      if (memorySystem) {
+       let qlibMemoryData = null;
+ try {
+   const result = await global.memorySystem.processConversation(userMessage, aiResponse, {
+     model: modelMatch ? modelMatch[1] : 'unknown',
+     topic: topicMatch ? topicMatch[1] : 'general',
+     category: categoryMatch ? categoryMatch[1] : 'general',
+     timestamp: new Date().toISOString(),
+     conversationPath: filename,
+     qlibFacts: qlibMemoryData?.facts || []  // ✅ Add this line
+   });
+
+           console.log('🔴 [MEMORY] Capsule created:', result);
+         } catch (error) {
+           console.error('🔴 [MEMORY] Failed to create capsule:', error);
+         }
+       } else {
+         console.error('🔴 [MEMORY] Memory system failed to initialize');
+       }
+     } else {
+       console.log('🔴 [MEMORY] Could not parse conversation format from content');
+       console.log('[DEBUG] Content sample:', content.substring(0, 200));
+     }
+   }
+   
+   return { success: true };
+ } catch (error) {
+   console.error('[DEBUG] [IPC] Failed to write note:', error);
+   throw error;
+ }
+});
+
+// ===== PROJECT SIDEBAR HANDLERS =====
+// Register all project sidebar handlers
+Object.entries(projectSidebarHandlers).forEach(([channel, handler]) => {
+  safeHandle(channel, async (event, ...args) => {
+    // Pass getVaultPath as last argument to handlers
+    return await handler(event, ...args, getVaultPath);
+  });
+});
+ipcMain.on('minimize-window', () => {
+ console.log('[DEBUG] minimize-window called');
+ const window = getMainWindow();
+ if (window) window.minimize();
+});
+
+ipcMain.on('maximize-window', () => {
+ console.log('[DEBUG] maximize-window called');
+ const window = getMainWindow();
+ if (window) {
+   if (window.isMaximized()) {
+     window.unmaximize();
+   } else {
+     window.maximize();
+   }
+ }
+});
+
+ipcMain.on('close-window', () => {
+ console.log('[DEBUG] close-window called');
+ const window = getMainWindow();
+ if (window) window.close();
+});
+
+ipcMain.on('open-external', (event, url) => {
+ console.log('[DEBUG] open-external called for:', url);
+ shell.openExternal(url);
+});
+
+// Identity set handler
+safeHandle('identity:set', async (event, identity) => {
+  global.currentIdentity = identity;
+  
+  // Save to disk using the existing IdentityManager
+  await identityManager.saveIdentity(identity);
+  
+  console.log('[IDENTITY] Set from renderer and persisted:', identity);
+  return { success: true };
+});
+
+// ===== HANDLE SIDE EFFECTS DEFINITION =====
+handleSideEffects = async function(prompt, reply, context) {
+ const { default: fetch } = await import('node-fetch');
+ const zapMatches = reply.match(/\[ZAP:(.*?)\]/gi);
+ const emailMatches = reply.match(/\[EMAIL:(.*?)\]/gi);
+
+ if (zapMatches) {
+   for (const match of zapMatches) {
+     const zapName = match.replace(/\[ZAP:|\]/gi, '').trim();
+     console.log('[ZAP-TRIGGER]', zapName);
+     await fetch(`https://hooks.zapier.com/hooks/catch/your-id/${zapName}`, {
+       method: 'POST',
+       body: JSON.stringify({ triggered_by: 'Echo', timestamp: Date.now() }),
+       headers: { 'Content-Type': 'application/json' }
+     });
+   }
+ }
+
+ if (emailMatches) {
+   for (const match of emailMatches) {
+     const emailBody = match.replace(/\[EMAIL:|\]/gi, '').trim();
+     console.log('[GMAIL-SEND] To: default@example.com Body:', emailBody);
+     await fetch('http://localhost:49200/api/send-gmail', {
+       method: 'POST',
+       body: JSON.stringify({ to: 'default@example.com', body: emailBody }),
+       headers: { 'Content-Type': 'application/json' }
+     });
+   }
+ }
+};
+// ===== PROJECT MANAGEMENT HANDLERS ===== 
+// Added 8/14/25 for dynamic project discovery
+safeHandle('vault:list-projects', async () => {
+  return await listProjects();
+});
+
+safeHandle('vault:project-stats', async (event, projectName) => {
+  return await getProjectStats(projectName);
+});
+
+// ===== INITIALIZATION =====
+function initializeIpcHandlers() {
+ console.log('[DEBUG] IPC handlers initialized');
+ 
+ const windowsModule = require('./windows');
+ getMainWindow = windowsModule.getMainWindow;
+}
+initializeMemorySystems().then(() => {
+  console.log('[INIT-1] Memory system initialized successfully');
+  console.log('[INIT-2] global.memorySystem exists?', !!global.memorySystem);
+}).catch(err => {
+  console.error('[BOOT] Memory system init failed:', err.message);
+});
+// ===== COMPREHENSIVE DEBUG SCRIPT =====
+console.log('='.repeat(80));
+console.log('[DEBUG AUDIT] Starting comprehensive memory system audit...');
+console.log('='.repeat(80));
+
+// 1. Test current state
+console.log('[DEBUG] Current global.memorySystem:', typeof global.memorySystem);
+console.log('[DEBUG] Current memoryService:', typeof memoryService);
+console.log('[DEBUG] initializeMemorySystems function:', typeof initializeMemorySystems);
+
+// 2. Test all imports
+console.log('\n--- TESTING IMPORTS ---');
+try {
+  const memoryIndex = require('../src/memory/index.js');
+  console.log('[DEBUG] memory/index.js exports:', Object.keys(memoryIndex));
+  console.log('[DEBUG] MemorySystem type:', typeof memoryIndex.MemorySystem);
+} catch (err) {
+  console.error('[DEBUG] Failed to import memory/index.js:', err.message);
+}
+
+try {
+  const { MemoryVaultManager } = require('../src/memory/MemoryVaultManager');
+  console.log('[DEBUG] MemoryVaultManager type:', typeof MemoryVaultManager);
+} catch (err) {
+  console.error('[DEBUG] Failed to import MemoryVaultManager:', err.message);
+}
+
+// 3. Test vault path
+console.log('\n--- TESTING VAULT PATH ---');
+try {
+  const vaultPath = getVaultPath();
+  console.log('[DEBUG] Vault path:', vaultPath);
+  console.log('[DEBUG] Vault exists:', require('fs').existsSync(vaultPath));
+} catch (err) {
+  console.error('[DEBUG] Vault path error:', err.message);
+}
+
+// 4. Try manual initialization
+console.log('\n--- MANUAL INITIALIZATION TEST ---');
+initializeMemorySystems().then(() => {
+  console.log('[DEBUG] ✅ Manual initialization SUCCESS');
+  console.log('[DEBUG] global.memorySystem after init:', typeof global.memorySystem);
+  
+  if (global.memorySystem) {
+    console.log('[DEBUG] Available methods:', Object.getOwnPropertyNames(global.memorySystem));
+    console.log('[DEBUG] buildContextForInput:', typeof global.memorySystem.buildContextForInput);
+  }
+}).catch(err => {
+  console.error('[DEBUG] ❌ Manual initialization FAILED:', err.message);
+  console.error('[DEBUG] Error stack:', err.stack);
+});
+
+// 5. Test handler registration
+console.log('\n--- TESTING HANDLER REGISTRATION ---');
+console.log('[DEBUG] Registered handlers count:', registeredHandlers.size);
+console.log('[DEBUG] Handler map size:', handlerMap.size);
+console.log('[DEBUG] chat:send handler exists:', handlerMap.has('chat:send'));
+console.log('[DEBUG] appendCapsule handler exists:', handlerMap.has('appendCapsule'));
+
+// 6. Working directory check
+console.log('\n--- ENVIRONMENT CHECK ---');
+console.log('[DEBUG] Current working directory:', process.cwd());
+console.log('[DEBUG] __dirname:', __dirname);
+console.log('[DEBUG] Node version:', process.version);
+
+console.log('='.repeat(80));
+console.log('[DEBUG AUDIT] Audit complete - check output above');
+console.log('='.repeat(80));
+// ===== EXPORT =====
+module.exports = {
+ initializeIpcHandlers,
+};
+
+

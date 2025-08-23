@@ -1,0 +1,35 @@
+USE EFFECTS WITH EMPTY DEPENDENCIES (Run on mount):
+
+Line ~478:
+useEffect(function() {
+        var aiName = localStorage.getItem('echo_ai_name') || localStorage.getItem('echo_assistant_name') || 'Echo';
+        var currentPrompt = localStorage.getItem('echo_system_prompt');
+        
+        if (currentPrompt && currentPrompt.includes('Echo') && aiName !== 'Echo') {
+            var newPrompt = currentPrompt.replace(/Echo/g, aiName);
+            localStorage.setItem('echo_system_prompt', newPrompt);
+            setSystemPrompt(newPrompt);
+            console.log('[DEBUG-PROMPT-FIX] Updated system prompt from "Echo" to "' + aiName + '"');
+        }
+    }, [])
+
+
+Line ~1286:
+useEffect(function() {
+    console.log('[DEBUG-TEST-EFFECT] Effects ARE running!');
+    console.log('[DEBUG-TEST-EFFECT] State check:', {
+        authState: authState?.isAuthenticated,
+        selectedLocalModel: selectedLocalModel,
+        onboardingComplete: onboardingComplete
+    });
+}, [])
+
+
+Line ~1403:
+useEffect(function() {
+      if (typeof window !== 'undefined' && window.electronAPI && window.electronAPI.ping) {
+        console.log('[DEBUG-IPC] Sending renderer-ready ping to main process');
+        window.electronAPI.ping('renderer-ready');
+      }
+    }, [])
+

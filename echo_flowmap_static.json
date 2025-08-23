@@ -1,0 +1,64 @@
+{
+  "MemoryCapsule.js": {
+    "file": "MemoryCapsule.js",
+    "connectedTo": [],
+    "connectionCount": 0
+  },
+  "MemoryVaultManager.js": {
+    "file": "MemoryVaultManager.js",
+    "connectedTo": [],
+    "connectionCount": 0
+  },
+  "PromptBuilder.js": {
+    "file": "PromptBuilder.js",
+    "connectedTo": [],
+    "connectionCount": 0
+  },
+  "SessionStitcher.js": {
+    "file": "SessionStitcher.js",
+    "connectedTo": [],
+    "connectionCount": 0
+  },
+  "TokenBudgetManager.js": {
+    "file": "TokenBudgetManager.js",
+    "connectedTo": [],
+    "connectionCount": 0
+  },
+  "vault.js": {
+    "file": "vault.js",
+    "connectedTo": [],
+    "connectionCount": 0
+  },
+  "ChatOrchestrator.js": {
+    "file": "ChatOrchestrator.js",
+    "connectedTo": [
+      "MemoryVaultManager.js",
+      "PromptBuilder.js",
+      "SessionStitcher.js",
+      "TokenBudgetManager.js"
+    ],
+    "connectionCount": 4
+  },
+  "context.js": {
+    "file": "context.js",
+    "connectedTo": [],
+    "connectionCount": 0
+  },
+  "index.js": {
+    "file": "index.js",
+    "connectedTo": [
+      "MemoryCapsule.js",
+      "MemoryVaultManager.js",
+      "context.js"
+    ],
+    "connectionCount": 3
+  },
+  "integration.js": {
+    "file": "integration.js",
+    "connectedTo": [
+      "index.js",
+      "vault.js"
+    ],
+    "connectionCount": 2
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "models": {
+    "clerk": {
+      "name": "phi3:mini",
+      "specialties": ["lists", "navigation", "menus", "file_selection"],
+      "patterns": ["list", "show", "who are", "what are", "select", "choose"],
+      "maxTokens": 500,
+      "temperature": 0.1,
+      "description": "Handles lists, navigation, and file selection tasks"
+    },
+    "reader": {
+      "name": "gemma:2b",
+      "specialties": ["summarization", "comprehension", "explanation"],
+      "patterns": ["summarize", "tell me about", "explain", "what is", "describe"],
+      "maxTokens": 1000,
+      "temperature": 0.3,
+      "description": "Specializes in reading, summarizing, and explaining content"
+    },
+    "analyst": {
+      "name": "qwen2.5-coder:1.5b",
+      "specialties": ["code", "technical", "debugging", "json"],
+      "patterns": ["error", "function", "code", "debug", "fix", "analyze"],
+      "maxTokens": 2000,
+      "temperature": 0.2,
+      "description": "Handles technical analysis, code review, and debugging"
+    },
+    "conversationalist": {
+      "name": "stablelm-zephyr:3b",
+      "specialties": ["chat", "creative", "emotional", "general"],
+      "patterns": ["hello", "how are", "feel", "think", "opinion", "creative"],
+      "maxTokens": 1500,
+      "temperature": 0.7,
+      "description": "General conversation and creative tasks"
+    }
+  },
+  "fallbackModel": "command-r:7b",
+  "routerEnabled": true,
+  "routing": {
+    "confidenceThreshold": 0.3,
+    "enableContextBonus": true,
+    "enableStats": true,
+    "logRouting": true
+  },
+  "performance": {
+    "maxConcurrentRequests": 3,
+    "timeoutMs": 30000,
+    "retryAttempts": 2,
+    "cacheResponses": false
+  },
+  "safety": {
+    "maxQueryLength": 4000,
+    "blockPatterns": [],
+    "sanitizeInput": true
+  }
+}

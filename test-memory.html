@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Memory Pipeline Test</title>
+</head>
+<body>
+    <h1>Echo Memory Pipeline Test</h1>
+    <div id="status"></div>
+    
+    <script>
+        // Load all memory modules
+        const scripts = [
+            'components/memory/ModelInterface.js',
+            'components/memory/PennyEngine.js',
+            'components/memory/VaultInterface.js',
+            'components/memory/CapsuleRetriever.js',
+            'components/memory/ContextInjector.js'
+        ];
+        
+        scripts.forEach(src => {
+            const script = document.createElement('script');
+            script.src = src;
+            document.head.appendChild(script);
+        });
+        
+        // Test after load
+        setTimeout(() => {
+            const status = document.getElementById('status');
+            const results = [];
+            
+            // Check each module
+            results.push(`PennyEngine: ${window.PennyEngine ? '✓' : '✗'}`);
+            results.push(`ModelInterface: ${window.ModelInterface ? '✓' : '✗'}`);
+            results.push(`VaultInterface: ${window.VaultInterface ? '✓' : '✗'}`);
+            results.push(`CapsuleRetriever: ${window.CapsuleRetriever ? '✓' : '✗'}`);
+            results.push(`ContextInjector: ${window.ContextInjector ? '✓' : '✗'}`);
+            
+            status.innerHTML = results.join('<br>');
+            
+            // If all loaded, run basic test
+            if (results.every(r => r.includes('✓'))) {
+                status.innerHTML += '<br><br><strong>All modules loaded! Memory pipeline ready.</strong>';
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

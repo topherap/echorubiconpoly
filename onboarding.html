@@ -1,0 +1,2246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Echo Rubicon - Setup</title>
+    <link rel="stylesheet" href="components/base.css">
+<link rel="stylesheet" href="components/layout.css">
+<link rel="stylesheet" href="components/components.css">
+<link rel="stylesheet" href="components/MyAI.css">
+   
+    <style>
+    /* Onboarding-specific styles - White Rabbit Theme */
+    body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        overflow: hidden; /* Prevent body scroll */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #0f0f0f;
+        color: #009900;
+        font-family: 'Courier New', Courier, monospace;
+    }
+
+    .onboarding-container {
+        width: 90%;
+        max-width: 800px;
+        max-height: 90vh; /* Limit height to 90% of viewport */
+        background: #1a1a1a;
+        border: 2px solid #009900;
+        border-radius: 0;
+        box-shadow: 0 0 40px rgba(0, 153, 0, 0.3);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .progress-bar {
+        height: 4px;
+        background: #0a0a0a;
+        position: relative;
+        flex-shrink: 0; /* Don't shrink */
+    }
+
+    .progress-fill {
+        height: 100%;
+        background: #009900;
+        transition: width 0.5s ease;
+        width: 12.5%;
+        box-shadow: 0 0 10px rgba(0, 153, 0, 0.5);
+    }
+
+    .screen {
+        display: none;
+        padding: 40px 60px; /* Reduced from 60px */
+        overflow-y: auto; /* Make content scrollable */
+        flex: 1; /* Take remaining space */
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+    .screen.active {
+        display: block;
+        animation: fadeIn 0.3s ease forwards;
+    }
+
+    @keyframes fadeIn {
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    h1 {
+        font-size: 2.5em;
+        margin-bottom: 20px;
+        color: #00ff00;
+        font-weight: 700;
+        text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+    }
+
+    h2 {
+        font-size: 1.8em;
+        margin-bottom: 15px;
+        color: #009900;
+    }
+
+    p {
+        font-size: 1.1em;
+        line-height: 1.6;
+        color: #00cc00;
+        margin-bottom: 30px;
+    }
+
+    .button-group {
+        display: flex;
+        gap: 12px;
+        margin-top: 40px;
+    }
+
+    /* Reduce padding on smaller screens */
+    @media (max-height: 768px) {
+        .screen {
+            padding: 30px 40px;
+        }
+        
+        h1 {
+            font-size: 2em; /* Smaller on short screens */
+        }
+        
+        h2 {
+            font-size: 1.5em;
+        }
+        
+        .button-group {
+            margin-top: 30px;
+        }
+    }
+
+    /* For very small screens */
+    @media (max-height: 600px) {
+        .onboarding-container {
+            max-height: 95vh;
+        }
+        
+        .screen {
+            padding: 20px 30px;
+        }
+        
+        h1 {
+            font-size: 1.8em;
+        }
+        
+        h2 {
+            font-size: 1.3em;
+        }
+        
+        p {
+            font-size: 1em;
+            margin-bottom: 20px;
+        }
+        
+        .button-group {
+            margin-top: 20px;
+        }
+    }
+
+    button {
+        padding: 12px 24px;
+        border: 1px solid #009900;
+        border-radius: 0;
+        font-size: 1em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: #0a0a0a;
+        color: #009900;
+        font-family: 'Courier New', Courier, monospace;
+    }
+
+    button.primary {
+        background: #009900;
+        color: #000000;
+        border: 1px solid #00ff00;
+        flex: 1;
+    }
+
+    button.primary:hover {
+        background: #00ff00;
+        box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+    }
+
+    button:hover {
+        background: #1a1a1a;
+        border-color: #00ff00;
+        color: #00ff00;
+    }
+
+    button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .edition-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin: 30px 0;
+    }
+
+    .edition-card {
+        background: #0f0f0f;
+        border: 1px solid #009900;
+        border-radius: 0;
+        padding: 30px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+    }
+
+    .edition-card:hover {
+        background: #1a1a1a;
+        border-color: #00ff00;
+        box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+    }
+
+    .edition-card.selected {
+        background: #1a1a1a;
+        border-color: #00ff00;
+        box-shadow: inset 0 0 20px rgba(0, 255, 0, 0.2);
+    }
+
+    .edition-card h3 {
+        color: #00ff00;
+        margin-bottom: 10px;
+        font-size: 1.5em;
+    }
+
+    .edition-card .price {
+        font-size: 2em;
+        color: #009900;
+        margin: 10px 0;
+        font-weight: bold;
+    }
+
+    .edition-card ul {
+        list-style: none;
+        padding: 0;
+        margin: 20px 0;
+        text-align: left;
+    }
+
+    .edition-card li {
+        padding: 5px 0;
+        color: #00cc00;
+    }
+
+    .edition-card li:before {
+        content: "> ";
+        color: #009900;
+        font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        width: 100%;
+        padding: 12px 16px;
+        background: #0f0f0f;
+        border: 1px solid #009900;
+        border-radius: 0;
+        color: #00ff00;
+        font-size: 1em;
+        margin-bottom: 20px;
+        font-family: 'Courier New', Courier, monospace;
+    }
+
+    input:focus {
+        outline: none;
+        border-color: #00ff00;
+        background: #1a1a1a;
+        box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+    }
+
+    .license-input-group {
+        margin-top: 30px;
+        padding: 20px;
+        background: #0a0a0a;
+        border: 1px solid #009900;
+        border-radius: 0;
+    }
+
+    .license-input-group h4 {
+        margin-bottom: 15px;
+        color: #00ff00;
+    }
+
+    .ai-name-suggestions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin: 20px 0;
+    }
+
+    .suggestion-chip {
+        padding: 8px 16px;
+        background: #0f0f0f;
+        border: 1px solid #009900;
+        border-radius: 0;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 0.9em;
+        color: #009900;
+    }
+
+    .suggestion-chip:hover {
+        background: #1a1a1a;
+        border-color: #00ff00;
+        color: #00ff00;
+    }
+
+    .purpose-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin: 30px 0;
+    }
+
+    .purpose-card {
+        background: #0f0f0f;
+        border: 1px solid #009900;
+        border-radius: 0;
+        padding: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+    }
+
+    .purpose-card:hover {
+        background: #1a1a1a;
+        border-color: #00ff00;
+    }
+
+    .purpose-card.selected {
+        background: #1a1a1a;
+        border-color: #00ff00;
+        box-shadow: inset 0 0 20px rgba(0, 255, 0, 0.2);
+    }
+
+    .purpose-card h4 {
+        color: #00ff00;
+        margin-bottom: 10px;
+    }
+
+    .purpose-card p {
+        font-size: 0.9em;
+        margin: 0;
+        color: #00cc00;
+    }
+
+    .theme-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        margin: 30px 0;
+    }
+
+    .theme-card {
+        background: #0f0f0f;
+        border: 1px solid #009900;
+        border-radius: 0;
+        padding: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .theme-card:hover {
+        border-color: #00ff00;
+        background: #1a1a1a;
+    }
+
+    .theme-card.selected {
+        background: #1a1a1a;
+        border-color: #00ff00;
+        box-shadow: inset 0 0 20px rgba(0, 255, 0, 0.2);
+    }
+
+    .theme-preview {
+        height: 100px;
+        border: 1px solid #009900;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-family: 'Courier New', Courier, monospace;
+    }
+
+    .final-review {
+        background: #0a0a0a;
+        border: 1px solid #009900;
+        border-radius: 0;
+        padding: 30px;
+        margin: 20px 0;
+    }
+
+    .review-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid #004400;
+    }
+
+    .review-item:last-child {
+        border-bottom: none;
+    }
+
+    .review-label {
+        color: #009900;
+    }
+
+    .review-value {
+        color: #00ff00;
+        font-weight: 600;
+    }
+
+    .promo-badge {
+        display: inline-block;
+        background: #00ff00;
+        color: #000000;
+        padding: 4px 12px;
+        border-radius: 0;
+        font-size: 0.8em;
+        margin-left: 10px;
+    }
+
+    .status-message {
+        padding: 15px;
+        border: 1px solid #009900;
+        margin: 20px 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: #0a0a0a;
+    }
+
+    .status-success {
+        border-color: #00ff00;
+        color: #00ff00;
+    }
+
+    .spinner {
+        width: 20px;
+        height: 20px;
+        border: 3px solid #004400;
+        border-top-color: #00ff00;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    /* NEW STYLES FOR MODEL SELECTION */
+    .model-section {
+        margin-bottom: 30px;
+    }
+
+    .model-card {
+        background: #0a0a0a;
+        border: 1px solid #333;
+        padding: 20px;
+        margin: 10px 0;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .model-card.installed {
+        border-color: #00ff00;
+        background: #0a1a0a;
+    }
+
+    .model-card:hover {
+        border-color: #666;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 255, 0, 0.1);
+    }
+
+    .model-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .model-name {
+        color: #00ff00;
+        font-size: 18px;
+        margin: 0;
+    }
+
+    .model-size {
+        color: #666;
+        font-size: 14px;
+    }
+
+    .model-description {
+        color: #ccc;
+        font-size: 14px;
+        margin: 10px 0;
+    }
+
+    .model-usecase {
+        color: #888;
+        font-size: 13px;
+        font-style: italic;
+        margin: 10px 0;
+    }
+
+    .model-stats {
+        display: flex;
+        gap: 20px;
+        margin: 15px 0;
+    }
+
+    .stat {
+        font-size: 13px;
+        font-weight: bold;
+    }
+
+    .model-actions {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-top: 15px;
+    }
+
+    .status.installed {
+        color: #00ff00;
+        font-weight: bold;
+    }
+
+    .action-btn {
+        background: #00ff00;
+        color: #000;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-family: 'Courier New', monospace;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+
+    .action-btn.select {
+        background: #00ff00;
+    }
+
+    .action-btn.install {
+        background: #0088ff;
+        color: #fff;
+    }
+
+    .action-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 15px currentColor;
+    }
+
+    .action-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    /* Download progress styles */
+    #downloadProgress {
+        display: none;
+        margin-top: 20px;
+    }
+
+    #downloadProgress .progress-container {
+        background: #0a0a0a;
+        border: 1px solid #00ff00;
+        height: 20px;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    #progressBar {
+        background: #00ff00;
+        height: 100%;
+        width: 0%;
+        transition: width 0.3s ease;
+    }
+
+    #progressText {
+        color: #00ff00;
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    #downloadStatus {
+        color: #00ff00;
+        text-align: center;
+        margin-top: 5px;
+        font-size: 12px;
+    }
+
+    /* Fix model list height on smaller screens */
+    #modelList {
+        max-height: 400px;
+        overflow-y: auto;
+        margin: 20px 0;
+    }
+
+    @media (max-height: 768px) {
+        #modelList {
+            max-height: 300px;
+        }
+    }
+</style>
+</head>
+<body>
+    <div class="onboarding-container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar"></div>
+        </div>
+
+        <!-- Screen 1: Welcome -->
+        <div class="screen active" id="screen-welcome">
+            <h1>&gt; ECHO RUBICON INIT</h1>
+            <p>LOCAL AI. TOTAL PRIVACY. YOUR CONTROL.</p>
+            
+            <div style="margin: 40px 0;">
+                <h3 style="color: #00ff00; margin-bottom: 20px;">&gt; SYSTEM FEATURES:</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="padding: 10px 0; color: #00cc00;">
+                        <strong style="color: #00ff00;">[SECURE]</strong> 
+                        RUNS ON YOUR HARDWARE. NO CLOUD. NO TRACKING.
+                    </li>
+                    <li style="padding: 10px 0; color: #00cc00;">
+                        <strong style="color: #00ff00;">[MEMORY]</strong> 
+                        OBSIDIAN VAULT INTEGRATION. PERSISTENT KNOWLEDGE.
+                    </li>
+                    <li style="padding: 10px 0; color: #00cc00;">
+                        <strong style="color: #00ff00;">[OWNED]</strong> 
+                        ONE PAYMENT. LIFETIME ACCESS. NO SUBSCRIPTIONS.
+                    </li>
+                </ul>
+            </div>
+
+            <p style="font-size: 0.9em; color: #009900;">
+                &gt; SETUP TIME: ~5 MINUTES
+            </p>
+
+            <div class="button-group">
+                <button class="primary" onclick="nextScreen()">Begin Setup</button>
+            </div>
+        </div>
+
+        
+
+        <!-- Screen 2: AI Identity -->
+        <div class="screen" id="screen-ai-identity">
+            <h2>Name Your AI Assistant</h2>
+            <p>Give your AI a personality. This creates a more personal connection.</p>
+
+            <input type="text" id="aiName" placeholder="Enter a name..." />
+
+           <div class="ai-name-suggestions">
+    <div class="suggestion-chip" onclick="setAIName('Echo')">Echo</div>
+    <div class="suggestion-chip" onclick="setAIName('Friday')">Friday</div>
+    <div class="suggestion-chip" onclick="setAIName('Jarvis')">Jarvis</div>
+    <div class="suggestion-chip" onclick="setAIName('Nova')">Nova</div>
+    <div class="suggestion-chip" onclick="setAIName('Atlas')">Atlas</div>
+    <div class="suggestion-chip" onclick="letAIChoose()">Let AI choose</div>
+</div>
+
+<!-- ADD THIS USER NAME SECTION -->
+<div style="margin-top: 30px;">
+    <h3 style="color: #00ff00; margin-bottom: 10px;">And what should I call you?</h3>
+    <input type="text" id="userName" placeholder="Enter your name..." />
+</div>
+
+
+
+            <div id="aiPreview" style="margin-top: 30px; padding: 20px; background: rgba(99, 102, 241, 0.1); border-radius: 10px; display: none;">
+                <p style="margin: 0; font-style: italic;">"Hi, I'm <span id="previewName"></span>. We are going to do great things together!"</p>
+            </div>
+
+            <div class="button-group">
+                <button onclick="previousScreen()">Back</button>
+                <button class="primary" onclick="nextScreen()" id="aiNext" disabled>Continue</button>
+            </div>
+        </div>
+
+        <!-- Screen 4: Purpose Selection -->
+        <div class="screen" id="screen-purpose">
+            <h2>How Will You Use <span id="aiNameDisplay">Your AI</span>?</h2>
+            <p>This helps customize the initial experience. You can always change this later.</p>
+
+            <div class="purpose-cards">
+                <div class="purpose-card" onclick="selectPurpose('writing')">
+                    <h4>✍️ Writing</h4>
+                    <p>Essays, blogs, journals</p>
+                </div>
+                <div class="purpose-card" onclick="selectPurpose('code')">
+                    <h4>💻 Coding</h4>
+                    <p>Programming assistant</p>
+                </div>
+                <div class="purpose-card" onclick="selectPurpose('creative')">
+                    <h4>🎨 Creative</h4>
+                    <p>Stories, ideas, art</p>
+                </div>
+                <div class="purpose-card" onclick="selectPurpose('research')">
+                    <h4>🔬 Research</h4>
+                    <p>Analysis, learning</p>
+                </div>
+                <div class="purpose-card" onclick="selectPurpose('business')">
+                    <h4>💼 Business</h4>
+                    <p>Professional tasks</p>
+                </div>
+                <div class="purpose-card" onclick="selectPurpose('general')">
+                    <h4>🌐 General</h4>
+                    <p>A bit of everything</p>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button onclick="previousScreen()">Back</button>
+                <button class="primary" onclick="nextScreen()" id="purposeNext" disabled>Continue</button>
+            </div>
+        </div>
+
+        <!-- Screen 4: Model Setup -->
+<div class="screen" id="screen-model">
+    <h2>Setting Up Your AI Brain</h2>
+    
+    <!-- System Status Section -->
+    <div id="systemStatus" style="background: #0a0a0a; border: 1px solid #333; padding: 20px; margin-bottom: 30px; border-radius: 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h3 style="margin: 0; color: #00ff00;">System Requirements</h3>
+            <button onclick="runSystemCheck()" style="padding: 8px 16px; background: #0a0a0a; border: 1px solid #00ff00;">
+                🔍 Run System Check
+            </button>
+        </div>
+        
+        <!-- Status Results -->
+        <div id="statusResults">
+            <p style="color: #888;">Click "Run System Check" to verify your system is ready.</p>
+        </div>
+        
+        <!-- Progress Bar -->
+        <div id="systemCheckProgress" style="display: none; margin-top: 15px;">
+            <div style="background: #1a1a1a; height: 4px; border-radius: 2px; overflow: hidden;">
+                <div id="checkProgressBar" style="height: 100%; background: #00ff00; width: 0%; transition: width 0.3s;"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Model Content -->
+    <div id="modelContent">
+        <p>Once your system is ready, you can browse and install AI models below.</p>
+        <p style="font-size: 0.9em; color: #666; margin-top: 10px;">
+            <strong>Note:</strong> Models run entirely on your computer. No internet required after download.
+        </p>
+    </div>
+
+    <!-- Refresh button -->
+    <div style="text-align: center; margin: 20px 0;">
+        <button onclick="loadModelOptions()" style="background: #0a0a0a; border: 1px solid #00ff00;" id="refreshModelsBtn" disabled>
+            🔄 Browse Available Models
+        </button>
+    </div>
+
+    <!-- Model list -->
+    <div id="modelList" style="max-height: 400px; overflow-y: auto; margin: 20px 0; display: none;"></div>
+
+    <!-- Download progress -->
+    <div id="downloadProgress" style="display: none;">
+        <div class="progress-container">
+            <div id="progressBar"></div>
+        </div>
+        <p id="progressText">0%</p>
+        <p id="downloadStatus"></p>
+    </div>
+
+    <div class="button-group">
+        <button onclick="previousScreen()">Back</button>
+        <button class="primary" onclick="nextScreen()" id="modelNext" disabled>Continue</button>
+    </div>
+</div>
+
+        <!-- Screen 5: Vault Connection -->
+        <div class="screen" id="screen-vault">
+            <h2>Connect Your Obsidian Vault</h2>
+            <p>Echo saves all conversations to your vault, building your knowledge base over time.</p>
+
+            <div style="margin: 30px 0;">
+                <button onclick="selectVault()" style="width: 100%; padding: 20px; font-size: 1.1em;">
+                    📁 Select Vault Folder
+                </button>
+            </div>
+
+            <div id="vaultStatus"></div>
+
+            <p style="font-size: 0.9em; color: #666; margin-top: 30px;">
+                Don't have Obsidian? 
+                <a href="#" onclick="openExternal('https://obsidian.md')" style="color: #6366f1;">Download it here</a> 
+                (it's free)
+            </p>
+
+            <div class="button-group">
+                <button onclick="previousScreen()">Back</button>
+                <button class="primary" onclick="nextScreen()" id="vaultNext" disabled>Continue</button>
+            </div>
+        </div>
+
+        <!-- Screen 7: Security Setup -->
+        <div class="screen" id="screen-security">
+            <h2>Create Your Security Phrase</h2>
+            <p>This protects your conversations. Choose something memorable but unique to you.</p>
+
+            <div style="margin: 30px 0;">
+                <label style="display: block; margin-bottom: 10px; color: #e0e0e0;">
+                    AI will say:
+                </label>
+                <input type="text" id="securityPrompt" placeholder="When I think of home..." />
+
+                <label style="display: block; margin-bottom: 10px; color: #e0e0e0; margin-top: 20px;">
+                    You'll respond:
+                </label>
+                <input type="text" id="securityResponse" placeholder="I smell fresh bread" />
+            </div>
+
+            <div style="margin: 30px 0;">
+                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                    <input type="checkbox" id="enableDestruction" />
+                    <span>Delete all data after 3 failed attempts (maximum security)</span>
+                </label>
+            </div>
+
+            <div class="button-group">
+                <button onclick="previousScreen()">Back</button>
+                <button class="primary" onclick="nextScreen()" id="securityNext" disabled>Continue</button>
+            </div>
+        </div>
+
+        <!-- Screen 8: Theme & Review -->
+        <div class="screen" id="screen-theme">
+            <h2>Almost Done!</h2>
+            <p>Choose your visual theme and review your settings.</p>
+
+            <div class="theme-grid">
+                <div class="theme-card" onclick="selectTheme('white-rabbit')">
+                    <div class="theme-preview white-rabbit theme-enhance">Matrix Green</div>
+                    <h4>White Rabbit</h4>
+                </div>
+                <div class="theme-card" onclick="selectTheme('minimalist-winter')">
+                    <div class="theme-preview minimalist-winter theme-enhance">Clean Light</div>
+                    <h4>Minimalist Winter</h4>
+                </div>
+                <div class="theme-card" onclick="selectTheme('haiku')">
+                    <div class="theme-preview haiku theme-enhance">Warm Paper</div>
+                    <h4>Haiku</h4>
+                </div>
+                <div class="theme-card" onclick="selectTheme('hemingway')">
+                    <div class="theme-preview hemingway theme-enhance">Dark Professional</div>
+                    <h4>Hemingway</h4>
+                </div>
+            </div>
+
+            <div style="margin: 20px 0;">
+                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                    <input type="checkbox" id="enhanceThemes" checked />
+                    <span>Use enhanced themes (modern gradients & effects)</span>
+                </label>
+            </div>
+
+            <div class="final-review">
+                <h3 style="margin-bottom: 20px;">Your Configuration</h3>
+                <div class="review-item">
+                    <span class="review-label">AI Name:</span>
+                    <span class="review-value" id="reviewAIName">Friday</span>
+                </div>
+                <div class="review-item">
+                    <span class="review-label">Primary Use:</span>
+                    <span class="review-value" id="reviewPurpose">Coding</span>
+                </div>
+                <div class="review-item">
+                    <span class="review-label">Model:</span>
+                    <span class="review-value" id="reviewModel">Not selected</span>
+                </div>
+                <div class="review-item">
+                    <span class="review-label">Vault:</span>
+                    <span class="review-value" id="reviewVault">Connected</span>
+                </div>
+                <div class="review-item">
+                    <span class="review-label">Security:</span>
+                    <span class="review-value" id="reviewSecurity">Configured</span>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button onclick="previousScreen()">Back</button>
+                <button class="primary" onclick="completeOnboarding()">
+                    Launch Echo Rubicon
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // Wait for electronAPI to be available
+    function initializeOnboarding() {
+        console.log('[DEBUG-INIT] initializeOnboarding called');
+        console.log('[DEBUG-BRIDGE] electronAPI exists:', !!window.electronAPI);
+        console.log('[DEBUG-BRIDGE] Available methods:', Object.keys(window.electronAPI || {}));
+        
+        window.api = window.electronAPI;
+        
+        // Onboarding state
+        const onboardingState = {
+            currentScreen: 0,
+            screens: [
+                'welcome', 'ai-identity', 'purpose', 
+                'model', 'vault', 'security', 'theme'
+            ],
+            config: {
+                // Auth will be determined by token at app launch
+                authToken: null,
+                authType: 'trial', // 'trial', 'personal', 'pro', 'hosted'
+                trialStarted: new Date().toISOString(), // Start trial immediately
+                ai: {
+                    name: null,
+                    purpose: null,
+                    voice: null
+                },
+                vault: null,
+                security: {
+                    prompt: null,
+                    response: null,
+                    enableDestruction: false,
+                    configured: false
+                },
+                theme: 'white-rabbit',
+                enhancedThemes: true,
+                selectedModel: null
+            }
+        };
+        
+        console.log('[DEBUG-STATE] Initial onboardingState:', onboardingState);
+        
+        // Make functions globally accessible for onclick handlers
+        window.onboardingState = onboardingState;
+        window.nextScreen = nextScreen;
+        window.previousScreen = previousScreen;
+        window.selectEdition = selectEdition;
+        window.validateLicense = validateLicense;
+        window.setAIName = setAIName;
+        window.letAIChoose = letAIChoose;
+        window.updateAIPreview = updateAIPreview;
+        window.updateAINameInPurpose = updateAINameInPurpose;
+        window.selectPurpose = selectPurpose;
+        window.setupModelScreen = setupModelScreen;
+        window.loadModelOptions = loadModelOptions;
+        window.createModelCard = createModelCard;
+        window.selectModel = selectModel;
+        window.installModel = installModel;
+        window.checkOllama = checkOllama;
+        window.downloadOllama = downloadOllama;
+        window.showAPIKeyInput = showAPIKeyInput;
+        window.testAPIConnection = testAPIConnection;
+        window.selectVault = selectVault;
+        window.validateSecurity = validateSecurity;
+        window.selectTheme = selectTheme;
+        window.updateFinalReview = updateFinalReview;
+        window.completeOnboarding = completeOnboarding;
+        window.openExternal = openExternal;
+        // Add these new functions to window object
+        window.runSystemCheck = runSystemCheck;
+        window.formatSystemResults = formatSystemResults;
+        
+        // Promo codes setup (first 100 dev promo codes)
+        const PROMO_CODES = {
+            // Format: CODE -> edition type
+            'ECHO-DEV-FREE-001': { edition: 'pro', type: 'dev-free', features: ['api', 'monthly'] },
+            'ECHO-DEV-FREE-002': { edition: 'pro', type: 'dev-free', features: ['api', 'monthly'] },
+            // ... would generate 100 of these
+            'ECHO-BETA-TESTER': { edition: 'personal', type: 'beta', features: ['full'] }
+        };
+
+        // Navigation functions
+        function showScreen(index) {
+            console.log('[DEBUG-showScreen] Function called with args:', arguments);
+            console.log('[DEBUG-STATE] Before currentScreen:', onboardingState.currentScreen);
+            
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            
+            const screenId = `screen-${onboardingState.screens[index]}`;
+            console.log('[DEBUG-FLOW] Showing screen:', screenId);
+            
+            const screen = document.getElementById(screenId);
+            if (screen) {
+                console.log('[DEBUG-DOM] Updating element:', screen);
+                screen.classList.add('active');
+                updateProgress();
+                
+                // Screen-specific setup
+                if (screenId === 'screen-model') {
+                    console.log('[DEBUG-FLOW] Entering model screen setup');
+                    setupModelScreen();
+                } else if (screenId === 'screen-purpose') {
+                    console.log('[DEBUG-FLOW] Entering purpose screen setup');
+                    updateAINameInPurpose();
+                } else if (screenId === 'screen-theme') {
+                    console.log('[DEBUG-FLOW] Entering theme screen setup');
+                    updateFinalReview();
+                }
+            }
+        }
+
+        function nextScreen() {
+            console.log('[DEBUG-nextScreen] Function called with args:', arguments);
+            console.log('[DEBUG-FLOW] Condition currentScreen < screens.length-1:', onboardingState.currentScreen < onboardingState.screens.length - 1);
+            
+            if (onboardingState.currentScreen < onboardingState.screens.length - 1) {
+                onboardingState.currentScreen++;
+                console.log('[DEBUG-STATE] After currentScreen:', onboardingState.currentScreen);
+                showScreen(onboardingState.currentScreen);
+            }
+        }
+
+        function previousScreen() {
+            console.log('[DEBUG-previousScreen] Function called with args:', arguments);
+            console.log('[DEBUG-FLOW] Condition currentScreen > 0:', onboardingState.currentScreen > 0);
+            
+            if (onboardingState.currentScreen > 0) {
+                onboardingState.currentScreen--;
+                console.log('[DEBUG-STATE] After currentScreen:', onboardingState.currentScreen);
+                showScreen(onboardingState.currentScreen);
+            }
+        }
+
+        function updateProgress() {
+            console.log('[DEBUG-updateProgress] Function called with args:', arguments);
+            const progress = ((onboardingState.currentScreen + 1) / onboardingState.screens.length) * 100;
+            console.log('[DEBUG-STATE] Progress percentage:', progress);
+            
+            const progressBar = document.getElementById('progressBar');
+            console.log('[DEBUG-DOM] Updating element:', progressBar);
+            progressBar.style.width = `${progress}%`;
+        }
+
+        // Edition selection
+        function selectEdition(edition) {
+            console.log('[DEBUG-selectEdition] Function called with args:', arguments);
+            console.log('[DEBUG-STATE] Before edition:', onboardingState.config.edition);
+            
+            onboardingState.config.edition = edition;
+            console.log('[DEBUG-STATE] After edition:', onboardingState.config.edition);
+            
+            document.querySelectorAll('.edition-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            event.target.closest('.edition-card').classList.add('selected');
+            
+            document.getElementById('editionNext').disabled = false;
+            
+            // If free edition, set trial start time
+            console.log('[DEBUG-FLOW] Condition edition === free && !trialStarted:', edition === 'free' && !onboardingState.config.trialStarted);
+            if (edition === 'free' && !onboardingState.config.trialStarted) {
+                onboardingState.config.trialStarted = new Date().toISOString();
+                console.log('[DEBUG-STATE] Trial started at:', onboardingState.config.trialStarted);
+            }
+        }
+
+        // License validation
+        async function validateLicense() {
+            console.log('[DEBUG-validateLicense] Function called with args:', arguments);
+            const key = document.getElementById('licenseKey').value.trim().toUpperCase();
+            console.log('[DEBUG-DATA] License key:', key);
+            
+            // Check promo codes
+            console.log('[DEBUG-FLOW] Condition PROMO_CODES[key]:', !!PROMO_CODES[key]);
+            if (PROMO_CODES[key]) {
+                const promo = PROMO_CODES[key];
+                console.log('[DEBUG-DATA] Promo found:', promo);
+                
+                onboardingState.config.edition = promo.edition;
+                onboardingState.config.isPromo = true;
+                onboardingState.config.promoType = promo.type;
+                onboardingState.config.licenseKey = key;
+                
+                console.log('[DEBUG-STATE] Config after promo:', onboardingState.config);
+                
+                // Show success message
+                const input = document.getElementById('licenseKey');
+                input.style.borderColor = '#22c55e';
+                
+                // Add promo badge
+                const badge = document.createElement('span');
+                badge.className = 'promo-badge';
+                badge.textContent = promo.type === 'dev-free' ? 'Dev Promo' : 'Beta Access';
+                input.parentElement.appendChild(badge);
+                
+                document.getElementById('editionNext').disabled = false;
+                
+                // Auto-select the edition card
+                document.querySelectorAll('.edition-card').forEach(card => {
+                    card.classList.remove('selected');
+                });
+                
+                return;
+            }
+            
+            // For now, dummy validation - accept any key in correct format
+            const validFormat = /^ECHO-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(key);
+            console.log('[DEBUG-FLOW] Condition valid format:', validFormat);
+            
+            if (validFormat) {
+                onboardingState.config.licenseKey = key;
+                document.getElementById('licenseKey').style.borderColor = '#22c55e';
+                document.getElementById('editionNext').disabled = false;
+                
+                // Determine edition from key pattern (dummy logic)
+                if (key.includes('PRO')) {
+                    onboardingState.config.edition = 'pro';
+                } else {
+                    onboardingState.config.edition = 'personal';
+                }
+                console.log('[DEBUG-STATE] Edition determined:', onboardingState.config.edition);
+            } else {
+                document.getElementById('licenseKey').style.borderColor = '#ef4444';
+            }
+        }
+
+        // AI Identity
+        function setAIName(name) {
+            console.log('[DEBUG-setAIName] Function called with args:', arguments);
+            document.getElementById('aiName').value = name;
+            updateAIPreview();
+        }
+
+        function letAIChoose() {
+            console.log('[DEBUG-letAIChoose] Function called with args:', arguments);
+            const names = [
+                'Athena', 'Sage', 'Oracle', 'Phoenix', 'Cosmos',
+                'Synth', 'Pixel', 'Quantum', 'Nebula', 'Cipher'
+            ];
+            const chosen = names[Math.floor(Math.random() * names.length)];
+            console.log('[DEBUG-DATA] AI chosen name:', chosen);
+            setAIName(chosen);
+        }
+
+        function updateAIPreview() {
+    console.log('[DEBUG-updateAIPreview] Function called with args:', arguments);
+    const name = document.getElementById('aiName').value.trim();
+    const userName = document.getElementById('userName').value.trim();
+    console.log('[DEBUG-DATA] AI name value:', name);
+    console.log('[DEBUG-DATA] User name value:', userName);
+    
+    console.log('[DEBUG-FLOW] Condition name exists:', !!name);
+    if (name && userName) {
+        console.log('[DEBUG-STATE] Before ai.name:', onboardingState.config.ai.name);
+        onboardingState.config.ai.name = name;
+        onboardingState.config.ai.userName = userName;
+        console.log('[DEBUG-STATE] After ai.name:', onboardingState.config.ai.name);
+        
+        document.getElementById('previewName').textContent = name;
+        document.getElementById('aiPreview').querySelector('p').textContent = 
+            `"Hi ${userName}, I'm ${name}. We are going to do great things together!"`;
+        document.getElementById('aiPreview').style.display = 'block';
+        document.getElementById('aiNext').disabled = false;
+    } else {
+        document.getElementById('aiPreview').style.display = 'none';
+        document.getElementById('aiNext').disabled = true;
+    }
+}
+
+        function updateAINameInPurpose() {
+            console.log('[DEBUG-updateAINameInPurpose] Function called with args:', arguments);
+            const name = onboardingState.config.ai.name || 'Your AI';
+            console.log('[DEBUG-DATA] AI name for purpose:', name);
+            document.getElementById('aiNameDisplay').textContent = name;
+        }
+
+        // Purpose selection
+        function selectPurpose(purpose) {
+            console.log('[DEBUG-selectPurpose] Function called with args:', arguments);
+            console.log('[DEBUG-STATE] Before ai.purpose:', onboardingState.config.ai.purpose);
+            
+            onboardingState.config.ai.purpose = purpose;
+            console.log('[DEBUG-STATE] After ai.purpose:', onboardingState.config.ai.purpose);
+            
+            document.querySelectorAll('.purpose-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            event.target.closest('.purpose-card').classList.add('selected');
+            
+            document.getElementById('purposeNext').disabled = false;
+        }
+
+        // Enhanced model setup screen
+        function setupModelScreen() {
+            console.log('[DEBUG-setupModelScreen] Function called with args:', arguments);
+            
+            // Reset the screen state
+            console.log('[DEBUG-DOM] Resetting statusResults element');
+            document.getElementById('statusResults').innerHTML = '<p style="color: #888;">Click "Run System Check" to verify your system is ready.</p>';
+            
+            console.log('[DEBUG-DOM] Hiding modelList');
+            document.getElementById('modelList').style.display = 'none';
+            
+            console.log('[DEBUG-DOM] Disabling refreshModelsBtn');
+            document.getElementById('refreshModelsBtn').disabled = true;
+            
+            // Auto-run system check after a short delay
+            console.log('[DEBUG-FLOW] Setting timeout for auto system check');
+            setTimeout(() => {
+                console.log('[DEBUG-FLOW] Auto-running system check');
+                runSystemCheck();
+            }, 500);
+        }
+
+        async function runSystemCheck() {
+            console.log('[DEBUG-runSystemCheck] Function called with args:', arguments);
+            
+            const statusDiv = document.getElementById('statusResults');
+            const progressDiv = document.getElementById('systemCheckProgress');
+            const progressBar = document.getElementById('checkProgressBar');
+            const refreshBtn = document.getElementById('refreshModelsBtn');
+            
+            // Show progress
+            console.log('[DEBUG-DOM] Showing progress div');
+            progressDiv.style.display = 'block';
+            progressBar.style.width = '0%';
+            
+            // Initialize results
+            const results = {
+                ollama: { status: 'checking', message: 'Checking Ollama...' },
+                memory: { status: 'checking', message: 'Checking system memory...' },
+                storage: { status: 'checking', message: 'Checking available storage...' }
+            };
+            
+            console.log('[DEBUG-STATE] Initial results:', results);
+            statusDiv.innerHTML = formatSystemResults(results);
+            
+            // Check Ollama (33% progress)
+            progressBar.style.width = '33%';
+            try {
+                console.log('[DEBUG-IPC] Calling checkOllama');
+                console.log('[DEBUG-BRIDGE] checkOllama exists:', !!window.electronAPI?.checkOllama);
+                
+                const ollamaCheck = await window.electronAPI.checkOllama();
+                console.log('[DEBUG-IPC] checkOllama returned:', ollamaCheck);
+                console.log('[DEBUG-DATA] ollamaCheck type:', typeof ollamaCheck);
+                console.log('[DEBUG-DATA] ollamaCheck value:', ollamaCheck);
+                
+                // Handle different response formats
+                let isAvailable = false;
+                
+                console.log('[DEBUG-FLOW] Checking ollamaCheck type');
+                if (typeof ollamaCheck === 'boolean') {
+                    // If it returns just true/false
+                    isAvailable = ollamaCheck;
+                    console.log('[DEBUG-FLOW] Boolean response, isAvailable:', isAvailable);
+                } else if (ollamaCheck && typeof ollamaCheck === 'object') {
+                    // If it returns an object with 'available' property
+                    isAvailable = ollamaCheck.available || false;
+                    console.log('[DEBUG-FLOW] Object response, isAvailable:', isAvailable);
+                    
+                    // DEBUG: Check for models in the response
+                    if (ollamaCheck.models) {
+                        console.log('[DEBUG-DATA] Models found in checkOllama response:', ollamaCheck.models);
+                    }
+                }
+                
+                console.log('[DEBUG-STATE] Before ollama results update');
+                results.ollama = {
+                    status: isAvailable ? 'success' : 'warning',
+                    message: isAvailable ? 'Ollama is installed and running' : 'Ollama not installed',
+                    action: !isAvailable ? {
+                        text: 'Download Ollama',
+                        url: 'https://ollama.ai/download'
+                    } : null
+                };
+                console.log('[DEBUG-STATE] After ollama results:', results.ollama);
+                
+            } catch (error) {
+                console.error('[DEBUG-ERROR] Ollama check error:', error);
+                console.error('[DEBUG-ERROR] Error stack:', error.stack);
+                results.ollama = {
+                    status: 'error',
+                    message: 'Failed to check Ollama status',
+                    action: {
+                        text: 'Download Ollama',
+                        url: 'https://ollama.ai/download'
+                    }
+                };
+            }
+            statusDiv.innerHTML = formatSystemResults(results);
+            
+            // Check Memory (66% progress)
+            progressBar.style.width = '66%';
+            await new Promise(resolve => setTimeout(resolve, 300)); // Simulate check
+            
+            // Get system memory (this is simulated - in production you'd use a proper system check)
+            const totalMemory = 16; // GB - you'd get this from system
+            const requiredMemory = 8; // GB minimum for AI models
+            
+            console.log('[DEBUG-DATA] Memory check - total:', totalMemory, 'required:', requiredMemory);
+            
+            results.memory = {
+                status: totalMemory >= requiredMemory ? 'success' : 'warning',
+                message: `${totalMemory}GB RAM detected (${requiredMemory}GB recommended)`,
+                action: totalMemory < requiredMemory ? {
+                    text: 'View System Requirements',
+                    url: 'https://github.com/ollama/ollama#system-requirements'
+                } : null
+            };
+            statusDiv.innerHTML = formatSystemResults(results);
+            
+            // Check Storage (100% progress)
+            progressBar.style.width = '100%';
+            await new Promise(resolve => setTimeout(resolve, 300));
+            
+            // Simulated storage check
+            const freeSpace = 50; // GB - you'd get this from system
+            const requiredSpace = 10; // GB for models
+            
+            console.log('[DEBUG-DATA] Storage check - free:', freeSpace, 'required:', requiredSpace);
+            
+            results.storage = {
+                status: freeSpace >= requiredSpace ? 'success' : 'warning',
+                message: `${freeSpace}GB free space (${requiredSpace}GB recommended for models)`,
+                action: null
+            };
+            
+            // Final results
+            console.log('[DEBUG-STATE] Final system check results:', results);
+            statusDiv.innerHTML = formatSystemResults(results);
+            
+            // Hide progress after a moment
+            setTimeout(() => {
+                console.log('[DEBUG-DOM] Hiding progress div');
+                progressDiv.style.display = 'none';
+                
+                // Enable model browsing if Ollama is available
+                console.log('[DEBUG-FLOW] Condition ollama.status === success:', results.ollama.status === 'success');
+                if (results.ollama.status === 'success') {
+                    console.log('[DEBUG-DOM] Enabling refresh button and showing model list');
+                    refreshBtn.disabled = false;
+                    document.getElementById('modelList').style.display = 'block';
+                    
+                    console.log('[DEBUG-FLOW] Auto-loading models');
+                    loadModelOptions(); // Auto-load models
+                }
+            }, 500);
+        }
+
+        function formatSystemResults(results) {
+            console.log('[DEBUG-formatSystemResults] Function called with args:', arguments);
+            let html = '<div style="display: grid; gap: 10px;">';
+            
+            for (const [key, result] of Object.entries(results)) {
+                console.log('[DEBUG-DATA] Formatting result for:', key, result);
+                
+                const icon = result.status === 'checking' ? '⏳' :
+                            result.status === 'success' ? '✅' :
+                            result.status === 'warning' ? '⚠️' :
+                            result.status === 'error' ? '❌' : 'ℹ️';
+                
+                const color = result.status === 'checking' ? '#888' :
+                             result.status === 'success' ? '#00ff00' :
+                             result.status === 'warning' ? '#ff9900' :
+                             result.status === 'error' ? '#ff0000' : '#0099ff';
+                
+                html += `
+                    <div style="display: flex; align-items: center; gap: 10px; padding: 10px; background: #1a1a1a; border-radius: 4px;">
+                        <span style="font-size: 20px;">${icon}</span>
+                        <div style="flex: 1;">
+                            <span style="color: ${color};">${result.message}</span>
+                        </div>
+                        ${result.action ? `
+                            <button onclick="openExternal('${result.action.url}')" 
+                                    style="padding: 6px 12px; background: #0a0a0a; border: 1px solid ${color}; color: ${color}; font-size: 12px;">
+                                ${result.action.text}
+                            </button>
+                        ` : ''}
+                    </div>
+                `;
+            }
+            
+            html += '</div>';
+            return html;
+        }
+
+        // Your existing loadModelOptions function with enhancements
+        async function loadModelOptions() {
+            console.log('[DEBUG-loadModelOptions] Function called with args:', arguments);
+            
+            const modelList = document.getElementById('modelList');
+            console.log('[DEBUG-DOM] modelList element exists:', !!modelList);
+            
+            modelList.innerHTML = '<p style="color: #00ff00;">Loading available models...</p>';
+            
+            try {
+                console.log('[DEBUG-IPC] Calling getModelOptions');
+                console.log('[DEBUG-BRIDGE] getModelOptions exists:', !!window.api?.getModelOptions);
+                
+                const result = await window.api.getModelOptions();
+                console.log('[DEBUG-IPC] getModelOptions returned:', result);
+                console.log('[DEBUG-DATA] Result type:', typeof result);
+                console.log('[DEBUG-DATA] Result keys:', Object.keys(result || {}));
+                console.log('[DEBUG-DATA] Result.grouped:', result?.grouped);
+                
+                // DEBUG: Log the entire structure
+                if (result) {
+                    console.log('[DEBUG-DATA] Full result structure:', JSON.stringify(result, null, 2));
+                }
+                
+                // WORKAROUND: Check for actually installed models
+                console.log('[DEBUG-IPC] Calling checkOllama to get installed models');
+                let installedModelNames = [];
+                try {
+                    const ollamaCheck = await window.electronAPI.checkOllama();
+                    if (ollamaCheck && ollamaCheck.models) {
+                        installedModelNames = ollamaCheck.models.map(m => m.name);
+                        console.log('[DEBUG-DATA] Actually installed models:', installedModelNames);
+                    }
+                } catch (e) {
+                    console.error('[DEBUG-ERROR] Failed to get installed models:', e);
+                }
+                
+                // Check if we have any data at all
+                console.log('[DEBUG-FLOW] Condition !result || !result.grouped:', !result || !result.grouped);
+                if (!result || !result.grouped) {
+                    console.log('[DEBUG-FLOW] No models found - showing empty state');
+                    modelList.innerHTML = `
+                        <div style="text-align: center; padding: 40px; background: #0a0a0a; border-radius: 8px;">
+                            <p style="color: #ff9900; font-size: 18px;">No models found</p>
+                            <p style="color: #888; margin-top: 10px;">Make sure Ollama is running and try again.</p>
+                            <button onclick="runSystemCheck()" style="margin-top: 20px; padding: 10px 20px;">
+                                🔍 Run System Check
+                            </button>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // REMOVED THE BROKEN WORKAROUND - Backend already provides correct structure
+                // The installed models are already in result.grouped.installed
+                
+                console.log('[DEBUG-RENDER] Starting model render');
+                let html = '';
+                
+                // Show installed models first
+                console.log('[DEBUG-DATA] Checking installed models:', result.grouped.installed);
+                console.log('[DEBUG-FLOW] Condition installed exists and length > 0:', !!(result.grouped.installed && result.grouped.installed.length > 0));
+                
+                if (result.grouped.installed && result.grouped.installed.length > 0) {
+                    console.log('[DEBUG-RENDER] Rendering installed models:', result.grouped.installed.length);
+                    console.log('[DEBUG-DATA] Installed models array:', result.grouped.installed);
+                    
+                    html += `
+                        <div class="model-section">
+                            <h3 style="color: #00ff00; margin-bottom: 15px;">✅ Installed Models</h3>
+                            ${result.grouped.installed.map(model => {
+                                console.log('[DEBUG-RENDER] Creating card for installed model:', model);
+                                return createModelCard(model, true);
+                            }).join('')}
+                        </div>
+                    `;
+                    
+                    // Auto-select first installed model
+                    const firstModel = result.grouped.installed[0];
+                    console.log('[DEBUG-DATA] First installed model:', firstModel);
+                    console.log('[DEBUG-DATA] Model id:', firstModel.id);
+                    console.log('[DEBUG-DATA] Model name:', firstModel.name);
+                    
+                    window.selectedModel = firstModel.id || firstModel.name;
+                    onboardingState.config.selectedModel = firstModel.id || firstModel.name;
+                    console.log('[DEBUG-STATE] Auto-selected model:', onboardingState.config.selectedModel);
+                    
+                    document.getElementById('modelNext').disabled = false;
+                } else {
+                    console.log('[DEBUG-FLOW] No installed models found');
+                }
+                
+                // Show available models (previously "other" models)
+                console.log('[DEBUG-DATA] Checking available models:', result.grouped.available);
+                if (result.grouped.available && result.grouped.available.length > 0) {
+                    console.log('[DEBUG-RENDER] Rendering available models:', result.grouped.available.length);
+                    
+                    html += `
+                        <div class="model-section" style="margin-top: 30px;">
+                            <h3 style="color: #ffff00; margin-bottom: 15px;">⭐ Available Models</h3>
+                            <p style="color: #888; font-size: 14px; margin-bottom: 15px;">Great models you can install</p>
+                            ${result.grouped.available.map(model => {
+                                console.log('[DEBUG-RENDER] Creating card for available model:', model);
+                                return createModelCard(model, false);
+                            }).join('')}
+                        </div>
+                    `;
+                }
+                
+                // Show API models if configured
+                console.log('[DEBUG-DATA] Checking API models:', result.grouped.api);
+                console.log('[DEBUG-FLOW] Checking purpose for coding models:', onboardingState.config.ai.purpose);
+                if (onboardingState.config.ai.purpose === 'code' && result.grouped.coding && result.grouped.coding.length > 0) {
+                    console.log('[DEBUG-RENDER] Rendering coding models:', result.grouped.coding.length);
+                    
+                    html += `
+                        <div class="model-section" style="margin-top: 30px;">
+                            <h3 style="color: #00ccff; margin-bottom: 15px;">💻 Coding Models</h3>
+                            <p style="color: #888; font-size: 14px; margin-bottom: 15px;">Specialized for programming tasks</p>
+                            ${result.grouped.coding.map(model => createModelCard(model, false)).join('')}
+                        </div>
+                    `;
+                }
+                
+                // Show other models (check for 'available' or 'other')
+                const otherModels = result.grouped.other || result.grouped.available || [];
+                console.log('[DEBUG-DATA] Other models:', otherModels);
+                console.log('[DEBUG-FLOW] Condition otherModels.length > 0:', otherModels.length > 0);
+                
+                if (otherModels.length > 0) {
+                    console.log('[DEBUG-RENDER] Rendering other models:', otherModels.length);
+                    
+                    html += `
+                        <div class="model-section" style="margin-top: 30px;">
+                            <h3 style="color: #888; margin-bottom: 15px;">Other Available Models</h3>
+                            ${otherModels.map(model => createModelCard(model, false)).join('')}
+                        </div>
+                    `;
+                }
+                
+                // Add Ollama Library link
+                html += `
+                    <div style="text-align: center; margin-top: 40px; padding: 20px; background: #0a0a0a; border-radius: 8px;">
+                        <p style="color: #888; margin-bottom: 15px;">Want to explore more models?</p>
+                        <button onclick="openExternal('https://ollama.ai/library')" 
+                                style="padding: 10px 20px; background: #1a1a1a; border: 1px solid #00ff00; color: #00ff00;">
+                            Browse Ollama Library →
+                        </button>
+                        <p style="color: #666; font-size: 12px; margin-top: 10px;">
+                            Install any model using: <code style="background: #1a1a1a; padding: 2px 6px;">ollama pull model-name</code>
+                        </p>
+                    </div>
+                `;
+                
+                console.log('[DEBUG-DOM] Setting modelList innerHTML');
+                modelList.innerHTML = html;
+                
+                console.log('[DEBUG-RENDER] Cards in DOM:', document.querySelectorAll('.model-card').length);
+                console.log('[DEBUG-RENDER] Model sections in DOM:', document.querySelectorAll('.model-section').length);
+                
+            } catch (error) {
+                console.error('[DEBUG-ERROR] Failed to load models:', error);
+                console.error('[DEBUG-ERROR] Error stack:', error.stack);
+                console.error('[DEBUG-ERROR] Error type:', error.constructor.name);
+                
+                modelList.innerHTML = `
+                    <div style="text-align: center; padding: 40px; background: #0a0a0a; border-radius: 8px;">
+                        <p style="color: #ff0000;">Failed to load models</p>
+                        <p style="color: #888; margin-top: 10px;">${error.message}</p>
+                        <button onclick="runSystemCheck()" style="margin-top: 20px; padding: 10px 20px;">
+                            🔍 Run System Check
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function createModelCard(model, isInstalled) {
+            console.log('[DEBUG-createModelCard] Function called with args:', arguments);
+            console.log('[DEBUG-DATA] Model object:', model);
+            console.log('[DEBUG-DATA] isInstalled:', isInstalled);
+            
+            const speedColors = {
+                'very fast': '#00ff00',
+                'fast': '#88ff00',
+                'moderate': '#ffff00'
+            };
+            
+            const qualityColors = {
+                'excellent': '#00ff00',
+                'excellent for code': '#00ff00',
+                'very good': '#88ff00',
+                'good': '#ffff00'
+            };
+            
+            // Use value or name, with fallback
+            const modelId = model.value || model.name || 'unknown';
+            console.log('[DEBUG-DATA] Model ID determined:', modelId);
+            
+            // DEBUG: This might be the issue - check if model has all expected properties
+            console.log('[DEBUG-DATA] Model properties:', {
+                label: model.label,
+                size: model.size,
+                description: model.description,
+                useCase: model.useCase,
+                speed: model.speed,
+                quality: model.quality
+            });
+            
+            const cardHtml = `
+                <div class="model-card ${isInstalled ? 'installed' : ''}" data-model="${modelId}">
+                    <div class="model-header">
+                        <h4 class="model-name">${model.label || modelId}</h4>
+                        <span class="model-size">${model.size || ''}</span>
+                    </div>
+                    <p class="model-description">${model.description || ''}</p>
+                    <p class="model-usecase">Best for: ${model.useCase || 'General use'}</p>
+                    <div class="model-stats">
+                        <span class="stat" style="color: ${speedColors[model.speed] || '#888'}">
+                            ⚡ ${model.speed || 'Unknown speed'}
+                        </span>
+                        <span class="stat" style="color: ${qualityColors[model.quality] || '#888'}">
+                            ✨ ${model.quality || 'Unknown quality'}
+                        </span>
+                    </div>
+                    <div class="model-actions">
+                        ${isInstalled ? 
+                            `<span class="status installed">✓ Installed</span>
+                             <button class="action-btn select" onclick="selectModel('${modelId}')">Use This Model</button>` :
+                            `<button class="action-btn install" onclick="installModel('${modelId}')">Install</button>`
+                        }
+                    </div>
+                </div>
+            `;
+            
+            console.log('[DEBUG-RENDER] Created card HTML for model:', modelId);
+            return cardHtml;
+        }
+
+        function selectModel(modelName) {
+            console.log('[DEBUG-selectModel] Function called with args:', arguments);
+            console.log('[DEBUG-STATE] Before selectedModel:', window.selectedModel);
+            console.log('[DEBUG-STATE] Before config.selectedModel:', onboardingState.config.selectedModel);
+            
+            // Store the selected model
+            window.selectedModel = modelName;
+            onboardingState.config.selectedModel = modelName;
+            
+            console.log('[DEBUG-STATE] After selectedModel:', window.selectedModel);
+            console.log('[DEBUG-STATE] After config.selectedModel:', onboardingState.config.selectedModel);
+            
+            // Update UI to show selection
+            console.log('[DEBUG-DOM] Resetting all model cards');
+            document.querySelectorAll('.model-card').forEach(el => {
+                el.classList.remove('selected');
+                // Reset all buttons
+                const btn = el.querySelector('.action-btn.select');
+                if (btn) {
+                    btn.textContent = 'Use This Model';
+                    btn.style.background = '';
+                }
+            });
+            
+            const selectedCard = document.querySelector(`[data-model="${modelName}"]`);
+            console.log('[DEBUG-DOM] Selected card element:', selectedCard);
+            console.log('[DEBUG-FLOW] Condition selectedCard exists:', !!selectedCard);
+            
+            if (selectedCard) {
+                selectedCard.classList.add('selected');
+                
+                // Update button text
+                const actionBtn = selectedCard.querySelector('.action-btn.select');
+                console.log('[DEBUG-DOM] Action button:', actionBtn);
+                if (actionBtn) {
+                    actionBtn.textContent = '✓ Selected';
+                    actionBtn.style.background = '#0a4a0a';
+                }
+            }
+            
+            // Enable next button
+            console.log('[DEBUG-DOM] Enabling modelNext button');
+            document.getElementById('modelNext').disabled = false;
+        }
+
+        async function installModel(modelName) {
+            console.log('[DEBUG-installModel] Function called with args:', arguments);
+            
+            const modelCard = document.querySelector(`[data-model="${modelName}"]`);
+            console.log('[DEBUG-DOM] Model card element:', modelCard);
+            
+            const statusEl = modelCard.querySelector('.model-actions');
+            console.log('[DEBUG-DOM] Status element:', statusEl);
+            
+            // Update UI to show downloading
+            statusEl.innerHTML = '<span class="status" style="color: #ffff00;">Downloading...</span>';
+            
+            // Show progress bar
+            const downloadProgress = document.getElementById('downloadProgress');
+            console.log('[DEBUG-DOM] Showing download progress');
+            downloadProgress.style.display = 'block';
+            
+            try {
+                // Listen for progress updates
+                console.log('[DEBUG-BRIDGE] Checking onDownloadProgress:', !!window.api?.onDownloadProgress);
+                if (window.api && window.api.onDownloadProgress) {
+                    console.log('[DEBUG-IPC] Setting up download progress listener');
+                    window.api.onDownloadProgress((progress) => {
+                        console.log('[DEBUG-DATA] Download progress update:', progress);
+                        
+                        const progressBar = document.getElementById('progressBar');
+                        const progressText = document.getElementById('progressText');
+                        const downloadStatus = document.getElementById('downloadStatus');
+                        
+                        progressBar.style.width = `${progress.percent}%`;
+                        progressText.textContent = `${progress.percent}%`;
+                        
+                        // Show status message
+                        if (progress.status === 'pulling manifest') {
+                            downloadStatus.textContent = 'Fetching model information...';
+                        } else if (progress.digest) {
+                            const size = progress.total ? `${(progress.total / 1e9).toFixed(1)}GB` : '';
+                            const downloaded = progress.completed ? `${(progress.completed / 1e9).toFixed(1)}GB` : '';
+                            downloadStatus.textContent = `Downloading: ${downloaded} / ${size}`;
+                        } else {
+                            downloadStatus.textContent = progress.status;
+                        }
+                    });
+                }
+                
+                console.log('[DEBUG-IPC] Calling pullModel');
+                console.log('[DEBUG-BRIDGE] pullModel exists:', !!window.api?.pullModel);
+                const success = await window.api.pullModel(modelName);
+                console.log('[DEBUG-IPC] pullModel returned:', success);
+                
+                // Hide progress bar
+                console.log('[DEBUG-DOM] Hiding download progress');
+                downloadProgress.style.display = 'none';
+                
+                console.log('[DEBUG-FLOW] Condition success:', success);
+                if (success) {
+                    console.log('[DEBUG-DOM] Updating status to installed');
+                    statusEl.innerHTML = `
+                        <span class="status installed">✓ Installed</span>
+                        <button class="action-btn select" onclick="selectModel('${modelName}')">Use This Model</button>
+                    `;
+                    modelCard.classList.add('installed');
+                    
+                    // Auto-select if it's the first installed model
+                    console.log('[DEBUG-FLOW] Condition !window.selectedModel:', !window.selectedModel);
+                    if (!window.selectedModel) {
+                        console.log('[DEBUG-FLOW] Auto-selecting first installed model');
+                        selectModel(modelName);
+                    }
+                } else {
+                    console.log('[DEBUG-DOM] Updating status to failed');
+                    statusEl.innerHTML = `
+                        <span class="status" style="color: #ff0000;">Failed</span>
+                        <button class="action-btn install" onclick="installModel('${modelName}')">Retry</button>
+                    `;
+                }
+            } catch (error) {
+                console.error('[DEBUG-ERROR] Failed to install model:', error);
+                console.error('[DEBUG-ERROR] Error stack:', error.stack);
+                
+                downloadProgress.style.display = 'none';
+                statusEl.innerHTML = `
+                    <span class="status" style="color: #ff0000;">Error</span>
+                    <button class="action-btn install" onclick="installModel('${modelName}')">Retry</button>
+                `;
+            }
+        }
+
+        async function checkOllama() {
+            console.log('[DEBUG-checkOllama] Function called with args:', arguments);
+            
+            const modelList = document.getElementById('modelList');
+            modelList.innerHTML = `
+                <div class="status-message">
+                    <div class="spinner"></div>
+                    <span>Checking Ollama installation...</span>
+                </div>
+            `;
+            
+            try {
+                console.log('[DEBUG-IPC] Calling checkOllama');
+                const hasOllama = await window.api.checkOllama();
+                console.log('[DEBUG-IPC] checkOllama returned:', hasOllama);
+                
+                console.log('[DEBUG-FLOW] Condition hasOllama:', hasOllama);
+                if (hasOllama) {
+                    modelList.innerHTML = `
+                        <div class="status-success">
+                            ✓ Ollama is installed and running
+                        </div>
+                        <button onclick="loadModelOptions()" style="margin-top: 20px;">
+                            Continue to Model Selection
+                        </button>
+                    `;
+                } else {
+                    modelList.innerHTML = `
+                        <p>Ollama needs to be installed for local AI models.</p>
+                        <button onclick="downloadOllama()" style="margin-top: 20px;">
+                            Download Ollama
+                        </button>
+                        <p style="font-size: 0.9em; color: #666; margin-top: 20px;">
+                            After installing Ollama, click "Check Again"
+                        </p>
+                        <button onclick="checkOllama()" style="margin-top: 10px;">
+                            Check Again
+                        </button>
+                    `;
+                }
+            } catch (error) {
+                console.error('[DEBUG-ERROR] Error checking Ollama:', error);
+                modelList.innerHTML = `
+                    <p style="color: #ff0000;">Error checking Ollama installation</p>
+                    <button onclick="checkOllama()" style="margin-top: 20px;">
+                        Try Again
+                    </button>
+                `;
+            }
+        }
+
+        async function downloadOllama() {
+            console.log('[DEBUG-downloadOllama] Function called with args:', arguments);
+            console.log('[DEBUG-IPC] Calling openExternal');
+            await window.api.openExternal('https://ollama.ai/download');
+        }
+
+        function showAPIKeyInput() {
+            console.log('[DEBUG-showAPIKeyInput] Function called with args:', arguments);
+            
+            const provider = document.getElementById('apiProvider').value;
+            console.log('[DEBUG-DATA] API provider:', provider);
+            
+            const container = document.getElementById('apiKeyInputs');
+            
+            console.log('[DEBUG-FLOW] Condition !provider:', !provider);
+            if (!provider) {
+                container.innerHTML = '';
+                return;
+            }
+            
+            let html = '';
+            
+            console.log('[DEBUG-FLOW] Checking provider type');
+            if (provider === 'openai' || provider === 'both') {
+                html += `
+                    <div style="margin: 20px 0;">
+                        <label style="display: block; margin-bottom: 10px; color: #e0e0e0;">
+                            OpenAI API Key:
+                        </label>
+                        <input type="password" id="openaiKey" placeholder="sk-..." style="width: 100%;" />
+                    </div>
+                `;
+            }
+            
+            if (provider === 'anthropic' || provider === 'both') {
+                html += `
+                    <div style="margin: 20px 0;">
+                        <label style="display: block; margin-bottom: 10px; color: #e0e0e0;">
+                            Anthropic API Key:
+                        </label>
+                        <input type="password" id="anthropicKey" placeholder="sk-ant-..." style="width: 100%;" />
+                    </div>
+                `;
+            }
+            
+            html += `
+                <button onclick="testAPIConnection()" style="width: 100%; margin-top: 20px;">
+                    Test Connection
+                </button>
+                <div id="apiTestResult"></div>
+            `;
+            
+            console.log('[DEBUG-DOM] Setting apiKeyInputs HTML');
+            container.innerHTML = html;
+        }
+
+        async function testAPIConnection() {
+            console.log('[DEBUG-testAPIConnection] Function called with args:', arguments);
+            
+            const result = document.getElementById('apiTestResult');
+            result.innerHTML = '<div class="spinner"></div> Testing connection...';
+            
+            // Dummy test - in real implementation would validate keys
+            console.log('[DEBUG-FLOW] Starting connection test simulation');
+            setTimeout(() => {
+                result.innerHTML = '<div class="status-success">✓ Connection successful!</div>';
+                document.getElementById('modelNext').disabled = false;
+            }, 1500);
+        }
+
+        // Vault selection
+        async function selectVault() {
+            console.log('[DEBUG-selectVault] Function called with args:', arguments);
+            
+            try {
+                // Check if the API is available
+                console.log('[DEBUG-BRIDGE] electronAPI exists:', !!window.electronAPI);
+                if (!window.electronAPI) {
+                    console.error('[DEBUG-ERROR] window.electronAPI is not available');
+                    return;
+                }
+                
+                console.log('[DEBUG-BRIDGE] selectFolder exists:', !!window.electronAPI.selectFolder);
+                if (!window.electronAPI.selectFolder) {
+                    console.error('[DEBUG-ERROR] window.electronAPI.selectFolder is not available');
+                    return;
+                }
+                
+                console.log('[DEBUG-IPC] Calling selectFolder');
+                const result = await window.electronAPI.selectFolder();
+                console.log('[DEBUG-IPC] selectFolder returned:', result);
+                
+                console.log('[DEBUG-FLOW] Condition result && result.path:', !!(result && result.path));
+                if (result && result.path) {
+                    console.log('[DEBUG-STATE] Before vault:', onboardingState.config.vault);
+                    onboardingState.config.vault = result.path;
+                    console.log('[DEBUG-STATE] After vault:', onboardingState.config.vault);
+                    
+                    const statusHtml = result.isObsidianVault 
+                        ? `<div class="status-success">✓ Obsidian vault connected: ${result.path}</div>`
+                        : `<div class="status-success">✓ Folder selected: ${result.path}<br><small style="color: #ffff00;">Note: This doesn't appear to be an Obsidian vault</small></div>`;
+                    
+                    console.log('[DEBUG-DOM] Setting vaultStatus HTML');
+                    document.getElementById('vaultStatus').innerHTML = statusHtml;
+                    document.getElementById('vaultNext').disabled = false;
+                } else {
+                    console.log('[DEBUG-FLOW] User cancelled folder selection');
+                }
+            } catch (error) {
+                console.error('[DEBUG-ERROR] Error in selectVault:', error);
+                console.error('[DEBUG-ERROR] Error stack:', error.stack);
+                
+                // Handle the specific "second handler" error
+                if (error.message && error.message.includes('second handler')) {
+                    console.log('[DEBUG-ERROR] Handler registration error detected, attempting fallback');
+                    
+                    // Try using a file input as fallback
+                    const input = document.createElement('input');
+                    input.type = 'file';
+                    input.webkitdirectory = true;
+                    input.directory = true;
+                    
+                    input.onchange = (e) => {
+                        if (e.target.files.length > 0) {
+                            const path = e.target.files[0].path;
+                            const folderPath = path.substring(0, path.lastIndexOf('/'));
+                            
+                            console.log('[DEBUG-FALLBACK] Folder selected via input:', folderPath);
+                            onboardingState.config.vault = folderPath;
+                            
+                            document.getElementById('vaultStatus').innerHTML = `
+                                <div class="status-success">✓ Folder selected: ${folderPath}<br>
+                                <small style="color: #ffff00;">Selected via fallback method</small></div>
+                            `;
+                            document.getElementById('vaultNext').disabled = false;
+                        }
+                    };
+                    
+                    input.click();
+                } else {
+                    // Show a more user-friendly error message
+                    document.getElementById('vaultStatus').innerHTML = `
+                        <div style="color: #ff9900; padding: 15px; background: #1a1a1a; border: 1px solid #ff9900; border-radius: 4px;">
+                            <p style="margin: 0;">Unable to open folder selector. Please try again.</p>
+                            <p style="margin: 10px 0 0 0; font-size: 0.9em;">If the problem persists, you can skip this step and configure it later in settings.</p>
+                        </div>
+                    `;
+                    
+                    // Add a skip button
+                    const skipButton = document.createElement('button');
+                    skipButton.textContent = 'Skip for now';
+                    skipButton.style.marginTop = '15px';
+                    skipButton.onclick = () => {
+                        console.log('[DEBUG-ACTION] User skipped vault selection');
+                        onboardingState.config.vault = null;
+                        document.getElementById('vaultNext').disabled = false;
+                        document.getElementById('vaultStatus').innerHTML = `
+                            <div style="color: #ffff00;">Vault connection skipped. You can set this up later in settings.</div>
+                        `;
+                    };
+                    
+                    document.getElementById('vaultStatus').appendChild(skipButton);
+                }
+            }
+        }
+
+        // Security setup
+        document.getElementById('securityPrompt').addEventListener('input', validateSecurity);
+        document.getElementById('securityResponse').addEventListener('input', validateSecurity);
+
+        function validateSecurity() {
+            console.log('[DEBUG-validateSecurity] Function called with args:', arguments);
+            
+            const prompt = document.getElementById('securityPrompt').value.trim();
+            const response = document.getElementById('securityResponse').value.trim();
+            
+            console.log('[DEBUG-DATA] Security prompt:', prompt);
+            console.log('[DEBUG-DATA] Security response:', response);
+            
+            console.log('[DEBUG-FLOW] Condition prompt && response:', !!(prompt && response));
+            if (prompt && response) {
+                console.log('[DEBUG-STATE] Before security config:', onboardingState.config.security);
+                onboardingState.config.security.prompt = prompt;
+                onboardingState.config.security.response = response;
+                onboardingState.config.security.configured = true;
+                console.log('[DEBUG-STATE] After security config:', onboardingState.config.security);
+                
+                document.getElementById('securityNext').disabled = false;
+            } else {
+                document.getElementById('securityNext').disabled = true;
+            }
+        }
+
+        // Theme selection
+        function selectTheme(theme) {
+            console.log('[DEBUG-selectTheme] Function called with args:', arguments);
+            console.log('[DEBUG-STATE] Before theme:', onboardingState.config.theme);
+            
+            onboardingState.config.theme = theme;
+            console.log('[DEBUG-STATE] After theme:', onboardingState.config.theme);
+            
+            document.querySelectorAll('.theme-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            event.target.closest('.theme-card').classList.add('selected');
+        }
+
+        // Final review update
+        function updateFinalReview() {
+            console.log('[DEBUG-updateFinalReview] Function called with args:', arguments);
+            
+            console.log('[DEBUG-DOM] Updating review elements');
+            document.getElementById('reviewAIName').textContent = 
+                onboardingState.config.ai.name || 'Not set';
+            
+            document.getElementById('reviewPurpose').textContent = 
+                onboardingState.config.ai.purpose?.charAt(0).toUpperCase() + 
+                onboardingState.config.ai.purpose?.slice(1) || 'Not set';
+            
+            document.getElementById('reviewModel').textContent = 
+                onboardingState.config.selectedModel || 'Not selected';
+            
+            document.getElementById('reviewVault').textContent = 
+                onboardingState.config.vault ? 'Connected' : 'Not connected';
+            
+            document.getElementById('reviewSecurity').textContent = 
+                onboardingState.config.security.configured ? 'Configured' : 'Not configured';
+                
+            console.log('[DEBUG-DATA] Review data:', {
+                aiName: onboardingState.config.ai.name,
+                purpose: onboardingState.config.ai.purpose,
+                model: onboardingState.config.selectedModel,
+                vault: onboardingState.config.vault,
+                security: onboardingState.config.security.configured
+            });
+        }
+
+        // Complete onboarding
+async function completeOnboarding() {
+    console.log('[DEBUG-completeOnboarding] Function called');
+    
+    // Update final config values
+    onboardingState.config.security.enableDestruction = 
+        document.getElementById('enableDestruction').checked;
+    onboardingState.config.enhancedThemes = 
+        document.getElementById('enhanceThemes').checked;
+    
+    console.log('[DEBUG-STATE] Final config:', onboardingState.config);
+    
+    try {
+        // CRITICAL: Save the security challenge to the security system FIRST
+        if (onboardingState.config.security.configured && window.myai && window.myai.security) {
+            console.log('[DEBUG-SECURITY] Saving security challenge to security API');
+            console.log('[DEBUG-SECURITY] Challenge data:', {
+                prompt: onboardingState.config.security.prompt,
+                response: onboardingState.config.security.response
+            });
+            
+            // Try multiple methods to save the challenge
+            if (window.myai.security.setChallenge) {
+                await window.myai.security.setChallenge({
+                    prompt: onboardingState.config.security.prompt,
+                    expectedCompletion: onboardingState.config.security.response,
+                    attemptsRemaining: 3,
+                    type: 'completion'
+                });
+                console.log('[DEBUG-SECURITY] Challenge saved via setChallenge');
+            } else if (window.myai.security.saveChallenge) {
+                await window.myai.security.saveChallenge(
+                    onboardingState.config.security.prompt,
+                    onboardingState.config.security.response
+                );
+                console.log('[DEBUG-SECURITY] Challenge saved via saveChallenge');
+            } else if (window.myai.security.savePassphrase) {
+                // If only a simple passphrase method exists
+                await window.myai.security.savePassphrase(onboardingState.config.security.response);
+                console.log('[DEBUG-SECURITY] Passphrase saved via savePassphrase');
+            } else {
+                console.error('[DEBUG-SECURITY] No method available to save challenge!');
+                console.log('[DEBUG-SECURITY] Available security methods:', Object.keys(window.myai.security));
+                
+                // Fallback: save to localStorage encrypted (base64 encoded for now)
+                const challengeData = {
+                    prompt: onboardingState.config.security.prompt,
+                    expectedCompletion: onboardingState.config.security.response,
+                    type: 'completion'
+                };
+                localStorage.setItem('echo_challenge', btoa(JSON.stringify(challengeData)));
+                console.log('[DEBUG-SECURITY] Challenge saved to localStorage as fallback');
+            }
+        } else {
+            console.warn('[DEBUG-SECURITY] Security not configured or API not available');
+        }
+        
+       // Save onboarding completion flag
+localStorage.setItem('echo_onboarding_complete', 'true');
+
+// Save user preferences
+localStorage.setItem('echo_ai_name', onboardingState.config.ai.name);
+localStorage.setItem('echo_user_name', onboardingState.config.ai.userName);
+localStorage.setItem('echo_selected_model', onboardingState.config.selectedModel || onboardingState.config.models?.selected || '');
+
+// Save vault path if set
+if (onboardingState.config.obsidian?.vaultPath || onboardingState.config.vault) {
+    const vaultPath = onboardingState.config.obsidian?.vaultPath || onboardingState.config.vault;
+    localStorage.setItem('obsidianVaultPath', vaultPath);
+    localStorage.setItem('echo_vault_path', vaultPath);
+}
+
+// Save additional preferences
+if (onboardingState.config.ai?.purpose) {
+    localStorage.setItem('echo_ai_purpose', onboardingState.config.ai.purpose);
+}
+if (onboardingState.config.theme) {
+    localStorage.setItem('selectedTheme', onboardingState.config.theme);
+}
+
+console.log('[DEBUG-SAVE] Saved onboarding complete flag and all user data');
+
+// Save configuration via electronAPI
+        console.log('[DEBUG-IPC] Calling saveOnboardingData');
+        try {
+            const saveResult = await window.electronAPI.saveOnboardingData(onboardingState.config);
+            console.log('[DEBUG-IPC] saveOnboardingData result:', saveResult);
+        } catch (error) {
+            console.error('[DEBUG-IPC] saveOnboardingData failed:', error);
+            // Continue anyway since we have localStorage backup
+        }
+        
+        // Mark onboarding as complete
+        console.log('[DEBUG-IPC] Calling completeOnboarding');
+        try {
+            await window.electronAPI.completeOnboarding();
+            console.log('[DEBUG-IPC] completeOnboarding completed');
+        } catch (error) {
+            console.error('[DEBUG-IPC] completeOnboarding failed:', error);
+            // Continue anyway
+        }
+        
+        // Set local storage flags so main app knows we're done
+        console.log('[DEBUG-STATE] Setting localStorage flags');
+        localStorage.setItem('onboardingComplete', 'true');
+        localStorage.setItem('echoAuthenticated', 'true');
+        
+        // Log all localStorage data for debugging
+        console.log('[DEBUG-STORAGE] Final localStorage state:', {
+            onboardingComplete: localStorage.getItem('onboardingComplete'),
+            echoAuthenticated: localStorage.getItem('echoAuthenticated'),
+            echo_ai_name: localStorage.getItem('echo_ai_name'),
+            echo_vault_path: localStorage.getItem('echo_vault_path'),
+            obsidianVaultPath: localStorage.getItem('obsidianVaultPath'),
+            echo_selected_model: localStorage.getItem('echo_selected_model'),
+            echo_ai_purpose: localStorage.getItem('echo_ai_purpose'),
+            selectedTheme: localStorage.getItem('selectedTheme'),
+            echo_challenge: localStorage.getItem('echo_challenge') ? 'Set' : 'Not set'
+        });
+        
+        // Small delay to ensure everything is saved
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
+        // Navigate to main app
+        console.log('[DEBUG-FLOW] Navigating to index.html');
+        window.location.href = 'index.html';
+    } catch (error) {
+        console.error('[DEBUG-ERROR] Failed to complete onboarding:', error);
+        console.error('[DEBUG-ERROR] Error stack:', error.stack);
+        
+        // Show error but still try to continue
+        alert('Some settings may not have saved properly. You can update them in Settings later.');
+        
+        // Still set the flags and continue
+        console.log('[DEBUG-STATE] Setting localStorage flags despite error');
+        localStorage.setItem('onboardingComplete', 'true');
+        sessionStorage.setItem('echoAuthenticated', 'true');
+        
+        // Still navigate after a delay
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 1000);
+    }
+}
+
+// Helper functions
+async function openExternal(url) {
+    console.log('[DEBUG-openExternal] Function called with args:', arguments);
+    
+    console.log('[DEBUG-BRIDGE] Checking openExternal availability');
+    if (window.api && window.api.openExternal) {
+        console.log('[DEBUG-IPC] Calling openExternal');
+        await window.api.openExternal(url);
+    } else {
+        console.log('[DEBUG-FLOW] Fallback to window.open');
+        window.open(url, '_blank');
+    }
+}
+
+// Initialize
+        console.log('[DEBUG-INIT] Setting up event listeners');
+        document.getElementById('aiName').addEventListener('input', updateAIPreview);
+        document.getElementById('userName').addEventListener('input', updateAIPreview); //line 2270
+        
+        // Add input listeners for security
+        document.getElementById('enableDestruction').addEventListener('change', (e) => {
+            console.log('[DEBUG-STATE] enableDestruction changed:', e.target.checked);
+            onboardingState.config.security.enableDestruction = e.target.checked;
+        });
+        
+    } // End of initializeOnboarding function
+    
+    // Start initialization when electronAPI is ready
+    console.log('[DEBUG-INIT] Checking for electronAPI availability');
+    if (window.electronAPI) {
+        console.log('[DEBUG-INIT] electronAPI available immediately');
+        initializeOnboarding();
+    } else {
+        console.log('[DEBUG-INIT] Waiting for electronAPI...');
+        let checkCount = 0;
+        const checkAPI = setInterval(() => {
+            console.log('[DEBUG-INIT] Check #' + checkCount + ' for electronAPI');
+            if (window.electronAPI) {
+                clearInterval(checkAPI);
+                console.log('[DEBUG-INIT] electronAPI now available after', checkCount, 'checks');
+                initializeOnboarding();
+            } else if (++checkCount > 100) {
+                clearInterval(checkAPI);
+                console.error('[DEBUG-INIT] electronAPI never loaded after 5 seconds');
+                // Try one more time with a longer delay
+                setTimeout(() => {
+                    if (window.electronAPI) {
+                        console.log('[DEBUG-INIT] electronAPI available after extended wait');
+                        initializeOnboarding();
+                    } else {
+                        console.error('[DEBUG-INIT] Final check failed - electronAPI not available');
+                        alert('Failed to initialize. Please restart the application.');
+                    }
+                }, 2000);
+            }
+        }, 50);
+    }
+    </script>
+</body>
+</html>

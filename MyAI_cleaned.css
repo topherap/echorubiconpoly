@@ -1,0 +1,704 @@
+/* Reset default margins/padding */
+html,
+body {
+  margin: 0;
+  padding: 0;
+
+}
+
+
+
+
+/* Base styles */
+
+/* Theme: White Rabbit */
+.white-rabbit {
+  --bg-primary: #1a1a1a;
+  --text-primary: #33ff33;
+  --border-color: #33ff33;
+  --header-bg: #0a0a0a;
+  --button-bg: #111111;
+  --button-hover: #1e1e1e;
+  --input-bg: #0f0f0f;
+  --status-connected: #33ff33;
+  --status-disconnected: #ff3333;
+  --scrollbar-thumb: #33ff33;
+  --scrollbar-track: #0a0a0a;
+}
+
+/* Theme: Minimalist Winter */
+.minimalist-winter {
+  --bg-primary: #e6ecef;
+  --text-primary: #1a2526;
+  --border-color: #b0bec5;
+  --header-bg: #e3f2fd;
+  --button-bg: #e1f5fe;
+  --button-hover: #b3e5fc;
+  --input-bg: #ffffff;
+  --status-connected: #43a047;
+  --status-disconnected: #e53935;
+  --scrollbar-thumb: #90a4ae;
+  --scrollbar-track: #eceff1;
+}
+
+/* Theme: Haiku */
+.haiku {
+  --bg-primary: #fff9e6;
+  --text-primary: #2f3e2a;
+  --border-color: #b0bec5;
+  --header-bg: #e3f2fd;
+  --button-bg: #e1f5fe;
+  --button-hover: #b3e5fc;
+  --input-bg: #ffffff;
+  --status-connected: #43a047;
+  --status-disconnected: #e53935;
+  --scrollbar-thumb: #90a4ae;
+  --scrollbar-track: #eceff1;
+}
+
+/* Theme: Hemingway */
+.hemingway {
+  --bg-primary: #2c2c2c;
+  --text-primary: #c8c8c8;
+  --border-color: #8d8d8d;
+  --header-bg: #3a3a3a;
+  --button-bg: #4a4a4a;
+  --button-hover: #5a5a5a;
+  --input-bg: #333333;
+  --status-connected: #33ff33;
+  --status-disconnected: #ff3333;
+  --scrollbar-thumb: #6e6e6e;
+  --scrollbar-track: #2c2c2c;
+}
+
+/* Map status classes to their colors */
+.status-connected {
+  color: var(--status-connected);
+}
+.status-disconnected {
+  color: var(--status-disconnected);
+}
+
+/* Ensure <select> and its <option>s inherit theme */
+.settings-select,
+.settings-select option {
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+}
+
+/* Main layout and containers */
+
+/* New console layout */
+
+/* Header Layout */
+.console-header {
+  grid-area: header;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background-color: var(--header-bg);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.console-title {
+  margin: 0;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.assistant-name-input {
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  border: none;
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.25rem 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  min-width: 200px;
+  outline: none;
+}
+
+.assistant-name-final {
+  padding: 0.25rem 0;
+  border-bottom: 1px solid transparent;
+}
+
+/* Settings Section */
+.console-settings {
+  position: relative;
+}
+
+.settings-button {
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 5px;
+}
+.settings-button:hover {
+  opacity: 0.8;
+}
+
+.settings-popup {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+  min-width: 250px;
+}
+
+.settings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.settings-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+/* Settings Items */
+.settings-item {
+  margin-bottom: 15px;
+}
+
+.settings-label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+}
+
+.settings-input,
+.settings-textarea {
+  width: 100%;
+  padding: 6px 8px;
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  margin-bottom: 8px;
+}
+
+.settings-textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.settings-toggle {
+  background: var(--button-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: var(--font-mono);
+}
+
+/* Main Column */
+
+/* Notes Sidebar */
+.console-notes {
+  grid-area: sidebar;
+  padding: 1rem;
+  overflow-y: auto;
+  border-right: 1px solid var(--border-color);
+}
+
+/* Voice Prompt Input - Updated to include file upload */
+/* ======================= */
+/* START: Mic Button Style */
+/* ======================= */
+
+.mic-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  margin-right: 8px;
+}
+
+.mic-button img {
+  width: 20px;
+  height: 20px;
+  filter: var(--icon-filter, none); /* Allow theme tinting */
+}
+
+/* Optional hover style */
+.mic-button:hover {
+  opacity: 0.75;
+}
+
+.voice-input-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1rem 0;
+  width: 100%;
+  justify-content: center;
+  max-width: 400px;
+}
+
+.console-input {
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  padding: 6px 10px;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 400px;
+  font-family: var(--font-mono);
+}
+
+/* Blinking Cursor Animation */
+.blinking-cursor {
+  caret-color: var(--text-primary);
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink {
+  50% {
+    caret-color: transparent;
+  }
+}
+
+.send-icon {
+  height: 32px;
+  width: 32px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+/* Chat Container with Rolling Scroll */
+.chat-container {
+  max-height: 70vh;
+  min-height: 400px;
+  overflow-y: auto;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.05);
+  width: 100%;
+  margin: 1rem 0;
+  align-self: center;
+}
+/* Buttons & Status */
+.console-knock {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.console-status {
+  font-size: 0.9rem;
+}
+.console-button {
+  background: var(--button-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    transform 0.1s;
+}
+.console-button:hover {
+  background-color: var(--button-hover);
+  transform: scale(1.02);
+}
+.console-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.console-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.note-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+.note-item {
+  margin-bottom: 8px;
+}
+
+.note-button {
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+/* Use theme var rather than hard-coded color */
+.note-button:hover {
+  color: var(--text-primary);
+}
+
+.note-content-container {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.05);
+  min-height: 100px;
+  max-height: 300px;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.note-content {
+  white-space: pre-wrap;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* Theme-specific hover tweaks */
+.white-rabbit .console-button:hover,
+.white-rabbit .note-button:hover {
+  background-color: rgba(51, 255, 51, 0.1);
+  color: #22cc22;
+}
+.minimalist-winter .console-button:hover,
+.minimalist-winter .note-button:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  color: #0f1c1e;
+}
+.haiku .console-button:hover,
+.haiku .note-button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #1e2a18;
+}
+.hemingway .console-button:hover,
+.hemingway .note-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #b0b0b0;
+}
+
+.icon-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 1rem;
+}
+
+/* ------------- UNIVERSAL ICON STYLE ------------- */
+.console-icon,
+.hotword-icon,
+.settings-icon,
+.send-icon {
+  width: 22px; /* <— change once to resize all icons */
+  height: 22px;
+  cursor: pointer;
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+}
+.console-icon:hover,
+.hotword-icon:hover,
+.settings-icon:hover,
+.send-icon:hover {
+  transform: scale(1.08);
+}
+
+/* ----------- THEME-SPECIFIC FILTERS ----------- */
+.white-rabbit {
+  --icon-filter: grayscale(1) brightness(2.2);
+} /* light-grey */
+.minimalist-winter {
+  --icon-filter: grayscale(1) brightness(0.3);
+} /* dark      */
+.haiku {
+  --icon-filter: grayscale(1) brightness(0.5);
+} /* mid       */
+.hemingway {
+  --icon-filter: grayscale(1) brightness(0.8);
+} /* silver    */
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+
+  .console-notes {
+    border-right: none;
+    border-top: 1px solid var(--border-color);
+  }
+}
+
+.chat-container {
+  margin-top: auto;
+  margin-left: auto;
+  margin-right: auto;
+  width: 90%;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.voice-input-container {
+  width: 100%;
+  max-width: 600px;
+  margin-top: 1rem;
+}
+.obsidian-notes h3 {
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.obsidian-notes button {
+  background: var(--input-bg);
+  border: 1px solid var(--border-color, #444);
+  color: var(--text-primary);
+  padding: 0.25rem 0.5rem;
+  font-size: 0.85rem;
+  border-radius: 6px;
+  width: 100%;
+  text-align: left;
+}
+
+.obsidian-notes textarea {
+  font-family: var(--font-mono, monospace);
+  background: var(--input-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color, #444);
+  border-radius: 8px;
+  padding: 0.5rem;
+  resize: vertical;
+}
+.nav-bar {
+  display: flex;
+  gap: 20px;
+  padding: 10px;
+  background-color: var(--input-bg);
+}
+.nav-bar a {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: bold;
+}
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.chat-container,
+a, button, select, input {
+  color: var(--text-primary);
+  background-color: var(--input-bg);
+}
+/* DEBUG: Hard Theme Overrides */
+.white-rabbit {
+  background-color: #ffffff !important;
+}
+.minimalist-winter {
+  background-color: #cccccc !important;
+}
+.haiku {
+  background-color: #ffebc2 !important;
+}
+.hemingway {
+  background-color: #e5decf !important;
+}
+/* FINAL OVERRIDES - Force Theme Cascade */
+body {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+
+input, select, button, a {
+  background-color: var(--input-bg) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+/* 🔒 Clamp all images globally to avoid layout distortion */
+img {
+  max-width: 10px;
+  max-height: 10px;
+  object-fit: contain;
+  display: inline-block;
+}
+
+/* 🔧 Main App Layout */
+.myai-container {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  grid-template-areas: "sidebar main";
+  height: 100vh;
+  gap: 1rem;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+/* Sidebar styling */
+.sidebar {
+  grid-area: sidebar;
+  overflow-y: auto;
+  background-color: var(--bg-secondary, #f5f5f5);
+  padding: 1rem;
+  border-right: 1px solid #ccc;
+}
+
+/* Main panel styling */
+.main-content {
+  grid-area: main;
+  overflow-y: auto;
+  padding: 1rem;
+}
+/* === Core Layout Refinements === */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.main-content {
+  grid-area: main;
+}
+
+
+.chat-container {
+  flex-grow: 1;
+  overflow-y: auto;
+  max-height: 400px;
+  margin-top: 1rem;
+  padding-right: 0.5rem;
+}
+
+/* === Chat Output Styling === */
+.chat-message {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: var(--input-bg, #f0f0f0);
+  color: var(--text-primary, #000);
+}
+
+.user-message {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.ai-response {
+  white-space: pre-wrap;
+}
+
+/* === Obsidian Styling === */
+.obsidian-note-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  margin: 0.25rem 0;
+}
+
+.obsidian-note-editor {
+  margin-top: 1rem;
+}
+
+.obsidian-note-textarea {
+  width: 100%;
+  height: 150px;
+  font-family: monospace;
+  padding: 0.5rem;
+}
+
+/* === Theme Integration === */
+body, .myai-container {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+
+
+
+
+html, body, #myai-root, .console-wrapper {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+
+.chat-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* === Login Overlay Wrapper === */
+.login-overlay-wrapper {
+  position: relative;
+  z-index: 0;
+  width: 100%;
+  height: 100vh;
+}
+
+.login-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  right: 0; bottom: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.login-overlay .auth-card,
+.login-overlay .auth-container {
+  z-index: 1001;
+  max-width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.login-overlay-wrapper .myai-container {
+  position: relative;
+  z-index: 1;
+}

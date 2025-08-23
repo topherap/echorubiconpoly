@@ -1,0 +1,36 @@
+ECHO RUBICON REFRESH ISSUE - COMPREHENSIVE DIAGNOSTIC REPORT
+==========================================================
+Generated: 06/27/2025 22:07:49
+
+CRITICAL FINDINGS:
+1. DUPLICATE FUNCTIONS: Two checkAuthenticationStatus functions found
+   - First at line ~784
+   - Second at line ~1057
+   - JavaScript will use the SECOND (last) definition
+
+2. BEFOREUNLOAD HANDLER: Found in preload.js line 346
+   - May interfere with page refresh
+
+3. MENU CONFIGURATION: No reload menu item in main.js
+
+4. MOUNT EFFECT: Found at line ~1229
+   - Calls checkAuthenticationStatus on component mount
+
+HYPOTHESIS:
+The second checkAuthenticationStatus function (line 1057) is missing
+the session persistence check, causing the app to re-authenticate on every refresh.
+
+RECOMMENDED FIXES:
+1. Delete the second checkAuthenticationStatus function
+2. Comment out the beforeunload handler in preload.js
+3. Add reload menu item to main.js
+4. Clear localStorage and test
+
+FILES GENERATED:
+- checkAuthenticationStatus-FIRST.js (working version)
+- checkAuthenticationStatus-SECOND.js (problematic version)
+- beforeunload-handler.js
+- mount-effects.txt
+- menu-config.js
+- state-flow-analysis.txt
+- runtime-test.js
