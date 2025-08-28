@@ -40,84 +40,116 @@ class VaultHighPriest {
   }
 
   isDivineQuery(message) {
-    const isDivine = this.divinePatterns.some(pattern => pattern.test(message.trim()));
-    if (isDivine) {
-      console.log('🏛️ HIGH PRIEST: Divine query detected:', message);
+  const trimmedMessage = message.trim();
+  
+  // Special handling for pure numbers - check context FIRST
+  if (/^\d+$/.test(trimmedMessage)) {
+    console.log('🔍 Context check:', {
+      hasDivineContext: !!this.divineContext?.lastResults,
+      hasLastRevelation: !!this.lastDivineRevelation?.records,
+      hasGlobalContext: !!global.vaultContext?.mode,
+      mode: global.vaultContext?.mode
+    });
+    
+    // Check if we have recent results in ANY of the context stores
+    if (this.divineContext?.lastResults?.length > 0 || 
+        this.lastDivineRevelation?.records?.length > 0 ||
+        global.vaultContext?.mode === 'listing') {
+      console.log('🎯 HIGH PRIEST: Number is selection from vault results');
+      return false; // Let selection handler take it
     }
-    return isDivine;
   }
+  
+  // Otherwise check patterns normally
+  const isDivine = this.divinePatterns.some(pattern => pattern.test(trimmedMessage));
+  if (isDivine) {
+    console.log('🏛️ HIGH PRIEST: Divine query detected:', message);
+  }
+  return isDivine;
+}
 
   async seekDivineKnowledge(query, event = null) {
-    console.log('📂 VAULT: Searching records...');
+  console.log('📂 VAULT: Searching records...');
+  
+  try {
+    // ALWAYS clear old context when doing new vault search
+    this.clearContext();
     
-    try {
-      // ALWAYS clear old context when doing new vault search
-      this.clearContext();
-      
-      // Extract query type and subject
-      const queryType = this.extractQueryType(query);
-      const subject = this.extractSubject(query);
-      
-      console.log('📂 VAULT: Query type:', queryType, 'Subject:', subject);
-      
-      // Direct vault access - no AI interpretation
-      const divineRecords = await this.consultQLIB(subject);
-      
-      // Store enhanced context
-      this.divineContext = {
-        lastQuery: query,
-        lastResults: divineRecords,
-        currentViewing: null,
-        conversationThread: [
-          ...this.divineContext.conversationThread,
-          { type: 'query', content: query, timestamp: Date.now() }
-        ],
-        timestamp: Date.now()
-      };
-      
-      // Set mode to browsing
-      global.vaultContext = {
-        mode: 'browsing',
-        lastQuery: query,
-        currentFile: null,
-        resultCount: divineRecords.length,
-        titles: divineRecords.map(r => r.title || r.filename)
-      };
-      
-      // Store for follow-up (backward compatibility)
-      this.lastDivineRevelation = {
-        query: query,
-        subject: subject,
-        records: divineRecords,
-        timestamp: Date.now()
-      };
-      
-      // Also set global context for AI
-      global.vaultContext = {
-        mode: 'listing',
-        query: query,
-        resultCount: divineRecords.length,
-        titles: divineRecords.map(r => r.title || r.filename)
-      };
-      
-      // Use streaming revelation if event provided
-      if (event && divineRecords.length > 0) {
-        return await this.streamDivineRevelation(divineRecords, queryType, event);
-      }
-      
-      // Format as numbered gospel (fallback)
-      return this.formatDivineRevelation(divineRecords, queryType);
-      
-    } catch (error) {
-      console.error('🏛️ HIGH PRIEST ERROR:', error.message);
-      return {
-        message: "The Vault is sealed. The High Priest cannot access divine records.",
-        source: 'vault-direct',
-        hasRecords: false,
-        error: true
-      };
+    // Extract query type and subject
+    const queryType = this.extractQueryType(query);
+    const subject = this.extractSubject(query);
+    
+    console.log('📂 VAULT: Query type:', queryType, 'Subject:', subject);
+    
+    // Direct vault access - no AI interpretation
+    const divineRecords = await this.consultQLIB(subject);
+    
+    // Store enhanced context (internal)
+    this.divineContext = {
+      lastQuery: query,
+      lastResults: divineRecords,
+      currentViewing: null,
+      conversationThread: [
+        ...this.divineContext.conversationThread,
+        { type: 'query', content: query, timestamp: Date.now() }
+      ],
+      timestamp: Date.now()
+    };
+    
+    // Store for follow-up (internal backward compatibility)
+    this.lastDivineRevelation = {
+      query: query,
+      subject: subject,
+      records: divineRecords,
+      timestamp: Date.now()
+    };
+    
+   // Initialize if needed, but DON'T destroy existing methods
+if (!global.vaultContext) {
+  global.vaultContext = {};
+}
+
+console.log('BEFORE context set:', Object.keys(global.vaultContext || {}));
+// Update properties without destroying methods from contextHandler.js
+global.vaultContext.mode = 'listing';
+global.vaultContext.lastQuery = query;
+global.vaultContext.currentFile = null;
+global.vaultContext.resultCount = divineRecords.length;
+global.vaultContext.titles = divineRecords.map(r => r.title || r.filename);
+global.vaultContext.records = divineRecords;
+global.vaultContext.awaitingSelection = true;
+global.vaultContext.timestamp = Date.now();
+console.log('AFTER context set:', Object.keys(global.vaultContext));
+    
+    // Set selection context (FIXED: was window, now global)
+    global.echoContext = {
+      lastListDisplay: divineRecords,
+      listTimestamp: Date.now(),
+      awaitingSelection: true,
+      listType: subject
+    };
+    
+    // Log for debugging
+    console.log(`📂 VAULT: Stored ${divineRecords.length} records in global context`);
+    
+    // Use streaming revelation if event provided
+    if (event && divineRecords.length > 0) {
+      return await this.streamDivineRevelation(divineRecords, queryType, event);
     }
+    
+    // Format as numbered gospel (fallback)
+    return this.formatDivineRevelation(divineRecords, queryType);
+    
+  } catch (error) {
+    console.error('🏛️ HIGH PRIEST ERROR:', error.message);
+    return {
+      message: "The Vault is sealed. The High Priest cannot access divine records.",
+      source: 'vault-direct',
+      hasRecords: false,
+      error: true
+    };
   }
+}
 
   async streamDivineRevelation(records, queryType, event) {
     console.log('🏛️ HIGH PRIEST: Beginning divine revelation stream...');
@@ -425,7 +457,8 @@ class VaultHighPriest {
   }
 
   async handleDivineSelection(selection) {
-    if (!this.lastDivineRevelation || !this.lastDivineRevelation.records) {
+    const records = this.lastDivineRevelation?.records || global.vaultContext?.records;
+if (!records) {
       return {
         message: "🏛️ No divine revelation to reference. Seek first, then select.",
         source: 'vault-direct'
@@ -463,7 +496,8 @@ class VaultHighPriest {
         content: this.stripMetadata(record.content),
         timestamp: Date.now()
       };
-      
+      global.lastFileContent = this.stripMetadata(record.content);
+      global.lastFileShown = record.title || record.filename;
       // Update vault context mode
       global.vaultContext.mode = 'viewing';
       global.vaultContext.currentFile = record.title || record.filename;

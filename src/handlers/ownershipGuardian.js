@@ -108,16 +108,17 @@ class OwnershipGuardian {
   static stripGratitudeLanguage(response) {
     if (typeof response !== 'string') return response;
     
-    // Remove common gratitude patterns
     const patterns = [
-      /thank you for sharing/gi,
-      /thanks for providing/gi,
-      /I see you've shared/gi,
-      /you've provided/gi,
-      /based on what you've given me/gi,
-      /the content you've shared/gi,
-      /thank you for the/gi
-    ];
+  /thank you for sharing/gi,
+  /thanks for providing/gi,
+  /thank you for the/gi,
+  /I appreciate you sharing/gi,
+  /you've provided/gi,
+  /you've shared/gi,
+  /the content you've shared/gi,
+  /what you've given me/gi,
+  /the information you've given/gi
+];
     
     let cleaned = response;
     patterns.forEach(pattern => {

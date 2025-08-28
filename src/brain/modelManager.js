@@ -23,6 +23,61 @@ class ModelManager {
   }
 
   /**
+   * PRIMARY ENTRY POINT FROM CANAL ROUTES
+   * This is what Canal calls with ownership context
+   * @param {string} userMessage - The user's query or content
+   * @param {string} systemPrompt - The ownership/persona context from Canal
+   */
+  async query(userMessage, systemPrompt) {
+    const startTime = Date.now();
+    
+    this.trace('model-manager', 'Query received from Canal', {
+      hasSystemPrompt: !!systemPrompt,
+      messageLength: userMessage.length
+    });
+    
+    // Select appropriate model based on query type
+    const modelName = this.selectModel(userMessage);
+    
+    // Pass through to callModel with Canal's context preserved
+    const response = await this.callModel(modelName, userMessage, {
+      fromCanal: true,
+      systemPrompt: systemPrompt
+    });
+    
+    this.trace('model-manager', 'Query completed', {
+      responseTime: Date.now() - startTime,
+      modelUsed: modelName
+    });
+    
+    return response;
+  }
+
+  /**
+   * Select appropriate model based on query content
+   */
+  selectModel(userMessage) {
+    const lower = userMessage.toLowerCase();
+    
+    // Map query types to brain specialties
+    if (lower.includes('analyze') || lower.includes('pattern') || lower.includes('insight')) {
+      return this.models.analyst?.name || 'phi3:mini';
+    }
+    if (lower.includes('list') || lower.includes('find') || lower.includes('show') || lower.includes('search')) {
+      return this.models.clerk?.name || 'phi3:mini';
+    }
+    if (lower.includes('summarize') || lower.includes('explain') || lower.includes('read')) {
+      return this.models.reader?.name || 'phi3:mini';
+    }
+    if (lower.includes('chat') || lower.includes('think') || lower.includes('help')) {
+      return this.models.conversationalist?.name || 'phi3:mini';
+    }
+    
+    // Default to conversationalist for general queries
+    return this.models.conversationalist?.name || 'phi3:mini';
+  }
+
+  /**
    * Initialize Ollama connection - look for existing Ollama integration
    */
   async initializeOllama() {
@@ -122,7 +177,7 @@ class ModelManager {
   async callModel(modelName, prompt, options = {}) {
     const startTime = Date.now();
     
-    console.log('🔍 MODEL MANAGER: Calling', modelName);
+    console.log('🔎 MODEL MANAGER: Calling', modelName);
     
     try {
       this.trace('model-manager', 'Calling model', {
@@ -133,10 +188,26 @@ class ModelManager {
 
       const messages = [];
       
-      if (options.canonicalText && options.canonicalText.content) {
+      // CRITICAL: Canal's systemPrompt takes absolute priority
+      if (options.systemPrompt) {
+        console.log('📌 USING CANAL OWNERSHIP CONTEXT');
+        
+        // System message establishes the AI's role and ownership context
+        messages.push({
+          role: 'system',
+          content: options.systemPrompt
+        });
+        
+        // User message is just the query/content
+        messages.push({
+          role: 'user',
+          content: prompt
+        });
+        
+      } else if (options.canonicalText && options.canonicalText.content) {
+        // Fallback to legacy canonical text approach
         console.log('📌 ENFORCING CANONICAL CONTEXT:', options.canonicalText.title);
         
-        // Context goes in USER message (the nugget approach)
         messages.push({
           role: 'user',
           content: `I am viewing this content from my vault:
@@ -170,17 +241,14 @@ Based on the content above: ${prompt}`
         });
         response = result.message.content;
         
-        // Quick check for lies
-        if (options.canonicalText && response.match(/don't see|don't have access|cannot access/i)) {
-          console.log('⚠️ Model denied seeing provided content - retrying with stronger prompt');
+        // Quick check for ownership confusion
+        if (options.systemPrompt && response.match(/thank you for sharing|thanks for providing|appreciate you showing/i)) {
+          console.log('⚠️ Model confused about ownership - retrying with stronger prompt');
           
-          // One retry with more explicit instruction
-          messages[0].content = `YOU CAN SEE THIS CONTENT - IT IS PROVIDED BELOW:
-
-"${options.canonicalText.title}"
-${options.canonicalText.content}
-
-DO NOT say you cannot see it. Answer this: ${prompt}`;
+          // Strengthen the system prompt
+          messages[0].content = `CRITICAL CONTEXT: You are the user's vault AI managing THEIR OWN content. 
+This is not content being shared with you - you have full access to their vault.
+${options.systemPrompt}`;
           
           const retry = await this.ollama.chat(modelName, messages, {
             temperature: options.temperature || 0.7,
@@ -192,7 +260,13 @@ DO NOT say you cannot see it. Answer this: ${prompt}`;
         
       } else if (this.ollama && this.ollama.generate) {
         // Fallback to generate if chat not available
-        const finalPrompt = messages.map(m => `${m.role}: ${m.content}`).join('\n\n');
+        let finalPrompt;
+        if (options.systemPrompt) {
+          finalPrompt = `${options.systemPrompt}\n\n${prompt}`;
+        } else {
+          finalPrompt = messages.map(m => `${m.role}: ${m.content}`).join('\n\n');
+        }
+        
         const result = await this.ollama.generate(modelName, finalPrompt, {
           temperature: options.temperature || 0.7,
           maxTokens: options.maxTokens || 1000
@@ -288,17 +362,17 @@ DO NOT say you cannot see it. Answer this: ${prompt}`;
    * Format prompt for Clerk brain (lists, navigation)
    */
   formatClerkPrompt(userQuery, context, config) {
-    let prompt = `You are a specialized assistant for handling lists and navigation tasks.\n\n`;
+    let prompt = `You are ${currentIdentity.ai.name || 'Q'}, the user's vault navigator managing THEIR personal knowledge system.
+You're displaying content from THEIR vault - files they've created, stored, and organized.
+This is not external content being shared with you. This is THEIR data that you're helping them navigate.
+Never express surprise at seeing their content or thank them for access - you're their vault custodian.\n\n`;
     
-    // Add specialties context
     prompt += `Your specialties: ${config.specialties.join(', ')}\n\n`;
     
-    // Add file content if available
     if (context.lastFileContent) {
       prompt += `Recent file context:\n${context.lastFileContent.content.substring(0, 500)}...\n\n`;
     }
     
-    // Add conversation history if available
     if (context.conversationHistory && context.conversationHistory.length > 0) {
       const lastFew = context.conversationHistory.slice(-3);
       prompt += `Recent conversation:\n`;
@@ -315,7 +389,7 @@ DO NOT say you cannot see it. Answer this: ${prompt}`;
     prompt += `- For file selection, provide specific options\n`;
     prompt += `- Use bullet points or numbers for clarity\n\n`;
     prompt += `Response:`;
-
+    
     return prompt;
   }
 
@@ -323,53 +397,75 @@ DO NOT say you cannot see it. Answer this: ${prompt}`;
    * Format prompt for Reader brain (summarization, explanation)
    */
   formatReaderPrompt(userQuery, context, config) {
-    let prompt = `You are a specialized assistant for reading, summarizing, and explaining content.\n\n`;
+    let prompt = `You are ${currentIdentity.ai.name || 'Q'}, analyzing content from the user's personal vault.
+This is THEIR ${context.type || 'content'} that already exists in their system.
+You're not receiving submissions - you're reviewing their established vault content.
+Respond as their vault analyst examining their own data, not as someone seeing it for the first time.
+Analyze their content directly without social pleasantries.\n\n`;
     
-    // Add specialties context
     prompt += `Your specialties: ${config.specialties.join(', ')}\n\n`;
     
-    // Add file content if available (this is crucial for Reader)
     if (context.lastFileContent) {
-      prompt += `Content to analyze:\n`;
+      prompt += `Vault content to analyze:\n`;
       prompt += `Filename: ${context.lastFileContent.fileName}\n`;
       prompt += `Content:\n${context.lastFileContent.content}\n\n`;
+    } else if (context.content) {
+      prompt += `Vault content:\n${context.content}\n\n`;
     }
     
     prompt += `User request: ${userQuery}\n\n`;
     prompt += `Instructions:\n`;
-    prompt += `- Provide clear, comprehensive summaries\n`;
+    prompt += `- Analyze THEIR content as established vault data\n`;
     prompt += `- Focus on key points and main themes\n`;
-    prompt += `- Use structured format when helpful\n`;
-    prompt += `- Explain complex concepts simply\n\n`;
+    prompt += `- Provide insights, not acknowledgments\n`;
+    prompt += `- Skip social pleasantries and gratitude\n\n`;
     prompt += `Response:`;
-
+    
     return prompt;
   }
 
   /**
-   * Format prompt for Analyst brain (technical, code)
+   * Format prompt for Analyst brain (deep analysis, patterns)
    */
   formatAnalystPrompt(userQuery, context, config) {
-    let prompt = `You are a specialized technical analyst and code expert.\n\n`;
+    let prompt = `You are ${currentIdentity.ai.name || 'Q'}, the user's vault analyst examining THEIR knowledge system.
+You're performing deep analysis on content they've accumulated in their vault.
+This is THEIR intellectual property and research - not external data being presented to you.
+You have full access as their analytical engine. Never act surprised at vault contents.\n\n`;
     
-    // Add specialties context
     prompt += `Your specialties: ${config.specialties.join(', ')}\n\n`;
     
-    // Add code context if available
-    if (context.lastFileContent && this.isCodeFile(context.lastFileContent.fileName)) {
-      prompt += `Code to analyze:\n`;
-      prompt += `File: ${context.lastFileContent.fileName}\n`;
-      prompt += `\`\`\`\n${context.lastFileContent.content}\n\`\`\`\n\n`;
+    // Include multiple files if available for pattern analysis
+    if (context.multipleFiles && context.multipleFiles.length > 0) {
+      prompt += `Vault files for analysis:\n`;
+      context.multipleFiles.forEach((file, idx) => {
+        prompt += `[${idx + 1}] ${file.fileName}: ${file.content.substring(0, 300)}...\n`;
+      });
+      prompt += `\n`;
+    } else if (context.lastFileContent) {
+      prompt += `Primary vault file:\n`;
+      prompt += `Filename: ${context.lastFileContent.fileName}\n`;
+      prompt += `Content:\n${context.lastFileContent.content}\n\n`;
     }
     
-    prompt += `Technical query: ${userQuery}\n\n`;
+    // Include metrics or patterns if available
+    if (context.metrics) {
+      prompt += `Vault metrics:\n`;
+      Object.entries(context.metrics).forEach(([key, value]) => {
+        prompt += `- ${key}: ${value}\n`;
+      });
+      prompt += `\n`;
+    }
+    
+    prompt += `Analysis request: ${userQuery}\n\n`;
     prompt += `Instructions:\n`;
-    prompt += `- Provide technical, accurate analysis\n`;
-    prompt += `- Include code examples when relevant\n`;
-    prompt += `- Explain technical concepts clearly\n`;
-    prompt += `- Focus on practical solutions\n\n`;
+    prompt += `- Perform deep analysis on THEIR vault data\n`;
+    prompt += `- Identify patterns, connections, and insights\n`;
+    prompt += `- Provide quantitative analysis where applicable\n`;
+    prompt += `- Suggest actionable recommendations\n`;
+    prompt += `- Skip acknowledgments - dive straight into analysis\n\n`;
     prompt += `Response:`;
-
+    
     return prompt;
   }
 
@@ -377,10 +473,11 @@ DO NOT say you cannot see it. Answer this: ${prompt}`;
    * Format prompt for Conversationalist brain (general chat)
    */
   formatConversationalistPrompt(userQuery, context, config) {
-    let prompt = `You are a friendly, conversational AI assistant.\n\n`;
+    let prompt = `You are ${currentIdentity.ai.name || 'Q'}, the user's conversational interface to their vault.
+You maintain ongoing dialogue about THEIR knowledge system and help them think through ideas.
+When referencing vault content, treat it as their established knowledge base, not new information.
+Engage naturally without excessive pleasantries or surprise at their content.\n\n`;
     
-    // Add personality context
-    prompt += `Your role: Engaging conversation partner with empathy and creativity\n`;
     prompt += `Your specialties: ${config.specialties.join(', ')}\n\n`;
     
     // Add conversation history for continuity
@@ -393,14 +490,22 @@ DO NOT say you cannot see it. Answer this: ${prompt}`;
       prompt += `\n`;
     }
     
+    // Include vault context if relevant to conversation
+    if (context.lastFileContent) {
+      prompt += `Current vault context:\n`;
+      prompt += `File: ${context.lastFileContent.fileName}\n`;
+      prompt += `Preview: ${context.lastFileContent.content.substring(0, 200)}...\n\n`;
+    }
+    
     prompt += `Current message: ${userQuery}\n\n`;
     prompt += `Instructions:\n`;
-    prompt += `- Be warm, engaging, and personable\n`;
-    prompt += `- Show empathy and understanding\n`;
-    prompt += `- Be creative when appropriate\n`;
-    prompt += `- Maintain conversation flow\n\n`;
+    prompt += `- Engage warmly but efficiently\n`;
+    prompt += `- Reference their vault naturally when relevant\n`;
+    prompt += `- Build on conversation history\n`;
+    prompt += `- Help develop their ideas further\n`;
+    prompt += `- Skip unnecessary acknowledgments\n\n`;
     prompt += `Response:`;
-
+    
     return prompt;
   }
 
@@ -440,6 +545,11 @@ DO NOT say you cannot see it. Answer this: ${prompt}`;
     // This would integrate with existing Echo Rubicon's model calling system
     // For now, return a placeholder that indicates we need integration
     this.trace('model-manager', 'Using existing system fallback');
+    
+    // If we have a system prompt from Canal, include it
+    if (options.systemPrompt) {
+      return `[ModelManager Integration Needed] This would call the existing Echo Rubicon model system with:\nSystem Context: ${options.systemPrompt.substring(0, 200)}...\nPrompt: ${prompt.substring(0, 200)}...\nOptions: ${JSON.stringify(options)}`;
+    }
     
     return `[ModelManager Integration Needed] This would call the existing Echo Rubicon model system with:\nPrompt: ${prompt.substring(0, 200)}...\nOptions: ${JSON.stringify(options)}`;
   }

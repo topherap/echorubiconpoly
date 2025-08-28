@@ -435,7 +435,11 @@ async buildContextForInput(userInput, options = {}) {
       hadFallback: selectedMemories.some(m => m._fallbackRecent),
       hadSemanticBoost: selectedMemories.some(m => m._semanticBoost),
       scoreRange: [scoredMemories[0]?.score || 0, scoredMemories[scoredMemories.length-1]?.score || 0]
-    }
+    },
+    // BRIDGE: Include IPC globals for AI systems
+    lastFileContent: global.lastFileContent || null,
+    vaultContext: global.vaultContext || {},
+    lastFileShown: global.lastFileShown || null,
   };
 }
 

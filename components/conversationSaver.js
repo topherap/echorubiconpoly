@@ -140,7 +140,6 @@ globalThis.saveConversationSimple = saveConversationSimple;
 //console.log('[DEBUG] saveConversationSimple attached to globalThis:', typeof globalThis.saveConversationSimple);
 //alert('SaveConversation attached: ' + (typeof globalThis.saveConversationSimple));
 //DELETE THIS LINE AFTER TESTING^^^^
-// ADD THESE LINES:
 window.saveConversationSimple = saveConversationSimple;
 console.log('[DEBUG] Also attached to window:', typeof window.saveConversationSimple);
 

@@ -98,11 +98,11 @@ function initializeApp() {
             // Run indexing directly
             const ChaosAnalyzer = require('../backend/qlib/chaosanalyzer');
             const analyzer = new ChaosAnalyzer({
-  vaultRoot: userVaultPath, 
-  concurrency: 4,
-  indexOnly: false,
-createCapsules: true 
-});
+              vaultRoot: userVaultPath, 
+              concurrency: 4,
+              indexOnly: false,
+              createCapsules: true 
+            });
             
             const indexResult = await analyzer.analyzeVault();
             global.lastIndexTime = Date.now();
@@ -164,46 +164,46 @@ createCapsules: true
     // Emit ready signal
     ipcMain.emit('app-ready');
     console.log('[INIT] Echo Rubicon backend started on port 49200');
-  });
+  }); // end app.whenReady()
+} // end initializeApp()
 
-  app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-      app.quit();
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
+});
+
+app.on('activate', () => {
+  ipcMain.emit('activate');
+});
+
+app.on('before-quit', () => {
+  console.log('[SHUTDOWN] Cleaning up Echo Rubicon...');
+
+  try {
+    if (db && typeof db.close === 'function') {
+      db.close();
+      console.log('[SHUTDOWN] Database connection closed');
     }
-  });
+  } catch (err) {
+    console.error('[SHUTDOWN] Error closing database:', err);
+  }
 
-  app.on('activate', () => {
-    ipcMain.emit('activate');
-  });
-
-  app.on('before-quit', () => {
-    console.log('[SHUTDOWN] Cleaning up Echo Rubicon...');
-
+  if (backend) {
     try {
-      if (db && typeof db.close === 'function') {
-        db.close();
-        console.log('[SHUTDOWN] Database connection closed');
+      if (typeof backend.close === 'function') {
+        backend.close();
+        console.log('[SHUTDOWN] Backend server closed');
+      } else {
+        console.warn('[SHUTDOWN] Backend does not support .close()');
       }
     } catch (err) {
-      console.error('[SHUTDOWN] Error closing database:', err);
+      console.error('[SHUTDOWN] Error closing backend:', err);
     }
+  }
 
-    if (backend) {
-      try {
-        if (typeof backend.close === 'function') {
-          backend.close();
-          console.log('[SHUTDOWN] Backend server closed');
-        } else {
-          console.warn('[SHUTDOWN] Backend does not support .close()');
-        }
-      } catch (err) {
-        console.error('[SHUTDOWN] Error closing backend:', err);
-      }
-    }
-
-    console.log('[SHUTDOWN] Echo Rubicon shutdown complete');
-  });
-}
+  console.log('[SHUTDOWN] Echo Rubicon shutdown complete');
+}); // end app.on('before-quit')
 
 initializeApp();
 

@@ -10,6 +10,7 @@ const { QLIBGod } = require('../../src/memory/qlibGod');
 // 🏛️ DIVINE HIERARCHY - Import High Priest and Canon Validator
 const vaultHighPriest = require('../../src/handlers/vaultHighPriest');
 const canonValidator = require('../../src/validators/canonValidator');
+const { OwnershipGuardian } = require('../../src/handlers/ownershipGuardian');
 
 // Multi-Brain Router System
 const BrainRouter = require('../../src/brain/BrainRouter');
@@ -753,6 +754,10 @@ let contextData = { memory: [], context: '', vault: [] };
           
           contextData = await global.memorySystem.buildContextForInput(message, currentProject);
           memoryTracer.track('CONTEXT_BUILD', contextData);
+          if (contextData && contextData.records) {
+  global.vaultContext.records = contextData.records;
+  console.log(`[CANAL] Stored ${contextData.records.length} records for selection`);
+}
           
           // Debug memory retrieval if enabled
           if (process.env.ECHO_DEBUG === 'true' && contextData?.memory?.length > 0) {
@@ -775,18 +780,30 @@ let contextData = { memory: [], context: '', vault: [] };
         }
 
         // Method 2: Use the broken import as a fallback (in case it sometimes works)
-        else if (typeof buildContextForInput === 'function') {
-          console.log('[DEBUG] Using imported buildContextForInput');
-          contextData = await buildContextForInput(message, currentProject);
-          memoryTracer.track('CONTEXT_BUILD', contextData);
-        }
-        // Method 3: Direct vaultManager search
-        else if (global.memorySystem?.vaultManager?.searchMemories) {
-          console.log('[DEBUG] Using vaultManager.searchMemories directly');
-          const memories = await global.memorySystem.vaultManager.searchMemories(message, { 
-            limit: 50,  // Increased from 10
-            filter: currentProject ? { project: currentProject } : {}
-          });
+else if (typeof buildContextForInput === 'function') {
+  console.log('[DEBUG] Using imported buildContextForInput');
+  contextData = await buildContextForInput(message, currentProject);
+  memoryTracer.track('CONTEXT_BUILD', contextData);
+  
+  // ADD: Store records for selection (Method 2)
+  if (contextData && contextData.records) {
+    global.vaultContext.records = contextData.records;
+    console.log(`[CANAL] Method 2: Stored ${contextData.records.length} records for selection`);
+  }
+}
+// Method 3: Direct vaultManager search
+else if (global.memorySystem?.vaultManager?.searchMemories) {
+  console.log('[DEBUG] Using vaultManager.searchMemories directly');
+  const memories = await global.memorySystem.vaultManager.searchMemories(message, { 
+    limit: 50,  // Increased from 10
+    filter: currentProject ? { project: currentProject } : {}
+  });
+  
+  // ADD: Store memories as records for selection (Method 3)
+  if (memories && memories.length > 0) {
+    global.vaultContext.records = memories;
+    console.log(`[CANAL] Method 3: Stored ${memories.length} memories as records for selection`);
+  }
           contextData = {
             memory: memories || [],
             context: memories?.map(m => m.summary || m.content || '').join('\n\n') || '',
@@ -2113,6 +2130,9 @@ Please check:
         finalReturn: 'AI MODEL RESPONSE'
       });
       console.log('=================== TRACE MAP END ===================');
+      
+      // Filter gratitude language from AI responses
+      content = OwnershipGuardian.stripGratitudeLanguage(content);
       
       memoryTracer.endTrace();
       return { 

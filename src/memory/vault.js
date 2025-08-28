@@ -1,6 +1,8 @@
 // src/memory/vault.js
 const path = require('path');
 const { MemoryCapsule } = require('./capsule');
+const { assignEpochAndWeight } = require('../../backend/qlib/epochClassifier');
+
 
 class MemoryVaultManager {
   constructor(vaultManager) {
@@ -9,48 +11,52 @@ class MemoryVaultManager {
     this.capsulesPath = '.echo/capsules'; // Updated to new structure
   }
 
-    // Save a memory capsule with project-based organization
-  async saveCapsule(capsule) {
-    console.log('[DEBUG] saveCapsule called with:', capsule.id);
-    
-    // Detect project from current context or capsule content
-    const project = this.detectProject(capsule);
-    console.log('[DEBUG] Detected project:', project);
-    
-    let relativePath;
+    // Save a memory capsule with project-based organization + epochs
+async saveCapsule(capsule) {
+  console.log('[DEBUG] saveCapsule called with:', capsule.id);
+  
+  // Detect project from current context or capsule content
+  const project = this.detectProject(capsule);
+  console.log('[DEBUG] Detected project:', project);
+  
+  // Get epoch classification
+  const epochData = assignEpochAndWeight(capsule);
+  console.log('[DEBUG] Epoch classification:', epochData.epoch, 'weight:', epochData.weight);
+  
+  let relativePath;
 
-    // If capsule ID starts with "memory-" save to misc folder (special/system capsules)
-    if (capsule.id.startsWith('memory-')) {
-      relativePath = path.join(this.capsulesPath, 'misc', `${capsule.id}.json`);
-    }
-    // Save to project-specific folder
-    else {
-      relativePath = path.join(this.capsulesPath, project, `${capsule.id}.json`);
-    }
-
-    console.log('[DEBUG] Writing capsule to:', relativePath);
-    
-    try {
-      // Use filesystem directly since writeFile method doesn't exist
-      const fs = require('fs/promises');
-      const path = require('path');
-      
-      // Get absolute path
-      const vaultPath = this.vaultManager.vaultPath || this.vaultManager.store?.vaultPath;
-      const absolutePath = path.join(vaultPath, relativePath);
-      
-      // Ensure directory exists
-      await fs.mkdir(path.dirname(absolutePath), { recursive: true });
-      
-      // Write file
-      await fs.writeFile(absolutePath, JSON.stringify(capsule.toJSON ? capsule.toJSON() : capsule, null, 2), 'utf8');
-      console.log('[DEBUG] Capsule write successful to:', absolutePath);
-      return { path: relativePath };
-    } catch (error) {
-      console.error('[DEBUG] Capsule write failed:', error);
-      throw error;
-    }
+  // If capsule ID starts with "memory-" save to misc/epoch folder (special/system capsules)
+  if (capsule.id.startsWith('memory-')) {
+    relativePath = path.join(this.capsulesPath, 'misc', epochData.epoch, `${capsule.id}.json`);
   }
+  // Save to project/epoch folder
+  else {
+    relativePath = path.join(this.capsulesPath, project, epochData.epoch, `${capsule.id}.json`);
+  }
+
+  console.log('[DEBUG] Writing capsule to:', relativePath);
+  
+  try {
+    // Use filesystem directly since writeFile method doesn't exist
+    const fs = require('fs/promises');
+    const path = require('path');
+    
+    // Get absolute path
+    const vaultPath = this.vaultManager.vaultPath || this.vaultManager.store?.vaultPath;
+    const absolutePath = path.join(vaultPath, relativePath);
+    
+    // Ensure directory exists
+    await fs.mkdir(path.dirname(absolutePath), { recursive: true });
+    
+    // Write file
+    await fs.writeFile(absolutePath, JSON.stringify(capsule.toJSON ? capsule.toJSON() : capsule, null, 2), 'utf8');
+    console.log('[DEBUG] Capsule write successful to:', absolutePath);
+    return { path: relativePath };
+  } catch (error) {
+    console.error('[DEBUG] Capsule write failed:', error);
+    throw error;
+  }
+}
 
   // Detect project from capsule content or current context
   detectProject(capsule) {

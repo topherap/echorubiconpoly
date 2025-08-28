@@ -2933,20 +2933,28 @@ safeHandle('read-file', async (event, filePath) => {
 });
 
 safeHandle('read-note', async (event, filename) => {
- console.log('[DEBUG] read-note called for:', filename);
- try {
-   const vaultPath = getVaultPath();
-   const filePath = path.join(vaultPath, filename);
-   
-   console.log('[DEBUG] [IPC] Reading note from:', filePath);
-   
-   const content = await fs.readFile(filePath, 'utf8');
-   console.log('[DEBUG] [IPC] Read note success:', filename, content.length, 'chars');
-   return content;
- } catch (error) {
-   console.error('[DEBUG] [IPC] Failed to read note:', error);
-   throw error;
- }
+  console.log('[DEBUG] read-note called for:', filename);
+  try {
+    const vaultPath = getVaultPath();
+    const filePath = path.join(vaultPath, filename);
+    
+    console.log('[DEBUG] [IPC] Reading note from:', filePath);
+    
+    const content = await fs.readFile(filePath, 'utf8');
+    console.log('[DEBUG] [IPC] Read note success:', filename, content.length, 'chars');
+    
+    // ADD THESE LINES - Connect sidebar to chat context
+    global.lastFileContent = content;
+    global.lastFileShown = filename;
+    global.vaultContext = global.vaultContext || {};
+    global.vaultContext.currentFile = filePath;
+    console.log('[DEBUG] Set global context for:', filename);
+    
+    return content;
+  } catch (error) {
+    console.error('[DEBUG] [IPC] Failed to read note:', error);
+    throw error;
+  }
 });
 
 safeHandle('save-file', async (event, filePath, content) => {

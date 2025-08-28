@@ -5,12 +5,12 @@ class MemoryCapsule {
     this.timestamp = data.timestamp || new Date().toISOString();
     this.messages = data.messages || [];
     this.summary = data.summary || '';
-    this.content = data.content || '';  // ADD THIS LINE
+    this.content = data.content || '';
     this.tags = data.tags || [];
     this.entities = data.entities || {};
     this.tokenCount = data.tokenCount || 0;
     this.confidence = data.confidence || 0.5;
-    this.metadata = data.metadata || {};  // ADD THIS LINE TOO
+    this.metadata = data.metadata || {};
   }
 static fromConversation(userInput, aiResponse, metadata = {}) {
   // Generate content from messages

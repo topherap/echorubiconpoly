@@ -2,7 +2,7 @@
 const fs = require('fs').promises;
 const path = require('path');
 const crypto = require('crypto');
-
+const { assignEpochAndWeight } = require('./epochClassifier');
 // Simple concurrency limiter
 class PLimit {
   constructor(concurrency) {
@@ -507,24 +507,7 @@ class ChaosAnalyzer {
       }
     }
     
-    // Build capsule directory based on project
-    let capsuleDir;
-    if (projectContext) {
-      capsuleDir = path.join(this.vaultRoot, '.echo', 'projects', projectContext, 'capsules', yearMonth, day);
-      console.log(`[ChaosAnalyzer] Saving to project: ${projectContext}`);
-    } else {
-      capsuleDir = path.join(this.vaultRoot, '.echo', 'capsules', yearMonth, day);
-    }
-    
-    const capsulePath = path.join(capsuleDir, `${capsuleId}.json`);
-    
-    await fs.mkdir(capsuleDir, { recursive: true });
-    await fs.writeFile(capsulePath, JSON.stringify(capsule, null, 2));
-    
-    // Update original file with clean metadata (pass summary separately)
-    await this.updateFileMetadata(filePath, analysis, capsule, summary);
-    
-    return capsule;
+    const { assignEpochAndWeight } = require('./epochClassifier');
   }
 
   // Create intelligent summary based on content analysis
